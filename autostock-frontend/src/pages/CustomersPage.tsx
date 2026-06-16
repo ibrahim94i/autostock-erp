@@ -42,6 +42,8 @@ import { CustomerDetailModal } from '../components/customers/CustomerDetailModal
 
 import { CustomerPaymentModal } from '../components/customers/CustomerPaymentModal';
 
+import { TouchButton } from '../components/ui/TouchButton';
+
 import type { Customer } from '../types';
 
 
@@ -504,7 +506,66 @@ export function CustomersPage() {
 
         <>
 
-          <div className="overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-sm">
+          <div className="space-y-3 lg:hidden">
+            {customerItems.map((customer) => {
+              const balance = balanceByCustomerId.get(customer.id);
+              return (
+                <div
+                  key={customer.id}
+                  className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm"
+                  onClick={() => setDetailCustomer(customer)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') setDetailCustomer(customer);
+                  }}
+                  role="button"
+                  tabIndex={0}
+                >
+                  <p className="font-semibold text-slate-900">{customer.name}</p>
+                  <p className="mt-1 text-sm text-slate-600">{customer.phone || '—'}</p>
+                  <p className="mt-1 text-sm text-slate-600">{customerTypeLabel(customer.type)}</p>
+                  <p className="mt-2 text-sm">
+                    <span className="text-slate-500">الرصيد: </span>
+                    {balancesLoading && balance === undefined ? (
+                      <span className="text-slate-400">...</span>
+                    ) : (
+                      <span className={balanceColorClass(balance ?? 0)}>
+                        {formatPrice(balance ?? 0)}
+                      </span>
+                    )}
+                  </p>
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    <TouchButton
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setCreateError('');
+                        setEditingCustomer(customer);
+                      }}
+                      className="flex-1 border border-slate-200 text-slate-700 hover:bg-slate-50"
+                    >
+                      <Pencil className="h-4 w-4" />
+                      تعديل
+                    </TouchButton>
+                    <TouchButton
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (window.confirm(`حذف العميل "${customer.name}"؟`)) {
+                          deleteMutation.mutate(customer.id);
+                        }
+                      }}
+                      className="flex-1 border border-red-200 text-red-700 hover:bg-red-50"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                      حذف
+                    </TouchButton>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          <div className="hidden overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-sm lg:block">
 
             <table className="w-full min-w-[700px] border-collapse text-sm">
 

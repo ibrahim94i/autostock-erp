@@ -393,7 +393,7 @@ export function PosPage() {
   }
 
   return (
-    <div className="-m-6 flex h-[calc(100vh-4rem)] min-h-0 flex-col overflow-hidden bg-slate-100">
+    <div className="-m-4 flex min-h-screen flex-col overflow-hidden bg-slate-100 lg:-m-6 lg:h-[calc(100vh-4rem)] lg:min-h-0">
       <header className="flex shrink-0 items-center justify-between border-b border-slate-200 bg-white px-6 py-3 shadow-sm">
         <h2 className="text-2xl font-extrabold tracking-tight text-slate-900">نقطة البيع</h2>
         <div className="flex items-center gap-2 rounded-full bg-slate-100 px-4 py-1.5 text-sm font-semibold text-slate-600">
@@ -402,9 +402,9 @@ export function PosPage() {
         </div>
       </header>
 
-      <div className="flex min-h-0 flex-1 flex-row overflow-hidden">
-        {/* Search + Products — right 45% in RTL */}
-        <section className="flex h-full min-h-0 w-[45%] shrink-0 flex-col border-e border-slate-200 bg-slate-50">
+      <div className="flex min-h-0 flex-1 flex-col overflow-hidden lg:flex-row">
+        {/* Search + Products — right 45% in RTL on desktop */}
+        <section className="flex h-full min-h-0 w-full shrink-0 flex-col border-b border-slate-200 bg-slate-50 lg:w-[45%] lg:border-b-0 lg:border-e">
           <div className="shrink-0 border-b border-slate-200 bg-white p-5 shadow-sm">
             <label className="block text-sm font-semibold text-slate-600">
               بحث منتج
@@ -451,7 +451,7 @@ export function PosPage() {
                     {debouncedProductSearch ? 'لا توجد نتائج' : 'ابدأ بالبحث عن منتج'}
                   </p>
                 ) : (
-                  <div className="grid grid-cols-3 gap-3">
+                  <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-3">
                     {(productsQuery.data?.items ?? []).map((product) => {
                       const stockQty = productStockQty(product.id);
                       const outOfStock = stockQty <= 0;
@@ -514,7 +514,7 @@ export function PosPage() {
         </section>
 
         {/* Cart — left 55% in RTL */}
-        <section className="flex h-full min-h-0 w-[55%] flex-col overflow-hidden bg-white">
+        <section className="flex h-full min-h-0 w-full flex-col overflow-hidden bg-white lg:w-[55%]">
           <div className="shrink-0 border-b border-slate-200 bg-slate-50 px-5 py-3">
             <h3 className="text-xl font-bold text-slate-900">
               السلة — {lines.length} {lines.length === 1 ? 'صنف' : 'صنف'}
@@ -591,7 +591,7 @@ export function PosPage() {
                             onClick={() =>
                               dispatchCart({ type: 'DECREMENT', lineKey: line.lineKey })
                             }
-                            className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-slate-50"
+                            className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-slate-50"
                           >
                             <Minus className="h-4 w-4" />
                           </button>
@@ -608,7 +608,7 @@ export function PosPage() {
                                 inputQty,
                               });
                             }}
-                            className="h-9 w-12 rounded-lg border border-slate-300 text-center text-base font-bold outline-none focus:border-blue-500"
+                            className="h-11 w-12 rounded-lg border border-slate-300 text-center text-base font-bold outline-none focus:border-blue-500"
                           />
                           <span className="text-xs font-semibold text-slate-500">
                             {lineQtyLabel(line)}
@@ -618,7 +618,7 @@ export function PosPage() {
                             onClick={() =>
                               dispatchCart({ type: 'INCREMENT', lineKey: line.lineKey })
                             }
-                            className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-slate-50"
+                            className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-slate-50"
                           >
                             <Plus className="h-4 w-4" />
                           </button>
@@ -631,7 +631,7 @@ export function PosPage() {
                           onClick={() =>
                             dispatchCart({ type: 'REMOVE', lineKey: line.lineKey })
                           }
-                          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-red-50 text-red-600 hover:bg-red-100"
+                          className="flex min-h-[44px] min-w-[44px] shrink-0 items-center justify-center rounded-lg bg-red-50 text-red-600 hover:bg-red-100"
                           aria-label="حذف"
                         >
                           <Trash2 className="h-4 w-4" />

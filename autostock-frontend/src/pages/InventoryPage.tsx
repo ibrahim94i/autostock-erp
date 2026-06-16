@@ -15,6 +15,7 @@ import {
 } from '../api';
 import type { Product, ReconcileStockPayload, StockBalanceItem } from '../types';
 import { ReconcileModal, type ReconcileFormValues } from '../components/inventory/ReconcileModal';
+import { TouchButton } from '../components/ui/TouchButton';
 import { useSettings } from '../context/SettingsContext';
 import { printInventoryVoucher } from '../pos/inventoryVoucherPrint';
 import { formatStockWithCartons, supportsCarton, toPieceQty } from '../utils/units';
@@ -587,7 +588,7 @@ export function InventoryPage() {
                           <td className="px-4 py-3 text-slate-500">{minAlert ?? '—'}</td>
                           <td className="px-4 py-3">
                             <div className="flex gap-2">
-                              <button
+                              <TouchButton
                                 type="button"
                                 onClick={() =>
                                   openEditBalance(
@@ -597,12 +598,12 @@ export function InventoryPage() {
                                     qty,
                                   )
                                 }
-                                className="inline-flex items-center gap-1 rounded-lg border border-slate-200 px-2 py-1 text-xs font-semibold text-slate-700 hover:bg-slate-50"
+                                className="gap-1 border border-slate-200 px-2 py-1 text-xs font-semibold text-slate-700 hover:bg-slate-50 lg:min-h-0 lg:min-w-0"
                               >
                                 <Pencil className="h-3.5 w-3.5" />
                                 تعديل
-                              </button>
-                              <button
+                              </TouchButton>
+                              <TouchButton
                                 type="button"
                                 onClick={() =>
                                   void handleDeleteBalance(
@@ -611,11 +612,11 @@ export function InventoryPage() {
                                     product?.sku ?? '—',
                                   )
                                 }
-                                className="inline-flex items-center gap-1 rounded-lg border border-red-200 px-2 py-1 text-xs font-semibold text-red-700 hover:bg-red-50"
+                                className="gap-1 border border-red-200 px-2 py-1 text-xs font-semibold text-red-700 hover:bg-red-50 lg:min-h-0 lg:min-w-0"
                               >
                                 <Trash2 className="h-3.5 w-3.5" />
                                 حذف
-                              </button>
+                              </TouchButton>
                             </div>
                           </td>
                         </tr>

@@ -16,6 +16,7 @@ import {
   updateExpense,
 } from '../api';
 import type { Expense } from '../types';
+import { TouchButton } from '../components/ui/TouchButton';
 import { exportToExcel } from '../utils/exportExcel';
 
 function todayIsoDate(): string {
@@ -472,29 +473,29 @@ export function ExpensesPage() {
                     {formatPrice(parseQuantity(item.amount))}
                   </td>
                   <td className="px-4 py-3">
-                    <button
+                    <TouchButton
                       type="button"
                       onClick={() => {
                         setFormError('');
                         setEditingExpense(item);
                       }}
-                      className="inline-flex items-center gap-1 rounded-lg border border-slate-200 px-2.5 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50"
+                      className="gap-1 border border-slate-200 px-2.5 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 lg:min-h-0 lg:min-w-0"
                     >
                       <Pencil className="h-3.5 w-3.5" />
                       تعديل
-                    </button>
-                    <button
+                    </TouchButton>
+                    <TouchButton
                       type="button"
                       onClick={() => {
                         if (window.confirm('حذف هذا المصروف؟')) {
                           deleteMutation.mutate(item.id);
                         }
                       }}
-                      className="ms-1 inline-flex items-center gap-1 rounded-lg border border-red-200 px-2.5 py-1.5 text-xs font-semibold text-red-700 hover:bg-red-50"
+                      className="ms-1 gap-1 border border-red-200 px-2.5 py-1.5 text-xs font-semibold text-red-700 hover:bg-red-50 lg:min-h-0 lg:min-w-0"
                     >
                       <Trash2 className="h-3.5 w-3.5" />
                       حذف
-                    </button>
+                    </TouchButton>
                   </td>
                 </tr>
               ))}

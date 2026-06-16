@@ -25,3 +25,5 @@ resources/backend
 *.njsproj
 *.sln
 *.sw?
+
+.vercel

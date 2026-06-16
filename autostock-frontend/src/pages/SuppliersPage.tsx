@@ -20,6 +20,7 @@ import {
 } from '../components/suppliers/CreateSupplierModal';
 import { PaymentModal } from '../components/suppliers/PaymentModal';
 import { SupplierDetailModal } from '../components/suppliers/SupplierDetailModal';
+import { TouchButton } from '../components/ui/TouchButton';
 import type { Supplier } from '../types';
 
 const PAGE_SIZE = 20;
@@ -244,7 +245,65 @@ export function SuppliersPage() {
 
       {!suppliersQuery.isLoading && !suppliersQuery.isError && supplierItems.length > 0 && (
         <>
-          <div className="overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-sm">
+          <div className="space-y-3 lg:hidden">
+            {supplierItems.map((supplier) => {
+              const balance = balanceBySupplierId.get(supplier.id);
+              return (
+                <div
+                  key={supplier.id}
+                  className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm"
+                  onClick={() => setDetailSupplier(supplier)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') setDetailSupplier(supplier);
+                  }}
+                  role="button"
+                  tabIndex={0}
+                >
+                  <p className="font-semibold text-slate-900">{supplier.name}</p>
+                  <p className="mt-1 text-sm text-slate-600">{supplier.phone || '—'}</p>
+                  <p className="mt-2 text-sm">
+                    <span className="text-slate-500">الرصيد: </span>
+                    {balancesLoading && balance === undefined ? (
+                      <span className="text-slate-400">...</span>
+                    ) : (
+                      <span className={balanceColorClass(balance ?? 0)}>
+                        {formatPrice(balance ?? 0)}
+                      </span>
+                    )}
+                  </p>
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    <TouchButton
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setCreateError('');
+                        setEditingSupplier(supplier);
+                      }}
+                      className="flex-1 border border-slate-200 text-slate-700 hover:bg-slate-50"
+                    >
+                      <Pencil className="h-4 w-4" />
+                      تعديل
+                    </TouchButton>
+                    <TouchButton
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (window.confirm(`حذف المورد "${supplier.name}"؟`)) {
+                          deleteMutation.mutate(supplier.id);
+                        }
+                      }}
+                      className="flex-1 border border-red-200 text-red-700 hover:bg-red-50"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                      حذف
+                    </TouchButton>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          <div className="hidden overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-sm lg:block">
             <table className="w-full min-w-[600px] border-collapse text-sm">
               <thead>
                 <tr className="border-b border-slate-200 bg-slate-50 text-slate-600">
@@ -275,19 +334,19 @@ export function SuppliersPage() {
                         )}
                       </td>
                       <td className="px-4 py-3">
-                        <button
+                        <TouchButton
                           type="button"
                           onClick={(e) => {
                             e.stopPropagation();
                             setCreateError('');
                             setEditingSupplier(supplier);
                           }}
-                          className="inline-flex items-center gap-1 rounded-lg border border-slate-200 px-2.5 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50"
+                          className="min-h-0 min-w-0 gap-1 border border-slate-200 px-2.5 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50"
                         >
                           <Pencil className="h-3.5 w-3.5" />
                           تعديل
-                        </button>
-                        <button
+                        </TouchButton>
+                        <TouchButton
                           type="button"
                           onClick={(e) => {
                             e.stopPropagation();
@@ -295,11 +354,11 @@ export function SuppliersPage() {
                               deleteMutation.mutate(supplier.id);
                             }
                           }}
-                          className="ms-1 inline-flex items-center gap-1 rounded-lg border border-red-200 px-2.5 py-1.5 text-xs font-semibold text-red-700 hover:bg-red-50"
+                          className="ms-1 min-h-0 min-w-0 gap-1 border border-red-200 px-2.5 py-1.5 text-xs font-semibold text-red-700 hover:bg-red-50"
                         >
                           <Trash2 className="h-3.5 w-3.5" />
                           حذف
-                        </button>
+                        </TouchButton>
                       </td>
                     </tr>
                   );

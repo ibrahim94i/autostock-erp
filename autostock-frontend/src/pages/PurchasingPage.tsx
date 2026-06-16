@@ -24,6 +24,7 @@ import {
 } from '../components/purchasing/CreatePoModal';
 import { PoDetailModal } from '../components/purchasing/PoDetailModal';
 import { ReceivePoModal } from '../components/purchasing/ReceivePoModal';
+import { TouchButton } from '../components/ui/TouchButton';
 import type {
   CreatePurchaseOrderPayload,
   Product,
@@ -393,7 +394,89 @@ export function PurchasingPage() {
 
       {!ordersQuery.isLoading && !ordersQuery.isError && orders.length > 0 && (
         <>
-          <div className="overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-sm">
+          <div className="space-y-3 lg:hidden">
+            {orders.map((po) => {
+              const badge = statusBadge(po.status);
+              const total = poTotal(po.items);
+              return (
+                <div
+                  key={po.id}
+                  className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm"
+                >
+                  <div className="flex items-start justify-between gap-2">
+                    <div>
+                      <p className="font-mono text-xs text-slate-500">{shortId(po.id)}</p>
+                      <p className="mt-1 font-semibold text-slate-900">
+                        {resolveSupplierName(po, suppliersCatalog)}
+                      </p>
+                    </div>
+                    <span
+                      className={[
+                        'inline-flex shrink-0 rounded-full px-2.5 py-0.5 text-xs font-semibold',
+                        badge.className,
+                      ].join(' ')}
+                    >
+                      {badge.label}
+                    </span>
+                  </div>
+                  <dl className="mt-3 grid grid-cols-2 gap-2 text-sm">
+                    <div>
+                      <dt className="text-xs text-slate-500">التاريخ</dt>
+                      <dd>{formatDateTime(po.createdAt)}</dd>
+                    </div>
+                    <div>
+                      <dt className="text-xs text-slate-500">الإجمالي</dt>
+                      <dd className="font-bold">{formatPrice(total)}</dd>
+                    </div>
+                  </dl>
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    <TouchButton
+                      type="button"
+                      onClick={() => setDetailPoId(po.id)}
+                      className="flex-1 border border-slate-200 text-slate-700 hover:bg-slate-100"
+                    >
+                      <Eye className="h-4 w-4" />
+                      عرض
+                    </TouchButton>
+                    {po.status === 'draft' && (
+                      <>
+                        <TouchButton
+                          type="button"
+                          onClick={() => void openEdit(po)}
+                          className="flex-1 border border-slate-200 text-slate-700 hover:bg-slate-100"
+                        >
+                          <Pencil className="h-4 w-4" />
+                          تعديل
+                        </TouchButton>
+                        <TouchButton
+                          type="button"
+                          onClick={() => {
+                            if (window.confirm('حذف أمر الشراء؟')) {
+                              deletePoMutation.mutate(po.id);
+                            }
+                          }}
+                          className="flex-1 border border-red-200 text-red-700 hover:bg-red-50"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                          حذف
+                        </TouchButton>
+                        <TouchButton
+                          type="button"
+                          onClick={() => openReceive(po)}
+                          className="flex-1 bg-emerald-600 text-white hover:bg-emerald-700"
+                        >
+                          <PackageCheck className="h-4 w-4" />
+                          استلام
+                        </TouchButton>
+                      </>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          <div className="hidden overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-sm lg:block">
             <table className="w-full min-w-[800px] border-collapse text-sm">
               <thead>
                 <tr className="border-b border-slate-200 bg-slate-50 text-slate-600">
@@ -432,44 +515,44 @@ export function PurchasingPage() {
                       <td className="px-4 py-3 font-semibold">{formatPrice(total)}</td>
                       <td className="px-4 py-3">
                         <div className="flex flex-wrap gap-2">
-                          <button
+                          <TouchButton
                             type="button"
                             onClick={() => setDetailPoId(po.id)}
-                            className="inline-flex items-center gap-1 rounded-lg border border-slate-200 px-2.5 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-100"
+                            className="min-h-0 min-w-0 gap-1 border border-slate-200 px-2.5 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-100"
                           >
                             <Eye className="h-3.5 w-3.5" />
                             عرض
-                          </button>
+                          </TouchButton>
                           {po.status === 'draft' && (
                             <>
-                              <button
+                              <TouchButton
                                 type="button"
                                 onClick={() => void openEdit(po)}
-                                className="inline-flex items-center gap-1 rounded-lg border border-slate-200 px-2.5 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-100"
+                                className="min-h-0 min-w-0 gap-1 border border-slate-200 px-2.5 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-100"
                               >
                                 <Pencil className="h-3.5 w-3.5" />
                                 تعديل
-                              </button>
-                              <button
+                              </TouchButton>
+                              <TouchButton
                                 type="button"
                                 onClick={() => {
                                   if (window.confirm('حذف أمر الشراء؟')) {
                                     deletePoMutation.mutate(po.id);
                                   }
                                 }}
-                                className="inline-flex items-center gap-1 rounded-lg border border-red-200 px-2.5 py-1.5 text-xs font-medium text-red-700 hover:bg-red-50"
+                                className="min-h-0 min-w-0 gap-1 border border-red-200 px-2.5 py-1.5 text-xs font-medium text-red-700 hover:bg-red-50"
                               >
                                 <Trash2 className="h-3.5 w-3.5" />
                                 حذف
-                              </button>
-                              <button
+                              </TouchButton>
+                              <TouchButton
                                 type="button"
                                 onClick={() => openReceive(po)}
-                                className="inline-flex items-center gap-1 rounded-lg bg-emerald-600 px-2.5 py-1.5 text-xs font-medium text-white hover:bg-emerald-700"
+                                className="min-h-0 min-w-0 gap-1 bg-emerald-600 px-2.5 py-1.5 text-xs font-medium text-white hover:bg-emerald-700"
                               >
                                 <PackageCheck className="h-3.5 w-3.5" />
                                 استلام
-                              </button>
+                              </TouchButton>
                             </>
                           )}
                         </div>
