@@ -1,19 +1,7 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
-import { Pool } from 'pg';
-
-function createPgPool(): Pool {
-  const connectionString = process.env.DATABASE_URL;
-  const useSsl =
-    process.env.NODE_ENV === 'production' ||
-    connectionString?.includes('railway.app') ||
-    connectionString?.includes('sslmode=');
-  return new Pool({
-    connectionString,
-    ...(useSsl && { ssl: { rejectUnauthorized: false } }),
-  });
-}
+import { createPgPool } from './pg-pool';
 
 @Injectable()
 export class PrismaService extends PrismaClient implements OnModuleInit {

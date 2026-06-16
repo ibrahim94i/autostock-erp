@@ -1,17 +1,10 @@
 import 'dotenv/config';
 import { PrismaClient } from '@prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
-import { Pool } from 'pg';
+import { createPgPool } from '../src/common/prisma/pg-pool';
 import * as bcrypt from 'bcryptjs';
 
-const useSsl =
-  process.env.NODE_ENV === 'production' ||
-  process.env.DATABASE_URL?.includes('railway.app') ||
-  process.env.DATABASE_URL?.includes('sslmode=');
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ...(useSsl && { ssl: { rejectUnauthorized: false } }),
-});
+const pool = createPgPool();
 const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter });
 
