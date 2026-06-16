@@ -210,11 +210,11 @@ export function AppLayout() {
         />
       )}
 
-      {/* Mobile drawer — RTL: slides from right */}
+      {/* Mobile drawer — anchored to physical right (RTL menu) */}
       <aside
         className={[
-          'fixed inset-y-0 end-0 z-50 flex w-64 flex-col border-s border-slate-200 bg-white shadow-xl transition-transform duration-200 lg:hidden dark:border-gray-700 dark:bg-gray-800',
-          sidebarOpen ? 'translate-x-0' : 'pointer-events-none translate-x-full',
+          'fixed inset-y-0 right-0 z-50 flex w-64 flex-col border-s border-slate-200 bg-white shadow-xl transition-transform duration-200 lg:hidden dark:border-gray-700 dark:bg-gray-800',
+          sidebarOpen ? 'translate-x-0' : 'hidden pointer-events-none',
         ].join(' ')}
         aria-hidden={!sidebarOpen}
       >
