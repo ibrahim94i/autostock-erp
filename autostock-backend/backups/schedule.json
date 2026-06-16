@@ -1,0 +1,6 @@
+{
+  "enabled": true,
+  "intervalHours": 24,
+  "keepLastN": 7,
+  "lastAutoBackupAt": "2026-06-16T14:00:00.372Z"
+}

@@ -1,0 +1,35 @@
+import { OnModuleInit } from '@nestjs/common';
+import { PrismaService } from '../common/prisma/prisma.service';
+import { type BackupDryRunResult, type BackupPayload, type BackupRestoreResult, type BackupScheduleConfig } from './backup.types';
+export declare class BackupService implements OnModuleInit {
+    private readonly prisma;
+    private readonly logger;
+    constructor(prisma: PrismaService);
+    onModuleInit(): void;
+    exportBackup(): Promise<BackupPayload>;
+    formatBackupFilename(date?: Date): string;
+    saveAutoBackupFile(payload: BackupPayload): Promise<string>;
+    pruneAutoBackups(keepLastN: number): void;
+    getSchedule(): BackupScheduleConfig;
+    updateSchedule(patch: Partial<BackupScheduleConfig>): BackupScheduleConfig;
+    markAutoBackupRun(iso: string): void;
+    shouldRunAutoBackup(): boolean;
+    runAutoBackupIfDue(): Promise<void>;
+    dryRun(raw: unknown): Promise<BackupDryRunResult>;
+    restore(userId: string, confirmPassword: string, raw: unknown): Promise<BackupRestoreResult>;
+    private parseBackupPayload;
+    private fetchAllTables;
+    private buildRecordCounts;
+    private computeChecksum;
+    private validateForeignKeys;
+    private validateJournalAccountRefs;
+    private deleteAllData;
+    private deleteTable;
+    private insertTableRows;
+    private insertCategories;
+    private resetEventLogSequence;
+    private rebuildDerivedViews;
+    private rebuildStockBalances;
+    private rebuildPartyBalances;
+    private ensureBackupsDir;
+}

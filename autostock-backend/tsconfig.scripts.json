@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "outDir": "./dist-scripts",
+    "rootDir": ".",
+    "target": "ES2023",
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "skipLibCheck": true,
+    "strictNullChecks": true
+  },
+  "include": ["scripts/**/*.ts", "src/**/*.ts"]
+}

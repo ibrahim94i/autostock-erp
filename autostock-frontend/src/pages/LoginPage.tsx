@@ -1,0 +1,93 @@
+import { useEffect, useState, type FormEvent } from 'react';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { getToken, login, setToken, setUsername } from '../api';
+
+export function LoginPage() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const sessionMessage = (location.state as { message?: string } | null)?.message ?? '';
+  const [username, setUsernameInput] = useState('admin');
+  const [password, setPassword] = useState('admin123');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    document.title = 'تسجيل الدخول — AutoStock ERP';
+  }, []);
+
+  if (getToken()) {
+    return <Navigate to="/dashboard" replace />;
+  }
+
+  async function handleSubmit(e: FormEvent) {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
+
+    try {
+      const trimmed = username.trim();
+      const data = await login(trimmed, password);
+      setToken(data.accessToken);
+      setUsername(trimmed);
+      window.dispatchEvent(new Event('autostock:login'));
+      navigate('/dashboard', { replace: true });
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'فشل تسجيل الدخول');
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-slate-100 p-4">
+      <div className="w-full max-w-md rounded-xl border border-slate-200 bg-white p-8 shadow-lg">
+        <h1 className="text-2xl font-bold text-slate-900">AutoStock ERP</h1>
+        <p className="mt-1 text-sm text-slate-500">تسجيل الدخول</p>
+
+        {sessionMessage && (
+          <p className="mt-4 rounded-lg bg-amber-50 px-3 py-2 text-sm text-amber-800">
+            {sessionMessage}
+          </p>
+        )}
+
+        <form onSubmit={handleSubmit} className="mt-6 space-y-4">
+          <label className="block text-sm font-medium text-slate-700">
+            اسم المستخدم
+            <input
+              type="text"
+              value={username}
+              onChange={(e) => setUsernameInput(e.target.value)}
+              autoComplete="username"
+              required
+              className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2.5 text-base outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+            />
+          </label>
+
+          <label className="block text-sm font-medium text-slate-700">
+            كلمة المرور
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              autoComplete="current-password"
+              required
+              className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2.5 text-base outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+            />
+          </label>
+
+          {error && (
+            <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">{error}</p>
+          )}
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full rounded-lg bg-blue-600 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:opacity-60"
+          >
+            {loading ? 'جاري الدخول...' : 'دخول'}
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+}

@@ -1,0 +1,156 @@
+{
+  "exportedAt": "2026-06-16T14:00:00.372Z",
+  "schemaVersion": "1.0",
+  "checksum": "d93a6d43b437eb6c7abcfb2b0d68312e",
+  "recordCounts": {
+    "categories": 1,
+    "products": 0,
+    "locations": 1,
+    "suppliers": 0,
+    "customers": 1,
+    "users": 4,
+    "roles": 4,
+    "settings": 1,
+    "purchaseOrders": 0,
+    "purchaseItems": 0,
+    "sales": 0,
+    "saleItems": 0,
+    "payments": 0,
+    "returns": 0,
+    "eventLog": 0,
+    "stockMovements": 0,
+    "journalEntries": 0,
+    "journalLines": 0
+  },
+  "tables": {
+    "categories": [
+      {
+        "id": "7a554075-c3e3-4184-a9ad-b7ab22f55d29",
+        "name": "test-cat",
+        "parentId": null
+      }
+    ],
+    "products": [],
+    "locations": [
+      {
+        "id": "87e408ff-0e04-4dc6-9ee8-ca04e3dcca4c",
+        "zone": "المخزن الرئيسي",
+        "shelf": "1",
+        "code": "MAIN"
+      }
+    ],
+    "suppliers": [],
+    "customers": [
+      {
+        "id": "caf45b4e-7529-48e4-8d27-e64c82be1a9a",
+        "name": "test customer",
+        "phone": "",
+        "type": "retail"
+      }
+    ],
+    "users": [
+      {
+        "id": "af538ab2-3c9d-40c2-896e-222b897014e0",
+        "name": "Admin",
+        "username": "admin",
+        "passwordHash": "$2b$10$9Rt19ox8As82O9s3KAT5UOtsWp1YwHGNQj1f0lwFQ/zRHMk1KMXuO",
+        "roleId": "99203b35-2616-4173-8382-902454f17d79",
+        "active": true
+      },
+      {
+        "id": "609d0cef-2863-4a31-a354-0c3dfd5e5198",
+        "name": "Cashier",
+        "username": "cashier",
+        "passwordHash": "$2b$10$nSr6V0IM6dIcLQtGUGPnXOsk3rrGZar5Mu0rmC5Q2xR0hB3VZwUEy",
+        "roleId": "092e9e16-19cd-4f59-b771-dcb774d0b1da",
+        "active": true
+      },
+      {
+        "id": "517259c7-5ee5-41f1-83fb-1d764c430c9e",
+        "name": "Warehouse",
+        "username": "warehouse",
+        "passwordHash": "$2b$10$1M0EuCbMLezc9sp0Jb0O5OncT3FSHsb05uEOy5HWb9M9AkDn/46WS",
+        "roleId": "74d7da0f-fa7c-4fa7-85f1-4ebed66f87aa",
+        "active": true
+      },
+      {
+        "id": "bf62f3e3-dc68-4d1e-836b-0edbdc49c0cd",
+        "name": "Accountant",
+        "username": "accountant",
+        "passwordHash": "$2b$10$s2oX8cWqaWQKXgtZtcJfQOu5D9fXQNRyfwyYycz06r7L4eRBPuF0y",
+        "roleId": "c70edc36-712b-4fb9-b34c-8939b7c4d2be",
+        "active": true
+      }
+    ],
+    "roles": [
+      {
+        "id": "99203b35-2616-4173-8382-902454f17d79",
+        "name": "admin",
+        "permissions": {
+          "all": true
+        }
+      },
+      {
+        "id": "092e9e16-19cd-4f59-b771-dcb774d0b1da",
+        "name": "cashier",
+        "permissions": {
+          "cash": true,
+          "sales": true,
+          "receipts": true,
+          "customers": true
+        }
+      },
+      {
+        "id": "74d7da0f-fa7c-4fa7-85f1-4ebed66f87aa",
+        "name": "warehouse",
+        "permissions": {
+          "products": true,
+          "inventory": true,
+          "purchasing": true
+        }
+      },
+      {
+        "id": "c70edc36-712b-4fb9-b34c-8939b7c4d2be",
+        "name": "accountant",
+        "permissions": {
+          "cash": true,
+          "reports": true,
+          "expenses": true,
+          "receipts": true,
+          "settings": false,
+          "customers": true
+        }
+      }
+    ],
+    "settings": [
+      {
+        "id": "997d9045-fc97-4eba-81c6-b8efe22b09d3",
+        "companyName": "شركتي",
+        "companyPhone": null,
+        "companyAddress": null,
+        "companyLogo": null,
+        "taxNumber": null,
+        "currency": "IQD",
+        "receiptSize": "80mm",
+        "defaultTaxRate": 0,
+        "defaultReceiptFooter": "شكراً لتعاملكم معنا",
+        "telegramBotToken": null,
+        "telegramChatId": null,
+        "telegramDailyTime": "21:00",
+        "telegramEnabled": false,
+        "nextReceiptNumber": 13,
+        "updatedAt": "2026-06-16T13:44:26.177Z"
+      }
+    ],
+    "purchaseOrders": [],
+    "purchaseItems": [],
+    "sales": [],
+    "saleItems": [],
+    "payments": [],
+    "returns": [],
+    "eventLog": [],
+    "stockMovements": [],
+    "journalEntries": [],
+    "journalLines": []
+  }
+}

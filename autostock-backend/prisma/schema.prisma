@@ -1,0 +1,342 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Category {
+  id       String     @id @default(uuid())
+  name     String
+  parentId String?
+  parent   Category?  @relation("CategoryHierarchy", fields: [parentId], references: [id])
+  children Category[] @relation("CategoryHierarchy")
+  products Product[]
+}
+
+model Product {
+  id             String   @id @default(uuid())
+  sku            String   @unique
+  name           String
+  categoryId     String
+  category       Category @relation(fields: [categoryId], references: [id])
+  costPrice      Decimal  @db.Decimal(18, 4)
+  averageCost    Decimal  @default(0) @db.Decimal(18, 4)
+  retailPrice    Decimal  @db.Decimal(18, 4)
+  wholesalePrice Decimal  @db.Decimal(18, 4)
+  minStockAlert  Int
+  unit           String
+  unitsPerCarton Int      @default(1)
+  active         Boolean  @default(true)
+
+  stockMovements StockMovement[]
+  stockBalances  StockBalanceView[]
+  saleItems      SaleItem[]
+  purchaseItems  PurchaseItem[]
+  returns        Return[]
+}
+
+model Location {
+  id             String             @id @default(uuid())
+  zone           String
+  shelf          String
+  code           String
+  stockMovements StockMovement[]
+  stockBalances  StockBalanceView[]
+}
+
+model Role {
+  id          String @id @default(uuid())
+  name        String
+  permissions Json
+  users       User[]
+}
+
+model User {
+  id           String @id @default(uuid())
+  name         String
+  username     String @unique
+  passwordHash String
+  roleId       String
+  role         Role   @relation(fields: [roleId], references: [id])
+  active       Boolean
+}
+
+model Customer {
+  id     String @id @default(uuid())
+  name   String
+  phone  String
+  type   String
+  sales  Sale[]
+  balance CustomerBalanceView?
+}
+
+model Supplier {
+  id             String          @id @default(uuid())
+  name           String
+  phone          String
+  purchaseOrders PurchaseOrder[]
+  balance        SupplierBalanceView?
+}
+
+model Account {
+  id           String        @id @default(uuid())
+  code         String        @unique
+  name         String
+  type         String
+  journalLines JournalLine[]
+}
+
+model EventLog {
+  id         String    @id @default(uuid())
+  clientUuid String    @unique
+  serverSeq  Int       @unique @default(autoincrement())
+  eventType  String
+  payload    Json
+  status     String
+  occurredAt DateTime
+  appliedAt  DateTime?
+  createdBy  String
+  deviceId   String
+  localSeq   Int
+  branchId   String?
+  result     Json?
+
+  stockMovements StockMovement[]
+  journalEntries JournalEntry[]
+
+  @@index([occurredAt])
+  @@index([eventType, occurredAt])
+  @@index([deviceId, localSeq])
+  @@index([branchId, occurredAt])
+}
+
+model StockMovement {
+  id         String   @id @default(uuid())
+  eventId    String
+  event      EventLog @relation(fields: [eventId], references: [id])
+  productId  String
+  product    Product  @relation(fields: [productId], references: [id])
+  locationId String
+  location   Location @relation(fields: [locationId], references: [id])
+  direction  String
+  quantity   Decimal  @db.Decimal(18, 4)
+  sourceType String
+  sourceId   String?
+  unitCost   Decimal  @db.Decimal(18, 4)
+  createdBy  String
+  createdAt  DateTime @default(now())
+
+  @@index([productId, locationId])
+  @@index([eventId])
+}
+
+model StockBalanceView {
+  productId      String
+  product        Product  @relation(fields: [productId], references: [id])
+  locationId     String
+  location       Location @relation(fields: [locationId], references: [id])
+  quantity       Decimal  @db.Decimal(18, 4)
+  lastMovementId String
+  updatedAt      DateTime
+
+  @@id([productId, locationId])
+}
+
+model JournalEntry {
+  id         String        @id @default(uuid())
+  eventId    String
+  event      EventLog      @relation(fields: [eventId], references: [id])
+  entryDate  DateTime
+  sourceType String
+  sourceId   String?
+  memo       String?
+  createdBy  String
+  lines      JournalLine[]
+}
+
+model JournalLine {
+  id        String       @id @default(uuid())
+  entryId   String
+  entry     JournalEntry @relation(fields: [entryId], references: [id])
+  accountId String
+  account   Account      @relation(fields: [accountId], references: [id])
+  debit     Decimal      @db.Decimal(18, 4)
+  credit    Decimal      @db.Decimal(18, 4)
+  partyType String?
+  partyId   String?
+
+  @@index([accountId, partyType, partyId])
+  @@index([entryId])
+}
+
+model CustomerBalanceView {
+  customerId  String   @id
+  customer    Customer @relation(fields: [customerId], references: [id])
+  balance     Decimal  @db.Decimal(18, 4)
+  lastEntryId String
+  updatedAt   DateTime
+}
+
+model SupplierBalanceView {
+  supplierId  String   @id
+  supplier    Supplier @relation(fields: [supplierId], references: [id])
+  balance     Decimal  @db.Decimal(18, 4)
+  lastEntryId String
+  updatedAt   DateTime
+}
+
+model Sale {
+  id          String     @id @default(uuid())
+  clientUuid  String     @unique
+  customerId  String?
+  customer    Customer?  @relation(fields: [customerId], references: [id])
+  type        String
+  paymentType String
+  subtotal    Decimal    @db.Decimal(18, 4)
+  status      String
+  createdBy   String
+  createdAt   DateTime   @default(now())
+  items       SaleItem[]
+  returns     Return[]
+}
+
+model SaleItem {
+  id        String  @id @default(uuid())
+  saleId    String
+  sale      Sale    @relation(fields: [saleId], references: [id])
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+  qty       Decimal @db.Decimal(18, 4)
+  unitPrice Decimal @db.Decimal(18, 4)
+  unitCost  Decimal @db.Decimal(18, 4)
+}
+
+model PurchaseOrder {
+  id         String         @id @default(uuid())
+  clientUuid String         @unique
+  supplierId String
+  supplier   Supplier       @relation(fields: [supplierId], references: [id])
+  status     String
+  createdBy  String
+  createdAt  DateTime       @default(now())
+  items      PurchaseItem[]
+}
+
+model PurchaseItem {
+  id        String        @id @default(uuid())
+  poId      String
+  po        PurchaseOrder @relation(fields: [poId], references: [id])
+  productId String
+  product   Product       @relation(fields: [productId], references: [id])
+  qty       Decimal       @db.Decimal(18, 4)
+  unitCost  Decimal       @db.Decimal(18, 4)
+}
+
+model Return {
+  id           String  @id @default(uuid())
+  clientUuid   String  @unique
+  saleId       String
+  sale         Sale    @relation(fields: [saleId], references: [id])
+  productId    String
+  product      Product @relation(fields: [productId], references: [id])
+  qty          Decimal @db.Decimal(18, 4)
+  reason       String
+  refundAmount Decimal @db.Decimal(18, 4)
+}
+
+model Payment {
+  id         String   @id @default(uuid())
+  clientUuid String   @unique
+  partyType  String
+  partyId    String
+  amount     Decimal  @db.Decimal(18, 4)
+  method     String
+  direction  String
+  createdAt  DateTime @default(now())
+}
+
+model DashboardAggregate {
+  id         String   @id @default(uuid())
+  metricKey  String
+  value      Decimal  @db.Decimal(18, 4)
+  period     String
+  computedAt DateTime
+}
+
+model Settings {
+  id                   String   @id @default(uuid())
+  companyName          String   @default("شركتي")
+  companyPhone         String?
+  companyAddress       String?
+  companyLogo          String?
+  taxNumber            String?
+  currency             String   @default("د.ع")
+  receiptSize          String   @default("80mm")
+  defaultTaxRate       Float    @default(0)
+  defaultReceiptFooter String   @default("شكراً لتعاملكم معنا")
+  telegramBotToken     String?
+  telegramChatId       String?
+  telegramDailyTime    String   @default("21:00")
+  telegramEnabled      Boolean  @default(false)
+  nextReceiptNumber    Int      @default(1)
+  updatedAt            DateTime @updatedAt
+}
+
+model CashRegister {
+  id             String            @id @default(uuid())
+  date           DateTime
+  openingBalance Decimal           @db.Decimal(18, 4)
+  closingBalance Decimal?          @db.Decimal(18, 4)
+  actualBalance  Decimal?          @db.Decimal(18, 4)
+  difference     Decimal?          @db.Decimal(18, 4)
+  status         String            @default("open")
+  notes          String?
+  createdBy      String
+  createdAt      DateTime          @default(now())
+  transactions   CashTransaction[]
+
+  @@index([date])
+}
+
+model CashTransaction {
+  id          String       @id @default(uuid())
+  registerId  String
+  register    CashRegister @relation(fields: [registerId], references: [id])
+  type        String
+  amount      Decimal      @db.Decimal(18, 4)
+  description String?
+  reference   String?      @unique
+  createdBy   String
+  createdAt   DateTime     @default(now())
+}
+
+model ExpenseCategory {
+  id       String    @id @default(uuid())
+  name     String    @unique
+  expenses Expense[]
+}
+
+model Expense {
+  id          String          @id @default(uuid())
+  clientUuid  String          @unique
+  date        DateTime
+  amount      Decimal         @db.Decimal(18, 4)
+  categoryId  String
+  category    ExpenseCategory @relation(fields: [categoryId], references: [id])
+  description String?
+  createdBy   String
+  createdAt   DateTime        @default(now())
+}
+
+model Receipt {
+  id            String   @id @default(uuid())
+  saleId        String   @unique
+  invoiceNumber String
+  customerName  String?
+  totalAmount   Decimal  @db.Decimal(18, 4)
+  printedAt     DateTime @default(now())
+  printCount    Int      @default(1)
+  createdBy     String
+}

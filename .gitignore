@@ -1,0 +1,12 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Env secrets
+.env
+.env.local
+.env.*.local
+
+# Dependencies & builds (covered in subprojects too)
+**/node_modules
+**/dist-electron

@@ -1,0 +1,62 @@
+import { OnModuleInit } from '@nestjs/common';
+import { PrismaService } from '../common/prisma/prisma.service';
+import { UpdateSettingsDto } from './dto/update-settings.dto';
+export declare class SettingsService implements OnModuleInit {
+    private readonly prisma;
+    constructor(prisma: PrismaService);
+    onModuleInit(): Promise<void>;
+    ensureSettings(): Promise<{
+        id: string;
+        updatedAt: Date;
+        companyName: string;
+        companyPhone: string | null;
+        companyAddress: string | null;
+        companyLogo: string | null;
+        taxNumber: string | null;
+        currency: string;
+        receiptSize: string;
+        defaultTaxRate: number;
+        defaultReceiptFooter: string;
+        telegramBotToken: string | null;
+        telegramChatId: string | null;
+        telegramDailyTime: string;
+        telegramEnabled: boolean;
+        nextReceiptNumber: number;
+    }>;
+    getSettings(): Promise<{
+        id: string;
+        updatedAt: Date;
+        companyName: string;
+        companyPhone: string | null;
+        companyAddress: string | null;
+        companyLogo: string | null;
+        taxNumber: string | null;
+        currency: string;
+        receiptSize: string;
+        defaultTaxRate: number;
+        defaultReceiptFooter: string;
+        telegramBotToken: string | null;
+        telegramChatId: string | null;
+        telegramDailyTime: string;
+        telegramEnabled: boolean;
+        nextReceiptNumber: number;
+    }>;
+    updateSettings(dto: UpdateSettingsDto): Promise<{
+        id: string;
+        updatedAt: Date;
+        companyName: string;
+        companyPhone: string | null;
+        companyAddress: string | null;
+        companyLogo: string | null;
+        taxNumber: string | null;
+        currency: string;
+        receiptSize: string;
+        defaultTaxRate: number;
+        defaultReceiptFooter: string;
+        telegramBotToken: string | null;
+        telegramChatId: string | null;
+        telegramDailyTime: string;
+        telegramEnabled: boolean;
+        nextReceiptNumber: number;
+    }>;
+}

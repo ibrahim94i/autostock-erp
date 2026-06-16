@@ -1,0 +1,2242 @@
+{
+  "exportedAt": "2026-06-13T07:00:00.174Z",
+  "schemaVersion": "1.0",
+  "checksum": "6de405cea32fa60001b808cbb28bf5d7",
+  "recordCounts": {
+    "categories": 6,
+    "products": 7,
+    "locations": 1,
+    "suppliers": 1,
+    "customers": 1,
+    "users": 1,
+    "roles": 4,
+    "settings": 1,
+    "purchaseOrders": 4,
+    "purchaseItems": 4,
+    "sales": 8,
+    "saleItems": 10,
+    "payments": 0,
+    "returns": 0,
+    "eventLog": 24,
+    "stockMovements": 20,
+    "journalEntries": 20,
+    "journalLines": 56
+  },
+  "tables": {
+    "categories": [
+      {
+        "id": "91bb5b74-98a9-4093-8ee5-1ea06193cb42",
+        "name": "زيوت محركات",
+        "parentId": null
+      },
+      {
+        "id": "b5a671a3-752c-4690-9a54-e7e7f940afb1",
+        "name": "فلاتر",
+        "parentId": null
+      },
+      {
+        "id": "fe9f36ac-18b5-422b-bfa1-c3aefc5770b7",
+        "name": "شحوم",
+        "parentId": null
+      },
+      {
+        "id": "c761b889-cab5-4571-a0f1-25e4b6074f3c",
+        "name": "إكسسوارات",
+        "parentId": null
+      },
+      {
+        "id": "a0f3cbdb-5a5d-481b-8bec-9c6b083e87f3",
+        "name": "اكسسوار",
+        "parentId": null
+      },
+      {
+        "id": "73450d48-a852-4c17-9fdc-1c7550a89961",
+        "name": "Cat-1781075038274",
+        "parentId": null
+      }
+    ],
+    "products": [
+      {
+        "id": "81e624a8-9cb3-44df-94ff-6ba79efcf2f3",
+        "sku": "0-20",
+        "name": "000",
+        "categoryId": "91bb5b74-98a9-4093-8ee5-1ea06193cb42",
+        "costPrice": "50000",
+        "retailPrice": "55000",
+        "wholesalePrice": "54000",
+        "minStockAlert": 0,
+        "unit": "كارتون"
+      },
+      {
+        "id": "b5b1faca-43ac-4871-bbc5-477f1fa7006e",
+        "sku": "0*20",
+        "name": "222",
+        "categoryId": "c761b889-cab5-4571-a0f1-25e4b6074f3c",
+        "costPrice": "20000",
+        "retailPrice": "22000",
+        "wholesalePrice": "21000",
+        "minStockAlert": 0,
+        "unit": "pcs"
+      },
+      {
+        "id": "19f8d652-84ab-4263-9f02-00b5c1d2603a",
+        "sku": "TEST-SKU-001",
+        "name": "Test Product",
+        "categoryId": "a0f3cbdb-5a5d-481b-8bec-9c6b083e87f3",
+        "costPrice": "10",
+        "retailPrice": "15",
+        "wholesalePrice": "12",
+        "minStockAlert": 5,
+        "unit": "piece"
+      },
+      {
+        "id": "b73a7167-2f0e-4033-af66-3393c11a241f",
+        "sku": "(5W-30)-TEST-1781074783318",
+        "name": "زيت محرك تجريبي",
+        "categoryId": "a0f3cbdb-5a5d-481b-8bec-9c6b083e87f3",
+        "costPrice": "100",
+        "retailPrice": "150",
+        "wholesalePrice": "130",
+        "minStockAlert": 5,
+        "unit": "قطعة"
+      },
+      {
+        "id": "ea1ebbe8-b0cb-4b90-8e46-a9128e2cb8a6",
+        "sku": "INLINE-1781075038329",
+        "name": "After inline category",
+        "categoryId": "73450d48-a852-4c17-9fdc-1c7550a89961",
+        "costPrice": "10",
+        "retailPrice": "15",
+        "wholesalePrice": "12",
+        "minStockAlert": 1,
+        "unit": "قطعة"
+      },
+      {
+        "id": "ae870eb3-88c7-420a-afba-09cb3bf60e84",
+        "sku": "(5W-30)-TEST-1781075092685",
+        "name": "زيت محرك تجريبي",
+        "categoryId": "73450d48-a852-4c17-9fdc-1c7550a89961",
+        "costPrice": "100",
+        "retailPrice": "150",
+        "wholesalePrice": "130",
+        "minStockAlert": 5,
+        "unit": "قطعة"
+      },
+      {
+        "id": "f7bc567b-e20d-404d-8679-2cd5efbfc003",
+        "sku": "5-30",
+        "name": "اوراكس",
+        "categoryId": "91bb5b74-98a9-4093-8ee5-1ea06193cb42",
+        "costPrice": "25000",
+        "retailPrice": "50000",
+        "wholesalePrice": "35000",
+        "minStockAlert": 0,
+        "unit": "كارتونة"
+      }
+    ],
+    "locations": [
+      {
+        "id": "d4bc2db8-3184-48eb-99a0-2eb9a694b83d",
+        "zone": "المخزن الرئيسي",
+        "shelf": "1",
+        "code": "MAIN"
+      }
+    ],
+    "suppliers": [
+      {
+        "id": "410585cc-4105-4e39-b547-7f5b0026c629",
+        "name": "ثثث",
+        "phone": "0111"
+      }
+    ],
+    "customers": [
+      {
+        "id": "6702d0ae-4cd0-4914-bfab-e1f63bd56a43",
+        "name": "احمد",
+        "phone": "",
+        "type": "retail"
+      }
+    ],
+    "users": [
+      {
+        "id": "af538ab2-3c9d-40c2-896e-222b897014e0",
+        "name": "Admin",
+        "username": "admin",
+        "passwordHash": "$2b$10$dAlhjxmfUJ6gtHPvVWWqieUECgrFfn8QGbty7CrWkHFcueZtKoorW",
+        "roleId": "99203b35-2616-4173-8382-902454f17d79",
+        "active": true
+      }
+    ],
+    "roles": [
+      {
+        "id": "99203b35-2616-4173-8382-902454f17d79",
+        "name": "admin",
+        "permissions": {
+          "all": true
+        }
+      },
+      {
+        "id": "092e9e16-19cd-4f59-b771-dcb774d0b1da",
+        "name": "cashier",
+        "permissions": {
+          "sales": true,
+          "customers": true
+        }
+      },
+      {
+        "id": "74d7da0f-fa7c-4fa7-85f1-4ebed66f87aa",
+        "name": "warehouse",
+        "permissions": {
+          "products": true,
+          "inventory": true
+        }
+      },
+      {
+        "id": "c70edc36-712b-4fb9-b34c-8939b7c4d2be",
+        "name": "accountant",
+        "permissions": {
+          "reports": true,
+          "accounting": true
+        }
+      }
+    ],
+    "settings": [
+      {
+        "id": "997d9045-fc97-4eba-81c6-b8efe22b09d3",
+        "companyName": "شركتي",
+        "companyPhone": null,
+        "companyAddress": null,
+        "companyLogo": null,
+        "taxNumber": null,
+        "currency": "IQD",
+        "receiptSize": "80mm",
+        "defaultTaxRate": 0,
+        "defaultReceiptFooter": "شكراً لتعاملكم معنا",
+        "telegramBotToken": null,
+        "telegramChatId": null,
+        "telegramDailyTime": "21:00",
+        "telegramEnabled": false,
+        "updatedAt": "2026-06-07T07:58:51.003Z"
+      }
+    ],
+    "purchaseOrders": [
+      {
+        "id": "b48487e4-d524-4b51-93ec-3da643d7819d",
+        "clientUuid": "d0aa37e1-906d-4cb6-8f68-6b2b5e201a69",
+        "supplierId": "410585cc-4105-4e39-b547-7f5b0026c629",
+        "status": "received",
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0",
+        "createdAt": "2026-06-08T11:42:08.047Z"
+      },
+      {
+        "id": "30a4f29e-ca33-4b1d-9add-1db0752e507f",
+        "clientUuid": "51f63fb0-70e4-42a6-8b66-f96677cdc656",
+        "supplierId": "410585cc-4105-4e39-b547-7f5b0026c629",
+        "status": "received",
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0",
+        "createdAt": "2026-06-08T11:42:57.597Z"
+      },
+      {
+        "id": "ca3f52ad-a739-421b-ac69-e0daa8f4de43",
+        "clientUuid": "f94b0b3e-b72a-4bd4-b9d8-b479539b0a76",
+        "supplierId": "410585cc-4105-4e39-b547-7f5b0026c629",
+        "status": "received",
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0",
+        "createdAt": "2026-06-08T11:42:20.167Z"
+      },
+      {
+        "id": "00ebda54-1bee-4858-84f2-2c69e0d1a483",
+        "clientUuid": "afe26ba4-104e-47a1-9ca8-b6dbf393fb6e",
+        "supplierId": "410585cc-4105-4e39-b547-7f5b0026c629",
+        "status": "received",
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0",
+        "createdAt": "2026-06-09T20:36:02.524Z"
+      }
+    ],
+    "purchaseItems": [
+      {
+        "id": "dfa0431d-d965-4d27-bc44-06d659718263",
+        "poId": "b48487e4-d524-4b51-93ec-3da643d7819d",
+        "productId": "81e624a8-9cb3-44df-94ff-6ba79efcf2f3",
+        "qty": "5",
+        "unitCost": "50000"
+      },
+      {
+        "id": "e6bdfb57-8a67-4d56-8362-4f8cfd926259",
+        "poId": "ca3f52ad-a739-421b-ac69-e0daa8f4de43",
+        "productId": "81e624a8-9cb3-44df-94ff-6ba79efcf2f3",
+        "qty": "2",
+        "unitCost": "1000"
+      },
+      {
+        "id": "57fa4202-69f3-47fb-a68b-a8da6ec836ad",
+        "poId": "30a4f29e-ca33-4b1d-9add-1db0752e507f",
+        "productId": "81e624a8-9cb3-44df-94ff-6ba79efcf2f3",
+        "qty": "3",
+        "unitCost": "25000"
+      },
+      {
+        "id": "16c899ca-1741-492f-a93f-c6d7ef6cffdf",
+        "poId": "00ebda54-1bee-4858-84f2-2c69e0d1a483",
+        "productId": "b5b1faca-43ac-4871-bbc5-477f1fa7006e",
+        "qty": "500",
+        "unitCost": "20000"
+      }
+    ],
+    "sales": [
+      {
+        "id": "7a4d3f9a-50d5-4b8d-96cc-c46facb5e90b",
+        "clientUuid": "8185aa91-6044-4d84-8c2a-388a395a73bd",
+        "customerId": null,
+        "type": "retail",
+        "paymentType": "cash",
+        "subtotal": "660000",
+        "status": "completed",
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0",
+        "createdAt": "2026-06-07T05:50:49.649Z"
+      },
+      {
+        "id": "c0d29347-77e3-44ce-9fe7-e188ff266297",
+        "clientUuid": "6a31f249-efdb-48a6-89e4-4fda37e01fc4",
+        "customerId": null,
+        "type": "wholesale",
+        "paymentType": "cash",
+        "subtotal": "54000",
+        "status": "completed",
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0",
+        "createdAt": "2026-06-07T08:34:46.540Z"
+      },
+      {
+        "id": "f271b68c-89bb-41e3-b6c9-8524783c97d8",
+        "clientUuid": "58f7e646-1511-4b16-ad39-208d754f501a",
+        "customerId": null,
+        "type": "wholesale",
+        "paymentType": "cash",
+        "subtotal": "54000",
+        "status": "completed",
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0",
+        "createdAt": "2026-06-08T10:53:05.138Z"
+      },
+      {
+        "id": "e8abc6a1-f5c7-42c2-94a8-f557c8b2c71e",
+        "clientUuid": "e08d4e2f-5604-4c3b-83aa-f0c11da3bb26",
+        "customerId": null,
+        "type": "retail",
+        "paymentType": "cash",
+        "subtotal": "55000",
+        "status": "completed",
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0",
+        "createdAt": "2026-06-09T20:27:49.551Z"
+      },
+      {
+        "id": "1698c7bd-ec57-4306-9600-08b4e4d1dcc0",
+        "clientUuid": "ab8becca-5e5e-408a-9adc-6b00e2a10a87",
+        "customerId": null,
+        "type": "retail",
+        "paymentType": "cash",
+        "subtotal": "22000",
+        "status": "completed",
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0",
+        "createdAt": "2026-06-10T08:00:07.534Z"
+      },
+      {
+        "id": "29678c81-9b31-4ba2-a8a1-fc121ed53b85",
+        "clientUuid": "61ed9f2c-cfca-4074-a488-2b41a3d9af2b",
+        "customerId": null,
+        "type": "retail",
+        "paymentType": "cash",
+        "subtotal": "77000",
+        "status": "completed",
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0",
+        "createdAt": "2026-06-10T08:39:32.353Z"
+      },
+      {
+        "id": "742bdefc-3e07-44bc-9579-08c11a2b173a",
+        "clientUuid": "09fbaa9f-67f6-42e7-9a6b-78951d878d9a",
+        "customerId": null,
+        "type": "retail",
+        "paymentType": "cash",
+        "subtotal": "110000",
+        "status": "completed",
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0",
+        "createdAt": "2026-06-10T13:09:05.206Z"
+      },
+      {
+        "id": "48fd254e-9bd5-48f5-9dd8-72c66945954e",
+        "clientUuid": "d8a84f4f-633d-4e93-af37-d16a22419a44",
+        "customerId": null,
+        "type": "retail",
+        "paymentType": "cash",
+        "subtotal": "8855000",
+        "status": "completed",
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0",
+        "createdAt": "2026-06-13T06:56:57.560Z"
+      }
+    ],
+    "saleItems": [
+      {
+        "id": "0bb2d6a7-6ecf-4da1-95b5-3005c991c5e8",
+        "saleId": "7a4d3f9a-50d5-4b8d-96cc-c46facb5e90b",
+        "productId": "81e624a8-9cb3-44df-94ff-6ba79efcf2f3",
+        "qty": "12",
+        "unitPrice": "55000",
+        "unitCost": "50000"
+      },
+      {
+        "id": "3bb819de-5758-48b1-aa4a-1f673bde38ff",
+        "saleId": "c0d29347-77e3-44ce-9fe7-e188ff266297",
+        "productId": "81e624a8-9cb3-44df-94ff-6ba79efcf2f3",
+        "qty": "1",
+        "unitPrice": "54000",
+        "unitCost": "50000"
+      },
+      {
+        "id": "11726c0a-f03b-4ca0-b1a6-9fdab48087f9",
+        "saleId": "f271b68c-89bb-41e3-b6c9-8524783c97d8",
+        "productId": "81e624a8-9cb3-44df-94ff-6ba79efcf2f3",
+        "qty": "1",
+        "unitPrice": "54000",
+        "unitCost": "50000"
+      },
+      {
+        "id": "c32ceec7-63fe-4b3e-a6cf-60dac4866cdb",
+        "saleId": "e8abc6a1-f5c7-42c2-94a8-f557c8b2c71e",
+        "productId": "81e624a8-9cb3-44df-94ff-6ba79efcf2f3",
+        "qty": "1",
+        "unitPrice": "55000",
+        "unitCost": "50000"
+      },
+      {
+        "id": "34891384-7277-4795-88fc-7f5450e41dea",
+        "saleId": "1698c7bd-ec57-4306-9600-08b4e4d1dcc0",
+        "productId": "b5b1faca-43ac-4871-bbc5-477f1fa7006e",
+        "qty": "1",
+        "unitPrice": "22000",
+        "unitCost": "20000"
+      },
+      {
+        "id": "6d4746c2-c77f-406a-8584-083d40d3b587",
+        "saleId": "29678c81-9b31-4ba2-a8a1-fc121ed53b85",
+        "productId": "81e624a8-9cb3-44df-94ff-6ba79efcf2f3",
+        "qty": "1",
+        "unitPrice": "55000",
+        "unitCost": "50000"
+      },
+      {
+        "id": "9e0a7f15-0c82-4d3a-816c-b6823ceda410",
+        "saleId": "29678c81-9b31-4ba2-a8a1-fc121ed53b85",
+        "productId": "b5b1faca-43ac-4871-bbc5-477f1fa7006e",
+        "qty": "1",
+        "unitPrice": "22000",
+        "unitCost": "20000"
+      },
+      {
+        "id": "381161b8-b21a-4739-a01b-bc6f14f4cfff",
+        "saleId": "742bdefc-3e07-44bc-9579-08c11a2b173a",
+        "productId": "b5b1faca-43ac-4871-bbc5-477f1fa7006e",
+        "qty": "5",
+        "unitPrice": "22000",
+        "unitCost": "20000"
+      },
+      {
+        "id": "bcd582cf-eea8-4ea4-a27a-4578b3592cbe",
+        "saleId": "48fd254e-9bd5-48f5-9dd8-72c66945954e",
+        "productId": "81e624a8-9cb3-44df-94ff-6ba79efcf2f3",
+        "qty": "1",
+        "unitPrice": "55000",
+        "unitCost": "50000"
+      },
+      {
+        "id": "3b310551-f9b6-4759-b186-fa0802776a3a",
+        "saleId": "48fd254e-9bd5-48f5-9dd8-72c66945954e",
+        "productId": "b5b1faca-43ac-4871-bbc5-477f1fa7006e",
+        "qty": "400",
+        "unitPrice": "22000",
+        "unitCost": "20000"
+      }
+    ],
+    "payments": [],
+    "returns": [],
+    "eventLog": [
+      {
+        "id": "1019db43-a400-4f86-ad3e-fb6b6e2102ea",
+        "clientUuid": "8185aa91-6044-4d84-8c2a-388a395a73bd",
+        "serverSeq": 33,
+        "eventType": "SALE_CREATED",
+        "payload": {
+          "type": "retail",
+          "items": [
+            {
+              "qty": 12,
+              "unitCost": 50000,
+              "productId": "81e624a8-9cb3-44df-94ff-6ba79efcf2f3",
+              "unitPrice": 55000,
+              "locationId": "d4bc2db8-3184-48eb-99a0-2eb9a694b83d"
+            }
+          ],
+          "customerId": null,
+          "paymentType": "cash"
+        },
+        "status": "APPLIED",
+        "occurredAt": "2026-06-07T05:50:49.620Z",
+        "appliedAt": "2026-06-07T05:50:49.895Z",
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0",
+        "deviceId": "sales-api",
+        "localSeq": 0,
+        "branchId": null,
+        "result": {
+          "domain": {
+            "saleId": "7a4d3f9a-50d5-4b8d-96cc-c46facb5e90b"
+          },
+          "eventId": "1019db43-a400-4f86-ad3e-fb6b6e2102ea",
+          "eventType": "SALE_CREATED",
+          "serverSeq": 33
+        }
+      },
+      {
+        "id": "0de1ed86-a69d-4fa1-b2c7-b2b0d2fe6f11",
+        "clientUuid": "de013a2a-18e3-44a7-beba-1bc092927cfe",
+        "serverSeq": 42,
+        "eventType": "STOCK_ADJUSTED",
+        "payload": {
+          "items": [
+            {
+              "unitCost": "50000",
+              "actualQty": 90,
+              "productId": "81e624a8-9cb3-44df-94ff-6ba79efcf2f3",
+              "locationId": "d4bc2db8-3184-48eb-99a0-2eb9a694b83d"
+            }
+          ],
+          "reason": "test reconcile"
+        },
+        "status": "APPLIED",
+        "occurredAt": "2026-06-08T11:28:34.597Z",
+        "appliedAt": "2026-06-08T11:28:34.655Z",
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0",
+        "deviceId": "inventory-api",
+        "localSeq": 0,
+        "branchId": null,
+        "result": {
+          "eventId": "0de1ed86-a69d-4fa1-b2c7-b2b0d2fe6f11",
+          "eventType": "STOCK_ADJUSTED",
+          "serverSeq": 42
+        }
+      },
+      {
+        "id": "b3a3ea74-0909-42a4-990d-9d46647010b1",
+        "clientUuid": "ea7ebfcf-ac88-4e9f-8118-224ea2a59a0a",
+        "serverSeq": 32,
+        "eventType": "STOCK_ADJUSTED",
+        "payload": {
+          "items": [
+            {
+              "unitCost": "50000",
+              "actualQty": 100,
+              "productId": "81e624a8-9cb3-44df-94ff-6ba79efcf2f3",
+              "locationId": "d4bc2db8-3184-48eb-99a0-2eb9a694b83d"
+            }
+          ],
+          "reason": "إدخال مخزون أولي"
+        },
+        "status": "APPLIED",
+        "occurredAt": "2026-06-07T05:50:30.250Z",
+        "appliedAt": "2026-06-07T05:50:30.317Z",
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0",
+        "deviceId": "inventory-api",
+        "localSeq": 0,
+        "branchId": null,
+        "result": {
+          "eventId": "b3a3ea74-0909-42a4-990d-9d46647010b1",
+          "eventType": "STOCK_ADJUSTED",
+          "serverSeq": 32
+        }
+      },
+      {
+        "id": "bdb78cdd-5d48-4609-bf49-e195359c9a51",
+        "clientUuid": "6ea0736b-d4e2-4a18-80ec-71a12be5b217",
+        "serverSeq": 43,
+        "eventType": "STOCK_ADJUSTED",
+        "payload": {
+          "items": [
+            {
+              "unitCost": "50000",
+              "actualQty": 85,
+              "productId": "81e624a8-9cb3-44df-94ff-6ba79efcf2f3",
+              "locationId": "d4bc2db8-3184-48eb-99a0-2eb9a694b83d"
+            }
+          ],
+          "reason": "r"
+        },
+        "status": "APPLIED",
+        "occurredAt": "2026-06-08T11:29:18.221Z",
+        "appliedAt": "2026-06-08T11:29:18.231Z",
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0",
+        "deviceId": "inventory-api",
+        "localSeq": 0,
+        "branchId": null,
+        "result": {
+          "eventId": "bdb78cdd-5d48-4609-bf49-e195359c9a51",
+          "eventType": "STOCK_ADJUSTED",
+          "serverSeq": 43
+        }
+      },
+      {
+        "id": "5495dd5e-42b9-4a90-9e4f-551bbee26f4e",
+        "clientUuid": "dbd482fe-010a-41e8-89e7-453ec46f4785",
+        "serverSeq": 38,
+        "eventType": "PAYMENT_MADE",
+        "payload": {
+          "amount": 30,
+          "method": "cash",
+          "partyId": "e7da55f4-1af4-4f78-854b-605ae9dc1e22",
+          "direction": "IN",
+          "partyType": "CUSTOMER"
+        },
+        "status": "APPLIED",
+        "occurredAt": "2026-06-07T07:40:55.958Z",
+        "appliedAt": "2026-06-07T07:40:55.974Z",
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0",
+        "deviceId": "accounting-api",
+        "localSeq": 0,
+        "branchId": null,
+        "result": {
+          "domain": {
+            "paymentId": "84f3025b-5f01-43bf-8754-0367e3887d83"
+          },
+          "eventId": "5495dd5e-42b9-4a90-9e4f-551bbee26f4e",
+          "eventType": "PAYMENT_MADE",
+          "serverSeq": 38
+        }
+      },
+      {
+        "id": "a5d54032-840f-4ccb-87c6-3d1f085de885",
+        "clientUuid": "8d130dc4-8078-4dac-ac6c-bea40ab89f3d",
+        "serverSeq": 39,
+        "eventType": "PAYMENT_MADE",
+        "payload": {
+          "amount": 100,
+          "method": "cash",
+          "partyId": "7bbe3693-437b-4489-b578-01fcb357bb6d",
+          "direction": "OUT",
+          "partyType": "SUPPLIER"
+        },
+        "status": "APPLIED",
+        "occurredAt": "2026-06-07T07:40:55.984Z",
+        "appliedAt": "2026-06-07T07:40:55.997Z",
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0",
+        "deviceId": "accounting-api",
+        "localSeq": 0,
+        "branchId": null,
+        "result": {
+          "domain": {
+            "paymentId": "92f86d76-90e4-499b-adaa-c89296dbd06d"
+          },
+          "eventId": "a5d54032-840f-4ccb-87c6-3d1f085de885",
+          "eventType": "PAYMENT_MADE",
+          "serverSeq": 39
+        }
+      },
+      {
+        "id": "773d9f1e-30a6-412c-88bf-c9fae46f35d9",
+        "clientUuid": "6a31f249-efdb-48a6-89e4-4fda37e01fc4",
+        "serverSeq": 40,
+        "eventType": "SALE_CREATED",
+        "payload": {
+          "type": "wholesale",
+          "items": [
+            {
+              "qty": 1,
+              "unitCost": 50000,
+              "productId": "81e624a8-9cb3-44df-94ff-6ba79efcf2f3",
+              "unitPrice": 54000,
+              "locationId": "d4bc2db8-3184-48eb-99a0-2eb9a694b83d"
+            }
+          ],
+          "customerId": null,
+          "paymentType": "cash"
+        },
+        "status": "APPLIED",
+        "occurredAt": "2026-06-07T08:34:46.362Z",
+        "appliedAt": "2026-06-07T08:34:46.549Z",
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0",
+        "deviceId": "sales-api",
+        "localSeq": 0,
+        "branchId": null,
+        "result": {
+          "domain": {
+            "saleId": "c0d29347-77e3-44ce-9fe7-e188ff266297"
+          },
+          "eventId": "773d9f1e-30a6-412c-88bf-c9fae46f35d9",
+          "eventType": "SALE_CREATED",
+          "serverSeq": 40
+        }
+      },
+      {
+        "id": "77a4b02d-dfbf-4501-a7fe-17fa7c6c2021",
+        "clientUuid": "58f7e646-1511-4b16-ad39-208d754f501a",
+        "serverSeq": 41,
+        "eventType": "SALE_CREATED",
+        "payload": {
+          "type": "wholesale",
+          "items": [
+            {
+              "qty": 1,
+              "unitCost": 50000,
+              "productId": "81e624a8-9cb3-44df-94ff-6ba79efcf2f3",
+              "unitPrice": 54000,
+              "locationId": "d4bc2db8-3184-48eb-99a0-2eb9a694b83d"
+            }
+          ],
+          "customerId": null,
+          "paymentType": "cash"
+        },
+        "status": "APPLIED",
+        "occurredAt": "2026-06-08T10:53:05.062Z",
+        "appliedAt": "2026-06-08T10:53:05.142Z",
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0",
+        "deviceId": "sales-api",
+        "localSeq": 0,
+        "branchId": null,
+        "result": {
+          "domain": {
+            "saleId": "f271b68c-89bb-41e3-b6c9-8524783c97d8"
+          },
+          "eventId": "77a4b02d-dfbf-4501-a7fe-17fa7c6c2021",
+          "eventType": "SALE_CREATED",
+          "serverSeq": 41
+        }
+      },
+      {
+        "id": "e0759310-4fe3-425d-9cda-42b9afafe8ba",
+        "clientUuid": "2975b36d-99fd-4672-a154-22f23591df1d",
+        "serverSeq": 44,
+        "eventType": "STOCK_ADJUSTED",
+        "payload": {
+          "items": [
+            {
+              "unitCost": "50000",
+              "actualQty": 95,
+              "productId": "81e624a8-9cb3-44df-94ff-6ba79efcf2f3",
+              "locationId": "d4bc2db8-3184-48eb-99a0-2eb9a694b83d"
+            }
+          ],
+          "reason": "inventory fix test"
+        },
+        "status": "APPLIED",
+        "occurredAt": "2026-06-08T11:33:10.209Z",
+        "appliedAt": "2026-06-08T11:33:10.241Z",
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0",
+        "deviceId": "inventory-api",
+        "localSeq": 0,
+        "branchId": null,
+        "result": {
+          "eventId": "e0759310-4fe3-425d-9cda-42b9afafe8ba",
+          "eventType": "STOCK_ADJUSTED",
+          "serverSeq": 44
+        }
+      },
+      {
+        "id": "6171b333-034d-4888-9050-2912b5e974e7",
+        "clientUuid": "d0aa37e1-906d-4cb6-8f68-6b2b5e201a69",
+        "serverSeq": 45,
+        "eventType": "PURCHASE_RECEIVED",
+        "payload": {
+          "poId": "b48487e4-d524-4b51-93ec-3da643d7819d",
+          "items": [
+            {
+              "qty": "5",
+              "unitCost": "50000",
+              "productId": "81e624a8-9cb3-44df-94ff-6ba79efcf2f3",
+              "locationId": "d4bc2db8-3184-48eb-99a0-2eb9a694b83d"
+            }
+          ],
+          "supplierId": "410585cc-4105-4e39-b547-7f5b0026c629"
+        },
+        "status": "APPLIED",
+        "occurredAt": "2026-06-08T11:42:17.645Z",
+        "appliedAt": "2026-06-08T11:42:17.672Z",
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0",
+        "deviceId": "purchasing-api",
+        "localSeq": 0,
+        "branchId": null,
+        "result": {
+          "domain": {
+            "poId": "b48487e4-d524-4b51-93ec-3da643d7819d",
+            "status": "received"
+          },
+          "eventId": "6171b333-034d-4888-9050-2912b5e974e7",
+          "eventType": "PURCHASE_RECEIVED",
+          "serverSeq": 45
+        }
+      },
+      {
+        "id": "cfbbece5-a08c-4e40-819a-8d302cf12a8d",
+        "clientUuid": "51f63fb0-70e4-42a6-8b66-f96677cdc656",
+        "serverSeq": 46,
+        "eventType": "PURCHASE_RECEIVED",
+        "payload": {
+          "poId": "30a4f29e-ca33-4b1d-9add-1db0752e507f",
+          "items": [
+            {
+              "qty": "3",
+              "unitCost": "25000",
+              "productId": "81e624a8-9cb3-44df-94ff-6ba79efcf2f3",
+              "locationId": "d4bc2db8-3184-48eb-99a0-2eb9a694b83d"
+            }
+          ],
+          "supplierId": "410585cc-4105-4e39-b547-7f5b0026c629"
+        },
+        "status": "APPLIED",
+        "occurredAt": "2026-06-08T11:42:57.700Z",
+        "appliedAt": "2026-06-08T11:42:57.714Z",
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0",
+        "deviceId": "purchasing-api",
+        "localSeq": 0,
+        "branchId": null,
+        "result": {
+          "domain": {
+            "poId": "30a4f29e-ca33-4b1d-9add-1db0752e507f",
+            "status": "received"
+          },
+          "eventId": "cfbbece5-a08c-4e40-819a-8d302cf12a8d",
+          "eventType": "PURCHASE_RECEIVED",
+          "serverSeq": 46
+        }
+      },
+      {
+        "id": "db83f82f-518f-46f7-81f6-3abbe0b4b7bf",
+        "clientUuid": "1a3768c6-60d3-456b-bcad-ebf3479f4760",
+        "serverSeq": 48,
+        "eventType": "SALE_CREATED",
+        "payload": {
+          "type": "retail",
+          "items": [
+            {
+              "qty": 1,
+              "unitCost": 50000,
+              "productId": "81e624a8-9cb3-44df-94ff-6ba79efcf2f3",
+              "unitPrice": 55000,
+              "locationId": "d4bc2db8-3184-48eb-99a0-2eb9a694b83d"
+            },
+            {
+              "qty": 1,
+              "unitCost": 20000,
+              "productId": "b5b1faca-43ac-4871-bbc5-477f1fa7006e",
+              "unitPrice": 22000,
+              "locationId": "d4bc2db8-3184-48eb-99a0-2eb9a694b83d"
+            }
+          ],
+          "customerId": null,
+          "paymentType": "cash"
+        },
+        "status": "REJECTED",
+        "occurredAt": "2026-06-09T20:27:09.556Z",
+        "appliedAt": "2026-06-09T20:27:09.601Z",
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0",
+        "deviceId": "sales-api",
+        "localSeq": 0,
+        "branchId": null,
+        "result": {
+          "reason": "Insufficient stock for product b5b1faca-43ac-4871-bbc5-477f1fa7006e at location d4bc2db8-3184-48eb-99a0-2eb9a694b83d: available 0, required 1"
+        }
+      },
+      {
+        "id": "d64dd4e9-5a26-44cf-af2f-28abb9123506",
+        "clientUuid": "e08d4e2f-5604-4c3b-83aa-f0c11da3bb26",
+        "serverSeq": 49,
+        "eventType": "SALE_CREATED",
+        "payload": {
+          "type": "retail",
+          "items": [
+            {
+              "qty": 1,
+              "unitCost": 50000,
+              "productId": "81e624a8-9cb3-44df-94ff-6ba79efcf2f3",
+              "unitPrice": 55000,
+              "locationId": "d4bc2db8-3184-48eb-99a0-2eb9a694b83d"
+            }
+          ],
+          "customerId": null,
+          "paymentType": "cash"
+        },
+        "status": "APPLIED",
+        "occurredAt": "2026-06-09T20:27:49.486Z",
+        "appliedAt": "2026-06-09T20:27:49.556Z",
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0",
+        "deviceId": "sales-api",
+        "localSeq": 0,
+        "branchId": null,
+        "result": {
+          "domain": {
+            "saleId": "e8abc6a1-f5c7-42c2-94a8-f557c8b2c71e"
+          },
+          "eventId": "d64dd4e9-5a26-44cf-af2f-28abb9123506",
+          "eventType": "SALE_CREATED",
+          "serverSeq": 49
+        }
+      },
+      {
+        "id": "302b7f10-3fdf-4077-b61e-3e4dc4346651",
+        "clientUuid": "1afd1361-489c-4f2a-8475-1b463c8f9d92",
+        "serverSeq": 50,
+        "eventType": "STOCK_ADJUSTED",
+        "payload": {
+          "items": [
+            {
+              "unitCost": "50000",
+              "actualQty": 100,
+              "productId": "81e624a8-9cb3-44df-94ff-6ba79efcf2f3",
+              "locationId": "d4bc2db8-3184-48eb-99a0-2eb9a694b83d"
+            }
+          ],
+          "reason": "إدخال مخزون أولي"
+        },
+        "status": "APPLIED",
+        "occurredAt": "2026-06-09T20:33:00.407Z",
+        "appliedAt": "2026-06-09T20:33:00.427Z",
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0",
+        "deviceId": "inventory-api",
+        "localSeq": 0,
+        "branchId": null,
+        "result": {
+          "eventId": "302b7f10-3fdf-4077-b61e-3e4dc4346651",
+          "eventType": "STOCK_ADJUSTED",
+          "serverSeq": 50
+        }
+      },
+      {
+        "id": "21256a33-5575-4aba-b404-a2b4dbf243c3",
+        "clientUuid": "ead058a1-14fc-4838-8671-79ea12f4a067",
+        "serverSeq": 51,
+        "eventType": "STOCK_ADJUSTED",
+        "payload": {
+          "items": [
+            {
+              "unitCost": "50000",
+              "actualQty": 1000,
+              "productId": "81e624a8-9cb3-44df-94ff-6ba79efcf2f3",
+              "locationId": "d4bc2db8-3184-48eb-99a0-2eb9a694b83d"
+            }
+          ],
+          "reason": "إدخال مخزون أولي"
+        },
+        "status": "APPLIED",
+        "occurredAt": "2026-06-09T20:33:23.355Z",
+        "appliedAt": "2026-06-09T20:33:23.375Z",
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0",
+        "deviceId": "inventory-api",
+        "localSeq": 0,
+        "branchId": null,
+        "result": {
+          "eventId": "21256a33-5575-4aba-b404-a2b4dbf243c3",
+          "eventType": "STOCK_ADJUSTED",
+          "serverSeq": 51
+        }
+      },
+      {
+        "id": "650b6523-6cc2-4341-878b-2e268b21f003",
+        "clientUuid": "f94b0b3e-b72a-4bd4-b9d8-b479539b0a76",
+        "serverSeq": 52,
+        "eventType": "PURCHASE_RECEIVED",
+        "payload": {
+          "poId": "ca3f52ad-a739-421b-ac69-e0daa8f4de43",
+          "items": [
+            {
+              "qty": "2",
+              "unitCost": "1000",
+              "productId": "81e624a8-9cb3-44df-94ff-6ba79efcf2f3",
+              "locationId": "d4bc2db8-3184-48eb-99a0-2eb9a694b83d"
+            }
+          ],
+          "supplierId": "410585cc-4105-4e39-b547-7f5b0026c629"
+        },
+        "status": "APPLIED",
+        "occurredAt": "2026-06-09T20:35:22.282Z",
+        "appliedAt": "2026-06-09T20:35:22.309Z",
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0",
+        "deviceId": "purchasing-api",
+        "localSeq": 0,
+        "branchId": null,
+        "result": {
+          "domain": {
+            "poId": "ca3f52ad-a739-421b-ac69-e0daa8f4de43",
+            "status": "received"
+          },
+          "eventId": "650b6523-6cc2-4341-878b-2e268b21f003",
+          "eventType": "PURCHASE_RECEIVED",
+          "serverSeq": 52
+        }
+      },
+      {
+        "id": "d395fe40-f61e-41ce-9108-5139fd4141b9",
+        "clientUuid": "afe26ba4-104e-47a1-9ca8-b6dbf393fb6e",
+        "serverSeq": 53,
+        "eventType": "PURCHASE_RECEIVED",
+        "payload": {
+          "poId": "00ebda54-1bee-4858-84f2-2c69e0d1a483",
+          "items": [
+            {
+              "qty": "500",
+              "unitCost": "20000",
+              "productId": "b5b1faca-43ac-4871-bbc5-477f1fa7006e",
+              "locationId": "d4bc2db8-3184-48eb-99a0-2eb9a694b83d"
+            }
+          ],
+          "supplierId": "410585cc-4105-4e39-b547-7f5b0026c629"
+        },
+        "status": "APPLIED",
+        "occurredAt": "2026-06-09T20:36:12.311Z",
+        "appliedAt": "2026-06-09T20:36:12.330Z",
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0",
+        "deviceId": "purchasing-api",
+        "localSeq": 0,
+        "branchId": null,
+        "result": {
+          "domain": {
+            "poId": "00ebda54-1bee-4858-84f2-2c69e0d1a483",
+            "status": "received"
+          },
+          "eventId": "d395fe40-f61e-41ce-9108-5139fd4141b9",
+          "eventType": "PURCHASE_RECEIVED",
+          "serverSeq": 53
+        }
+      },
+      {
+        "id": "4866cc44-9ca5-47dd-a23d-655f156c9579",
+        "clientUuid": "ab8becca-5e5e-408a-9adc-6b00e2a10a87",
+        "serverSeq": 86,
+        "eventType": "SALE_CREATED",
+        "payload": {
+          "type": "retail",
+          "items": [
+            {
+              "qty": 1,
+              "unitCost": 20000,
+              "productId": "b5b1faca-43ac-4871-bbc5-477f1fa7006e",
+              "unitPrice": 22000,
+              "locationId": "d4bc2db8-3184-48eb-99a0-2eb9a694b83d"
+            }
+          ],
+          "customerId": null,
+          "paymentType": "cash"
+        },
+        "status": "APPLIED",
+        "occurredAt": "2026-06-10T08:00:07.433Z",
+        "appliedAt": "2026-06-10T08:00:07.539Z",
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0",
+        "deviceId": "sales-api",
+        "localSeq": 0,
+        "branchId": null,
+        "result": {
+          "domain": {
+            "saleId": "1698c7bd-ec57-4306-9600-08b4e4d1dcc0"
+          },
+          "eventId": "4866cc44-9ca5-47dd-a23d-655f156c9579",
+          "eventType": "SALE_CREATED",
+          "serverSeq": 86
+        }
+      },
+      {
+        "id": "544da15d-7053-4787-b83e-2c2890c562b9",
+        "clientUuid": "61ed9f2c-cfca-4074-a488-2b41a3d9af2b",
+        "serverSeq": 87,
+        "eventType": "SALE_CREATED",
+        "payload": {
+          "type": "retail",
+          "items": [
+            {
+              "qty": 1,
+              "unitCost": 50000,
+              "productId": "81e624a8-9cb3-44df-94ff-6ba79efcf2f3",
+              "unitPrice": 55000,
+              "locationId": "d4bc2db8-3184-48eb-99a0-2eb9a694b83d"
+            },
+            {
+              "qty": 1,
+              "unitCost": 20000,
+              "productId": "b5b1faca-43ac-4871-bbc5-477f1fa7006e",
+              "unitPrice": 22000,
+              "locationId": "d4bc2db8-3184-48eb-99a0-2eb9a694b83d"
+            }
+          ],
+          "customerId": null,
+          "paymentType": "cash"
+        },
+        "status": "APPLIED",
+        "occurredAt": "2026-06-10T08:39:32.152Z",
+        "appliedAt": "2026-06-10T08:39:32.368Z",
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0",
+        "deviceId": "sales-api",
+        "localSeq": 0,
+        "branchId": null,
+        "result": {
+          "domain": {
+            "saleId": "29678c81-9b31-4ba2-a8a1-fc121ed53b85"
+          },
+          "eventId": "544da15d-7053-4787-b83e-2c2890c562b9",
+          "eventType": "SALE_CREATED",
+          "serverSeq": 87
+        }
+      },
+      {
+        "id": "785a298d-f204-4610-a3dd-5721f1acd3e7",
+        "clientUuid": "9efb9f1e-9db4-40a4-a749-c883b20a0ddd",
+        "serverSeq": 89,
+        "eventType": "SALE_CREATED",
+        "payload": {
+          "type": "retail",
+          "items": [
+            {
+              "qty": 11,
+              "unitCost": 50000,
+              "productId": "81e624a8-9cb3-44df-94ff-6ba79efcf2f3",
+              "unitPrice": 55000,
+              "locationId": "d4bc2db8-3184-48eb-99a0-2eb9a694b83d"
+            },
+            {
+              "qty": 6,
+              "unitCost": 20000,
+              "productId": "b5b1faca-43ac-4871-bbc5-477f1fa7006e",
+              "unitPrice": 22000,
+              "locationId": "d4bc2db8-3184-48eb-99a0-2eb9a694b83d"
+            },
+            {
+              "qty": 1,
+              "unitCost": 10,
+              "productId": "ea1ebbe8-b0cb-4b90-8e46-a9128e2cb8a6",
+              "unitPrice": 15,
+              "locationId": "d4bc2db8-3184-48eb-99a0-2eb9a694b83d"
+            },
+            {
+              "qty": 1,
+              "unitCost": 100,
+              "productId": "b73a7167-2f0e-4033-af66-3393c11a241f",
+              "unitPrice": 150,
+              "locationId": "d4bc2db8-3184-48eb-99a0-2eb9a694b83d"
+            },
+            {
+              "qty": 1,
+              "unitCost": 100,
+              "productId": "ae870eb3-88c7-420a-afba-09cb3bf60e84",
+              "unitPrice": 150,
+              "locationId": "d4bc2db8-3184-48eb-99a0-2eb9a694b83d"
+            }
+          ],
+          "customerId": null,
+          "paymentType": "cash"
+        },
+        "status": "REJECTED",
+        "occurredAt": "2026-06-10T08:39:56.035Z",
+        "appliedAt": "2026-06-10T08:39:56.061Z",
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0",
+        "deviceId": "sales-api",
+        "localSeq": 0,
+        "branchId": null,
+        "result": {
+          "reason": "Insufficient stock for product ea1ebbe8-b0cb-4b90-8e46-a9128e2cb8a6 at location d4bc2db8-3184-48eb-99a0-2eb9a694b83d: available 0, required 1"
+        }
+      },
+      {
+        "id": "37d64a19-7615-4bb8-b857-96e90bf8c053",
+        "clientUuid": "09fbaa9f-67f6-42e7-9a6b-78951d878d9a",
+        "serverSeq": 90,
+        "eventType": "SALE_CREATED",
+        "payload": {
+          "type": "retail",
+          "items": [
+            {
+              "qty": 5,
+              "unitCost": 20000,
+              "productId": "b5b1faca-43ac-4871-bbc5-477f1fa7006e",
+              "unitPrice": 22000,
+              "locationId": "d4bc2db8-3184-48eb-99a0-2eb9a694b83d"
+            }
+          ],
+          "customerId": null,
+          "paymentType": "cash"
+        },
+        "status": "APPLIED",
+        "occurredAt": "2026-06-10T13:09:05.048Z",
+        "appliedAt": "2026-06-10T13:09:05.211Z",
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0",
+        "deviceId": "sales-api",
+        "localSeq": 0,
+        "branchId": null,
+        "result": {
+          "domain": {
+            "saleId": "742bdefc-3e07-44bc-9579-08c11a2b173a"
+          },
+          "eventId": "37d64a19-7615-4bb8-b857-96e90bf8c053",
+          "eventType": "SALE_CREATED",
+          "serverSeq": 90
+        }
+      },
+      {
+        "id": "e5a2104d-8735-4b70-ab74-8d9a46a23738",
+        "clientUuid": "2e56cba4-6c6a-48a5-98fc-9c6577de2c4b",
+        "serverSeq": 92,
+        "eventType": "SALE_CREATED",
+        "payload": {
+          "type": "retail",
+          "items": [
+            {
+              "qty": 1,
+              "unitCost": 50000,
+              "productId": "81e624a8-9cb3-44df-94ff-6ba79efcf2f3",
+              "unitPrice": 55000,
+              "locationId": "d4bc2db8-3184-48eb-99a0-2eb9a694b83d"
+            },
+            {
+              "qty": 1000,
+              "unitCost": 20000,
+              "productId": "b5b1faca-43ac-4871-bbc5-477f1fa7006e",
+              "unitPrice": 22000,
+              "locationId": "d4bc2db8-3184-48eb-99a0-2eb9a694b83d"
+            }
+          ],
+          "customerId": null,
+          "paymentType": "cash"
+        },
+        "status": "REJECTED",
+        "occurredAt": "2026-06-13T06:56:40.361Z",
+        "appliedAt": "2026-06-13T06:56:40.387Z",
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0",
+        "deviceId": "sales-api",
+        "localSeq": 0,
+        "branchId": null,
+        "result": {
+          "reason": "Insufficient stock for product b5b1faca-43ac-4871-bbc5-477f1fa7006e at location d4bc2db8-3184-48eb-99a0-2eb9a694b83d: available 493, required 1000"
+        }
+      },
+      {
+        "id": "f32ebf70-8b5e-4642-a2ff-78f633412518",
+        "clientUuid": "0190e428-095b-4245-9b58-53f194c682da",
+        "serverSeq": 94,
+        "eventType": "SALE_CREATED",
+        "payload": {
+          "type": "retail",
+          "items": [
+            {
+              "qty": 1,
+              "unitCost": 50000,
+              "productId": "81e624a8-9cb3-44df-94ff-6ba79efcf2f3",
+              "unitPrice": 55000,
+              "locationId": "d4bc2db8-3184-48eb-99a0-2eb9a694b83d"
+            },
+            {
+              "qty": 500,
+              "unitCost": 20000,
+              "productId": "b5b1faca-43ac-4871-bbc5-477f1fa7006e",
+              "unitPrice": 22000,
+              "locationId": "d4bc2db8-3184-48eb-99a0-2eb9a694b83d"
+            }
+          ],
+          "customerId": null,
+          "paymentType": "cash"
+        },
+        "status": "REJECTED",
+        "occurredAt": "2026-06-13T06:56:50.056Z",
+        "appliedAt": "2026-06-13T06:56:50.065Z",
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0",
+        "deviceId": "sales-api",
+        "localSeq": 0,
+        "branchId": null,
+        "result": {
+          "reason": "Insufficient stock for product b5b1faca-43ac-4871-bbc5-477f1fa7006e at location d4bc2db8-3184-48eb-99a0-2eb9a694b83d: available 493, required 500"
+        }
+      },
+      {
+        "id": "7f377bfe-d6f1-4fa5-8011-067588726614",
+        "clientUuid": "d8a84f4f-633d-4e93-af37-d16a22419a44",
+        "serverSeq": 95,
+        "eventType": "SALE_CREATED",
+        "payload": {
+          "type": "retail",
+          "items": [
+            {
+              "qty": 1,
+              "unitCost": 50000,
+              "productId": "81e624a8-9cb3-44df-94ff-6ba79efcf2f3",
+              "unitPrice": 55000,
+              "locationId": "d4bc2db8-3184-48eb-99a0-2eb9a694b83d"
+            },
+            {
+              "qty": 400,
+              "unitCost": 20000,
+              "productId": "b5b1faca-43ac-4871-bbc5-477f1fa7006e",
+              "unitPrice": 22000,
+              "locationId": "d4bc2db8-3184-48eb-99a0-2eb9a694b83d"
+            }
+          ],
+          "customerId": null,
+          "paymentType": "cash"
+        },
+        "status": "APPLIED",
+        "occurredAt": "2026-06-13T06:56:57.494Z",
+        "appliedAt": "2026-06-13T06:56:57.566Z",
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0",
+        "deviceId": "sales-api",
+        "localSeq": 0,
+        "branchId": null,
+        "result": {
+          "domain": {
+            "saleId": "48fd254e-9bd5-48f5-9dd8-72c66945954e"
+          },
+          "eventId": "7f377bfe-d6f1-4fa5-8011-067588726614",
+          "eventType": "SALE_CREATED",
+          "serverSeq": 95
+        }
+      }
+    ],
+    "stockMovements": [
+      {
+        "id": "89d5f287-228e-498a-a9c9-4a841aaadd0f",
+        "eventId": "b3a3ea74-0909-42a4-990d-9d46647010b1",
+        "productId": "81e624a8-9cb3-44df-94ff-6ba79efcf2f3",
+        "locationId": "d4bc2db8-3184-48eb-99a0-2eb9a694b83d",
+        "direction": "IN",
+        "quantity": "100",
+        "sourceType": "ADJUSTMENT",
+        "sourceId": null,
+        "unitCost": "50000",
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0",
+        "createdAt": "2026-06-07T05:50:30.250Z"
+      },
+      {
+        "id": "2abcdf9e-5b6c-41f0-8f95-713284188841",
+        "eventId": "1019db43-a400-4f86-ad3e-fb6b6e2102ea",
+        "productId": "81e624a8-9cb3-44df-94ff-6ba79efcf2f3",
+        "locationId": "d4bc2db8-3184-48eb-99a0-2eb9a694b83d",
+        "direction": "OUT",
+        "quantity": "12",
+        "sourceType": "SALE",
+        "sourceId": null,
+        "unitCost": "50000",
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0",
+        "createdAt": "2026-06-07T05:50:49.620Z"
+      },
+      {
+        "id": "c2cb5d3b-c398-44d2-925a-5df26dd71c20",
+        "eventId": "773d9f1e-30a6-412c-88bf-c9fae46f35d9",
+        "productId": "81e624a8-9cb3-44df-94ff-6ba79efcf2f3",
+        "locationId": "d4bc2db8-3184-48eb-99a0-2eb9a694b83d",
+        "direction": "OUT",
+        "quantity": "1",
+        "sourceType": "SALE",
+        "sourceId": null,
+        "unitCost": "50000",
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0",
+        "createdAt": "2026-06-07T08:34:46.362Z"
+      },
+      {
+        "id": "7f4bdca4-b69b-4543-90bc-6e4f0ac08467",
+        "eventId": "77a4b02d-dfbf-4501-a7fe-17fa7c6c2021",
+        "productId": "81e624a8-9cb3-44df-94ff-6ba79efcf2f3",
+        "locationId": "d4bc2db8-3184-48eb-99a0-2eb9a694b83d",
+        "direction": "OUT",
+        "quantity": "1",
+        "sourceType": "SALE",
+        "sourceId": null,
+        "unitCost": "50000",
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0",
+        "createdAt": "2026-06-08T10:53:05.062Z"
+      },
+      {
+        "id": "bbb0cb01-1cf1-4222-8e33-be9a0b46ccbc",
+        "eventId": "0de1ed86-a69d-4fa1-b2c7-b2b0d2fe6f11",
+        "productId": "81e624a8-9cb3-44df-94ff-6ba79efcf2f3",
+        "locationId": "d4bc2db8-3184-48eb-99a0-2eb9a694b83d",
+        "direction": "IN",
+        "quantity": "4",
+        "sourceType": "ADJUSTMENT",
+        "sourceId": null,
+        "unitCost": "50000",
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0",
+        "createdAt": "2026-06-08T11:28:34.597Z"
+      },
+      {
+        "id": "7b996e55-71ac-4391-9074-7fdee1ee9a28",
+        "eventId": "bdb78cdd-5d48-4609-bf49-e195359c9a51",
+        "productId": "81e624a8-9cb3-44df-94ff-6ba79efcf2f3",
+        "locationId": "d4bc2db8-3184-48eb-99a0-2eb9a694b83d",
+        "direction": "OUT",
+        "quantity": "5",
+        "sourceType": "ADJUSTMENT",
+        "sourceId": null,
+        "unitCost": "50000",
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0",
+        "createdAt": "2026-06-08T11:29:18.221Z"
+      },
+      {
+        "id": "5a028208-44db-4370-a19c-bb97979fc925",
+        "eventId": "e0759310-4fe3-425d-9cda-42b9afafe8ba",
+        "productId": "81e624a8-9cb3-44df-94ff-6ba79efcf2f3",
+        "locationId": "d4bc2db8-3184-48eb-99a0-2eb9a694b83d",
+        "direction": "IN",
+        "quantity": "10",
+        "sourceType": "ADJUSTMENT",
+        "sourceId": null,
+        "unitCost": "50000",
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0",
+        "createdAt": "2026-06-08T11:33:10.209Z"
+      },
+      {
+        "id": "b67fda62-ff98-4155-89b5-9c6fb1ccfc5f",
+        "eventId": "6171b333-034d-4888-9050-2912b5e974e7",
+        "productId": "81e624a8-9cb3-44df-94ff-6ba79efcf2f3",
+        "locationId": "d4bc2db8-3184-48eb-99a0-2eb9a694b83d",
+        "direction": "IN",
+        "quantity": "5",
+        "sourceType": "PURCHASE",
+        "sourceId": null,
+        "unitCost": "50000",
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0",
+        "createdAt": "2026-06-08T11:42:17.645Z"
+      },
+      {
+        "id": "5dfadc92-9582-439c-98b9-3f485434323e",
+        "eventId": "cfbbece5-a08c-4e40-819a-8d302cf12a8d",
+        "productId": "81e624a8-9cb3-44df-94ff-6ba79efcf2f3",
+        "locationId": "d4bc2db8-3184-48eb-99a0-2eb9a694b83d",
+        "direction": "IN",
+        "quantity": "3",
+        "sourceType": "PURCHASE",
+        "sourceId": null,
+        "unitCost": "25000",
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0",
+        "createdAt": "2026-06-08T11:42:57.700Z"
+      },
+      {
+        "id": "a4700d0e-b037-4a7e-9cbe-9d46dceda8b7",
+        "eventId": "d64dd4e9-5a26-44cf-af2f-28abb9123506",
+        "productId": "81e624a8-9cb3-44df-94ff-6ba79efcf2f3",
+        "locationId": "d4bc2db8-3184-48eb-99a0-2eb9a694b83d",
+        "direction": "OUT",
+        "quantity": "1",
+        "sourceType": "SALE",
+        "sourceId": null,
+        "unitCost": "50000",
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0",
+        "createdAt": "2026-06-09T20:27:49.486Z"
+      },
+      {
+        "id": "c8082b85-a77d-4fbb-9de5-184ae5c72651",
+        "eventId": "302b7f10-3fdf-4077-b61e-3e4dc4346651",
+        "productId": "81e624a8-9cb3-44df-94ff-6ba79efcf2f3",
+        "locationId": "d4bc2db8-3184-48eb-99a0-2eb9a694b83d",
+        "direction": "OUT",
+        "quantity": "2",
+        "sourceType": "ADJUSTMENT",
+        "sourceId": null,
+        "unitCost": "50000",
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0",
+        "createdAt": "2026-06-09T20:33:00.407Z"
+      },
+      {
+        "id": "d6ee96fe-5d79-4226-a553-e2e93beb32d8",
+        "eventId": "21256a33-5575-4aba-b404-a2b4dbf243c3",
+        "productId": "81e624a8-9cb3-44df-94ff-6ba79efcf2f3",
+        "locationId": "d4bc2db8-3184-48eb-99a0-2eb9a694b83d",
+        "direction": "IN",
+        "quantity": "900",
+        "sourceType": "ADJUSTMENT",
+        "sourceId": null,
+        "unitCost": "50000",
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0",
+        "createdAt": "2026-06-09T20:33:23.355Z"
+      },
+      {
+        "id": "0aa44e60-dd6d-41d1-b3e9-4e6d1e3b8e07",
+        "eventId": "650b6523-6cc2-4341-878b-2e268b21f003",
+        "productId": "81e624a8-9cb3-44df-94ff-6ba79efcf2f3",
+        "locationId": "d4bc2db8-3184-48eb-99a0-2eb9a694b83d",
+        "direction": "IN",
+        "quantity": "2",
+        "sourceType": "PURCHASE",
+        "sourceId": null,
+        "unitCost": "1000",
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0",
+        "createdAt": "2026-06-09T20:35:22.282Z"
+      },
+      {
+        "id": "604175f1-f832-49ba-a166-b300325d08b5",
+        "eventId": "d395fe40-f61e-41ce-9108-5139fd4141b9",
+        "productId": "b5b1faca-43ac-4871-bbc5-477f1fa7006e",
+        "locationId": "d4bc2db8-3184-48eb-99a0-2eb9a694b83d",
+        "direction": "IN",
+        "quantity": "500",
+        "sourceType": "PURCHASE",
+        "sourceId": null,
+        "unitCost": "20000",
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0",
+        "createdAt": "2026-06-09T20:36:12.311Z"
+      },
+      {
+        "id": "87e64e7a-bd5a-4b2d-a79e-59497735ab8a",
+        "eventId": "4866cc44-9ca5-47dd-a23d-655f156c9579",
+        "productId": "b5b1faca-43ac-4871-bbc5-477f1fa7006e",
+        "locationId": "d4bc2db8-3184-48eb-99a0-2eb9a694b83d",
+        "direction": "OUT",
+        "quantity": "1",
+        "sourceType": "SALE",
+        "sourceId": null,
+        "unitCost": "20000",
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0",
+        "createdAt": "2026-06-10T08:00:07.433Z"
+      },
+      {
+        "id": "c71b2587-bef6-43a1-be6c-ba06935ece96",
+        "eventId": "544da15d-7053-4787-b83e-2c2890c562b9",
+        "productId": "81e624a8-9cb3-44df-94ff-6ba79efcf2f3",
+        "locationId": "d4bc2db8-3184-48eb-99a0-2eb9a694b83d",
+        "direction": "OUT",
+        "quantity": "1",
+        "sourceType": "SALE",
+        "sourceId": null,
+        "unitCost": "50000",
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0",
+        "createdAt": "2026-06-10T08:39:32.152Z"
+      },
+      {
+        "id": "0b2df050-d3c9-471a-b072-52ed124c9c37",
+        "eventId": "544da15d-7053-4787-b83e-2c2890c562b9",
+        "productId": "b5b1faca-43ac-4871-bbc5-477f1fa7006e",
+        "locationId": "d4bc2db8-3184-48eb-99a0-2eb9a694b83d",
+        "direction": "OUT",
+        "quantity": "1",
+        "sourceType": "SALE",
+        "sourceId": null,
+        "unitCost": "20000",
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0",
+        "createdAt": "2026-06-10T08:39:32.152Z"
+      },
+      {
+        "id": "5beb038b-afb2-4bbd-8160-5e9498af9b9b",
+        "eventId": "37d64a19-7615-4bb8-b857-96e90bf8c053",
+        "productId": "b5b1faca-43ac-4871-bbc5-477f1fa7006e",
+        "locationId": "d4bc2db8-3184-48eb-99a0-2eb9a694b83d",
+        "direction": "OUT",
+        "quantity": "5",
+        "sourceType": "SALE",
+        "sourceId": null,
+        "unitCost": "20000",
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0",
+        "createdAt": "2026-06-10T13:09:05.048Z"
+      },
+      {
+        "id": "2f11f1d1-368b-4cb1-8e39-ffeda68e4f21",
+        "eventId": "7f377bfe-d6f1-4fa5-8011-067588726614",
+        "productId": "81e624a8-9cb3-44df-94ff-6ba79efcf2f3",
+        "locationId": "d4bc2db8-3184-48eb-99a0-2eb9a694b83d",
+        "direction": "OUT",
+        "quantity": "1",
+        "sourceType": "SALE",
+        "sourceId": null,
+        "unitCost": "50000",
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0",
+        "createdAt": "2026-06-13T06:56:57.494Z"
+      },
+      {
+        "id": "f9793637-4ea6-48c2-8151-2968324f5c84",
+        "eventId": "7f377bfe-d6f1-4fa5-8011-067588726614",
+        "productId": "b5b1faca-43ac-4871-bbc5-477f1fa7006e",
+        "locationId": "d4bc2db8-3184-48eb-99a0-2eb9a694b83d",
+        "direction": "OUT",
+        "quantity": "400",
+        "sourceType": "SALE",
+        "sourceId": null,
+        "unitCost": "20000",
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0",
+        "createdAt": "2026-06-13T06:56:57.494Z"
+      }
+    ],
+    "journalEntries": [
+      {
+        "id": "f6939358-a4da-48d1-ba14-5f3d346f5a58",
+        "eventId": "b3a3ea74-0909-42a4-990d-9d46647010b1",
+        "entryDate": "2026-06-07T05:50:30.250Z",
+        "sourceType": "ADJUSTMENT",
+        "sourceId": null,
+        "memo": null,
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0"
+      },
+      {
+        "id": "14ee6580-eed1-4a62-99d8-67b08e5583ef",
+        "eventId": "1019db43-a400-4f86-ad3e-fb6b6e2102ea",
+        "entryDate": "2026-06-07T05:50:49.620Z",
+        "sourceType": "SALE",
+        "sourceId": null,
+        "memo": null,
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0"
+      },
+      {
+        "id": "8d263118-b313-4d4a-87f8-84d9dc12399f",
+        "eventId": "5495dd5e-42b9-4a90-9e4f-551bbee26f4e",
+        "entryDate": "2026-06-07T07:40:55.958Z",
+        "sourceType": "PAYMENT",
+        "sourceId": "e7da55f4-1af4-4f78-854b-605ae9dc1e22",
+        "memo": null,
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0"
+      },
+      {
+        "id": "e9f78321-14ff-49ba-a2b6-42dc0f427fa1",
+        "eventId": "a5d54032-840f-4ccb-87c6-3d1f085de885",
+        "entryDate": "2026-06-07T07:40:55.984Z",
+        "sourceType": "PAYMENT",
+        "sourceId": "7bbe3693-437b-4489-b578-01fcb357bb6d",
+        "memo": null,
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0"
+      },
+      {
+        "id": "09f674ff-b1a7-4911-9d0f-3303592b3ccf",
+        "eventId": "773d9f1e-30a6-412c-88bf-c9fae46f35d9",
+        "entryDate": "2026-06-07T08:34:46.362Z",
+        "sourceType": "SALE",
+        "sourceId": null,
+        "memo": null,
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0"
+      },
+      {
+        "id": "1f1113d7-b487-478b-8abd-580daeed70be",
+        "eventId": "77a4b02d-dfbf-4501-a7fe-17fa7c6c2021",
+        "entryDate": "2026-06-08T10:53:05.062Z",
+        "sourceType": "SALE",
+        "sourceId": null,
+        "memo": null,
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0"
+      },
+      {
+        "id": "4648ecfa-2452-4192-9f95-be8a32b14f8e",
+        "eventId": "0de1ed86-a69d-4fa1-b2c7-b2b0d2fe6f11",
+        "entryDate": "2026-06-08T11:28:34.597Z",
+        "sourceType": "ADJUSTMENT",
+        "sourceId": null,
+        "memo": null,
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0"
+      },
+      {
+        "id": "94023297-dd01-4544-85f3-e9711353cdb3",
+        "eventId": "bdb78cdd-5d48-4609-bf49-e195359c9a51",
+        "entryDate": "2026-06-08T11:29:18.221Z",
+        "sourceType": "ADJUSTMENT",
+        "sourceId": null,
+        "memo": null,
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0"
+      },
+      {
+        "id": "99b4b960-43da-4aa6-9ef2-78282bc061e4",
+        "eventId": "e0759310-4fe3-425d-9cda-42b9afafe8ba",
+        "entryDate": "2026-06-08T11:33:10.209Z",
+        "sourceType": "ADJUSTMENT",
+        "sourceId": null,
+        "memo": null,
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0"
+      },
+      {
+        "id": "ca08293b-80cd-4a23-9e66-5b2da9544a8f",
+        "eventId": "6171b333-034d-4888-9050-2912b5e974e7",
+        "entryDate": "2026-06-08T11:42:17.645Z",
+        "sourceType": "PURCHASE",
+        "sourceId": null,
+        "memo": null,
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0"
+      },
+      {
+        "id": "7b2504a5-f412-4140-a0b8-083b109dfd4d",
+        "eventId": "cfbbece5-a08c-4e40-819a-8d302cf12a8d",
+        "entryDate": "2026-06-08T11:42:57.700Z",
+        "sourceType": "PURCHASE",
+        "sourceId": null,
+        "memo": null,
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0"
+      },
+      {
+        "id": "caae09bb-b5c5-41d9-94ff-87199f2dfa07",
+        "eventId": "d64dd4e9-5a26-44cf-af2f-28abb9123506",
+        "entryDate": "2026-06-09T20:27:49.486Z",
+        "sourceType": "SALE",
+        "sourceId": null,
+        "memo": null,
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0"
+      },
+      {
+        "id": "444aa8c2-e2bd-4faf-8e09-7b52c5484a0d",
+        "eventId": "302b7f10-3fdf-4077-b61e-3e4dc4346651",
+        "entryDate": "2026-06-09T20:33:00.407Z",
+        "sourceType": "ADJUSTMENT",
+        "sourceId": null,
+        "memo": null,
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0"
+      },
+      {
+        "id": "5a902842-7dd6-4f35-8fce-82799466ff4a",
+        "eventId": "21256a33-5575-4aba-b404-a2b4dbf243c3",
+        "entryDate": "2026-06-09T20:33:23.355Z",
+        "sourceType": "ADJUSTMENT",
+        "sourceId": null,
+        "memo": null,
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0"
+      },
+      {
+        "id": "6bc6ae84-9125-4869-8dcc-8f12578c2cae",
+        "eventId": "650b6523-6cc2-4341-878b-2e268b21f003",
+        "entryDate": "2026-06-09T20:35:22.282Z",
+        "sourceType": "PURCHASE",
+        "sourceId": null,
+        "memo": null,
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0"
+      },
+      {
+        "id": "f032ea4a-38fe-4e29-bbd7-53a7d0a04f7d",
+        "eventId": "d395fe40-f61e-41ce-9108-5139fd4141b9",
+        "entryDate": "2026-06-09T20:36:12.311Z",
+        "sourceType": "PURCHASE",
+        "sourceId": null,
+        "memo": null,
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0"
+      },
+      {
+        "id": "c46e16cd-4e39-4228-8071-558fb8435455",
+        "eventId": "4866cc44-9ca5-47dd-a23d-655f156c9579",
+        "entryDate": "2026-06-10T08:00:07.433Z",
+        "sourceType": "SALE",
+        "sourceId": null,
+        "memo": null,
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0"
+      },
+      {
+        "id": "9bab9545-b882-4190-b646-d31963bd6775",
+        "eventId": "544da15d-7053-4787-b83e-2c2890c562b9",
+        "entryDate": "2026-06-10T08:39:32.152Z",
+        "sourceType": "SALE",
+        "sourceId": null,
+        "memo": null,
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0"
+      },
+      {
+        "id": "6a9abcad-6b6c-427f-9315-283892599753",
+        "eventId": "37d64a19-7615-4bb8-b857-96e90bf8c053",
+        "entryDate": "2026-06-10T13:09:05.048Z",
+        "sourceType": "SALE",
+        "sourceId": null,
+        "memo": null,
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0"
+      },
+      {
+        "id": "2c55507e-2dea-4572-876e-a2b78478ad16",
+        "eventId": "7f377bfe-d6f1-4fa5-8011-067588726614",
+        "entryDate": "2026-06-13T06:56:57.494Z",
+        "sourceType": "SALE",
+        "sourceId": null,
+        "memo": null,
+        "createdBy": "af538ab2-3c9d-40c2-896e-222b897014e0"
+      }
+    ],
+    "journalLines": [
+      {
+        "id": "1ca970f7-3fd5-4955-b0c3-631c3d2b3f35",
+        "entryId": "f6939358-a4da-48d1-ba14-5f3d346f5a58",
+        "accountId": "6fb65161-7177-4221-af4d-0b98b16766ee",
+        "debit": "5000000",
+        "credit": "0",
+        "partyType": null,
+        "partyId": null
+      },
+      {
+        "id": "b8508832-0016-44df-9b36-579b96d364fa",
+        "entryId": "f6939358-a4da-48d1-ba14-5f3d346f5a58",
+        "accountId": "4784bd81-dadc-4357-a9be-79f752346954",
+        "debit": "0",
+        "credit": "5000000",
+        "partyType": null,
+        "partyId": null
+      },
+      {
+        "id": "dd26f32a-2b23-4a72-84c2-7f1ccfc88f51",
+        "entryId": "14ee6580-eed1-4a62-99d8-67b08e5583ef",
+        "accountId": "cdd8aadf-44e2-4807-afc9-20efb449ff85",
+        "debit": "660000",
+        "credit": "0",
+        "partyType": null,
+        "partyId": null
+      },
+      {
+        "id": "812bbedf-1c3e-4070-aeba-03c96b8a2c48",
+        "entryId": "14ee6580-eed1-4a62-99d8-67b08e5583ef",
+        "accountId": "385c7a10-cdc2-4f5c-b58f-0b2569042521",
+        "debit": "0",
+        "credit": "660000",
+        "partyType": null,
+        "partyId": null
+      },
+      {
+        "id": "dfea4588-8b0b-4aa2-9877-ba737d82bec8",
+        "entryId": "14ee6580-eed1-4a62-99d8-67b08e5583ef",
+        "accountId": "131a46a5-fbf0-4e51-9f51-3d21c2d9c42f",
+        "debit": "600000",
+        "credit": "0",
+        "partyType": null,
+        "partyId": null
+      },
+      {
+        "id": "e7744d53-49ab-4088-89fa-ba368ecf069c",
+        "entryId": "14ee6580-eed1-4a62-99d8-67b08e5583ef",
+        "accountId": "6fb65161-7177-4221-af4d-0b98b16766ee",
+        "debit": "0",
+        "credit": "600000",
+        "partyType": null,
+        "partyId": null
+      },
+      {
+        "id": "050d502d-6cda-4211-85aa-91c5c4bda209",
+        "entryId": "8d263118-b313-4d4a-87f8-84d9dc12399f",
+        "accountId": "cdd8aadf-44e2-4807-afc9-20efb449ff85",
+        "debit": "30",
+        "credit": "0",
+        "partyType": null,
+        "partyId": null
+      },
+      {
+        "id": "15ca29aa-fc8b-48f0-8526-73070c9c6130",
+        "entryId": "8d263118-b313-4d4a-87f8-84d9dc12399f",
+        "accountId": "02bcac2d-c387-443f-bafb-19e76ecab22d",
+        "debit": "0",
+        "credit": "30",
+        "partyType": "CUSTOMER",
+        "partyId": "e7da55f4-1af4-4f78-854b-605ae9dc1e22"
+      },
+      {
+        "id": "fb12f584-a631-46aa-bd13-e9dac57e1d79",
+        "entryId": "e9f78321-14ff-49ba-a2b6-42dc0f427fa1",
+        "accountId": "9336bd6f-e0c6-45cd-924c-1cd31b6bcfc0",
+        "debit": "100",
+        "credit": "0",
+        "partyType": "SUPPLIER",
+        "partyId": "7bbe3693-437b-4489-b578-01fcb357bb6d"
+      },
+      {
+        "id": "37b3301f-af84-4d5e-9912-efad01eaaf5f",
+        "entryId": "e9f78321-14ff-49ba-a2b6-42dc0f427fa1",
+        "accountId": "cdd8aadf-44e2-4807-afc9-20efb449ff85",
+        "debit": "0",
+        "credit": "100",
+        "partyType": null,
+        "partyId": null
+      },
+      {
+        "id": "8b687155-3046-4796-8610-0af27b4060d4",
+        "entryId": "09f674ff-b1a7-4911-9d0f-3303592b3ccf",
+        "accountId": "cdd8aadf-44e2-4807-afc9-20efb449ff85",
+        "debit": "54000",
+        "credit": "0",
+        "partyType": null,
+        "partyId": null
+      },
+      {
+        "id": "57ea2711-33c9-4373-850f-5f1754eb1dad",
+        "entryId": "09f674ff-b1a7-4911-9d0f-3303592b3ccf",
+        "accountId": "385c7a10-cdc2-4f5c-b58f-0b2569042521",
+        "debit": "0",
+        "credit": "54000",
+        "partyType": null,
+        "partyId": null
+      },
+      {
+        "id": "285845da-e5bc-40ed-b10b-315eceebaf0f",
+        "entryId": "09f674ff-b1a7-4911-9d0f-3303592b3ccf",
+        "accountId": "131a46a5-fbf0-4e51-9f51-3d21c2d9c42f",
+        "debit": "50000",
+        "credit": "0",
+        "partyType": null,
+        "partyId": null
+      },
+      {
+        "id": "ec3953e1-ae40-4be1-89a9-42c484c6313e",
+        "entryId": "09f674ff-b1a7-4911-9d0f-3303592b3ccf",
+        "accountId": "6fb65161-7177-4221-af4d-0b98b16766ee",
+        "debit": "0",
+        "credit": "50000",
+        "partyType": null,
+        "partyId": null
+      },
+      {
+        "id": "a7d8ff08-9468-407e-8219-c4fea74ba73c",
+        "entryId": "1f1113d7-b487-478b-8abd-580daeed70be",
+        "accountId": "cdd8aadf-44e2-4807-afc9-20efb449ff85",
+        "debit": "54000",
+        "credit": "0",
+        "partyType": null,
+        "partyId": null
+      },
+      {
+        "id": "bfb8e48f-7664-4386-bca6-1d3649a58481",
+        "entryId": "1f1113d7-b487-478b-8abd-580daeed70be",
+        "accountId": "385c7a10-cdc2-4f5c-b58f-0b2569042521",
+        "debit": "0",
+        "credit": "54000",
+        "partyType": null,
+        "partyId": null
+      },
+      {
+        "id": "6be80bcc-b171-4482-b170-a2b8cd404bca",
+        "entryId": "1f1113d7-b487-478b-8abd-580daeed70be",
+        "accountId": "131a46a5-fbf0-4e51-9f51-3d21c2d9c42f",
+        "debit": "50000",
+        "credit": "0",
+        "partyType": null,
+        "partyId": null
+      },
+      {
+        "id": "260cc4bd-da78-4743-9ed7-5ccb646600b5",
+        "entryId": "1f1113d7-b487-478b-8abd-580daeed70be",
+        "accountId": "6fb65161-7177-4221-af4d-0b98b16766ee",
+        "debit": "0",
+        "credit": "50000",
+        "partyType": null,
+        "partyId": null
+      },
+      {
+        "id": "b600f8fd-f899-4e31-a9da-e0101452b7bf",
+        "entryId": "4648ecfa-2452-4192-9f95-be8a32b14f8e",
+        "accountId": "6fb65161-7177-4221-af4d-0b98b16766ee",
+        "debit": "200000",
+        "credit": "0",
+        "partyType": null,
+        "partyId": null
+      },
+      {
+        "id": "654cf29f-7a1a-4ffd-ad7b-986916323250",
+        "entryId": "4648ecfa-2452-4192-9f95-be8a32b14f8e",
+        "accountId": "4784bd81-dadc-4357-a9be-79f752346954",
+        "debit": "0",
+        "credit": "200000",
+        "partyType": null,
+        "partyId": null
+      },
+      {
+        "id": "619667f3-9dd3-406e-92ac-fa6d58893513",
+        "entryId": "94023297-dd01-4544-85f3-e9711353cdb3",
+        "accountId": "083b6fca-0a09-4183-929c-a40572184c99",
+        "debit": "250000",
+        "credit": "0",
+        "partyType": null,
+        "partyId": null
+      },
+      {
+        "id": "cce49be4-20b8-4f54-a13d-04077ad3b231",
+        "entryId": "94023297-dd01-4544-85f3-e9711353cdb3",
+        "accountId": "6fb65161-7177-4221-af4d-0b98b16766ee",
+        "debit": "0",
+        "credit": "250000",
+        "partyType": null,
+        "partyId": null
+      },
+      {
+        "id": "69c31718-adb9-494a-8cd5-d9fa172d8552",
+        "entryId": "99b4b960-43da-4aa6-9ef2-78282bc061e4",
+        "accountId": "6fb65161-7177-4221-af4d-0b98b16766ee",
+        "debit": "500000",
+        "credit": "0",
+        "partyType": null,
+        "partyId": null
+      },
+      {
+        "id": "11e458ac-5561-4b71-9599-4569b1bd66e0",
+        "entryId": "99b4b960-43da-4aa6-9ef2-78282bc061e4",
+        "accountId": "4784bd81-dadc-4357-a9be-79f752346954",
+        "debit": "0",
+        "credit": "500000",
+        "partyType": null,
+        "partyId": null
+      },
+      {
+        "id": "8f1883de-e354-441c-8775-4eefc0d5038f",
+        "entryId": "ca08293b-80cd-4a23-9e66-5b2da9544a8f",
+        "accountId": "6fb65161-7177-4221-af4d-0b98b16766ee",
+        "debit": "250000",
+        "credit": "0",
+        "partyType": null,
+        "partyId": null
+      },
+      {
+        "id": "5b70f35e-3943-4a6c-9865-b89969094193",
+        "entryId": "ca08293b-80cd-4a23-9e66-5b2da9544a8f",
+        "accountId": "9336bd6f-e0c6-45cd-924c-1cd31b6bcfc0",
+        "debit": "0",
+        "credit": "250000",
+        "partyType": "SUPPLIER",
+        "partyId": "410585cc-4105-4e39-b547-7f5b0026c629"
+      },
+      {
+        "id": "0400a645-7ee7-4268-acd7-7d0505cb59da",
+        "entryId": "7b2504a5-f412-4140-a0b8-083b109dfd4d",
+        "accountId": "6fb65161-7177-4221-af4d-0b98b16766ee",
+        "debit": "75000",
+        "credit": "0",
+        "partyType": null,
+        "partyId": null
+      },
+      {
+        "id": "e80d570a-bb71-4d34-9753-816a18bf7432",
+        "entryId": "7b2504a5-f412-4140-a0b8-083b109dfd4d",
+        "accountId": "9336bd6f-e0c6-45cd-924c-1cd31b6bcfc0",
+        "debit": "0",
+        "credit": "75000",
+        "partyType": "SUPPLIER",
+        "partyId": "410585cc-4105-4e39-b547-7f5b0026c629"
+      },
+      {
+        "id": "d8b30e55-689f-4d3d-a358-fd6dbda05fbd",
+        "entryId": "caae09bb-b5c5-41d9-94ff-87199f2dfa07",
+        "accountId": "cdd8aadf-44e2-4807-afc9-20efb449ff85",
+        "debit": "55000",
+        "credit": "0",
+        "partyType": null,
+        "partyId": null
+      },
+      {
+        "id": "0a7ce1ed-1948-40b5-ba6b-35cd8f0705aa",
+        "entryId": "caae09bb-b5c5-41d9-94ff-87199f2dfa07",
+        "accountId": "385c7a10-cdc2-4f5c-b58f-0b2569042521",
+        "debit": "0",
+        "credit": "55000",
+        "partyType": null,
+        "partyId": null
+      },
+      {
+        "id": "3cb2cbb5-3cb7-4726-9d10-d0abd701723d",
+        "entryId": "caae09bb-b5c5-41d9-94ff-87199f2dfa07",
+        "accountId": "131a46a5-fbf0-4e51-9f51-3d21c2d9c42f",
+        "debit": "50000",
+        "credit": "0",
+        "partyType": null,
+        "partyId": null
+      },
+      {
+        "id": "fb26d63c-78f5-47fa-816a-ce137d836691",
+        "entryId": "caae09bb-b5c5-41d9-94ff-87199f2dfa07",
+        "accountId": "6fb65161-7177-4221-af4d-0b98b16766ee",
+        "debit": "0",
+        "credit": "50000",
+        "partyType": null,
+        "partyId": null
+      },
+      {
+        "id": "7b72227b-e03f-4015-8859-bf2ea91c0acb",
+        "entryId": "444aa8c2-e2bd-4faf-8e09-7b52c5484a0d",
+        "accountId": "083b6fca-0a09-4183-929c-a40572184c99",
+        "debit": "100000",
+        "credit": "0",
+        "partyType": null,
+        "partyId": null
+      },
+      {
+        "id": "7bde0304-05d4-459c-a663-9f282231253b",
+        "entryId": "444aa8c2-e2bd-4faf-8e09-7b52c5484a0d",
+        "accountId": "6fb65161-7177-4221-af4d-0b98b16766ee",
+        "debit": "0",
+        "credit": "100000",
+        "partyType": null,
+        "partyId": null
+      },
+      {
+        "id": "8b056054-7c1e-4b7a-ad46-c404d08d2762",
+        "entryId": "5a902842-7dd6-4f35-8fce-82799466ff4a",
+        "accountId": "6fb65161-7177-4221-af4d-0b98b16766ee",
+        "debit": "45000000",
+        "credit": "0",
+        "partyType": null,
+        "partyId": null
+      },
+      {
+        "id": "8518a47e-a630-46d8-aba0-04fe52c4642e",
+        "entryId": "5a902842-7dd6-4f35-8fce-82799466ff4a",
+        "accountId": "4784bd81-dadc-4357-a9be-79f752346954",
+        "debit": "0",
+        "credit": "45000000",
+        "partyType": null,
+        "partyId": null
+      },
+      {
+        "id": "ed4c5f94-bc3c-4e01-a293-edfb47ff5f0e",
+        "entryId": "6bc6ae84-9125-4869-8dcc-8f12578c2cae",
+        "accountId": "6fb65161-7177-4221-af4d-0b98b16766ee",
+        "debit": "2000",
+        "credit": "0",
+        "partyType": null,
+        "partyId": null
+      },
+      {
+        "id": "2decaa8c-eb1b-4147-a5ee-4aa376e60cf7",
+        "entryId": "6bc6ae84-9125-4869-8dcc-8f12578c2cae",
+        "accountId": "9336bd6f-e0c6-45cd-924c-1cd31b6bcfc0",
+        "debit": "0",
+        "credit": "2000",
+        "partyType": "SUPPLIER",
+        "partyId": "410585cc-4105-4e39-b547-7f5b0026c629"
+      },
+      {
+        "id": "833fe6d8-d31a-494d-bbda-43dc88b1a6f4",
+        "entryId": "f032ea4a-38fe-4e29-bbd7-53a7d0a04f7d",
+        "accountId": "6fb65161-7177-4221-af4d-0b98b16766ee",
+        "debit": "10000000",
+        "credit": "0",
+        "partyType": null,
+        "partyId": null
+      },
+      {
+        "id": "de69ea82-833a-4f39-99d2-3617a0993211",
+        "entryId": "f032ea4a-38fe-4e29-bbd7-53a7d0a04f7d",
+        "accountId": "9336bd6f-e0c6-45cd-924c-1cd31b6bcfc0",
+        "debit": "0",
+        "credit": "10000000",
+        "partyType": "SUPPLIER",
+        "partyId": "410585cc-4105-4e39-b547-7f5b0026c629"
+      },
+      {
+        "id": "ae9b4385-921c-420e-90b2-f074cfd3833a",
+        "entryId": "c46e16cd-4e39-4228-8071-558fb8435455",
+        "accountId": "cdd8aadf-44e2-4807-afc9-20efb449ff85",
+        "debit": "22000",
+        "credit": "0",
+        "partyType": null,
+        "partyId": null
+      },
+      {
+        "id": "125360cf-4b32-45bb-b627-206c460feeec",
+        "entryId": "c46e16cd-4e39-4228-8071-558fb8435455",
+        "accountId": "385c7a10-cdc2-4f5c-b58f-0b2569042521",
+        "debit": "0",
+        "credit": "22000",
+        "partyType": null,
+        "partyId": null
+      },
+      {
+        "id": "19fcd5ee-0be6-4265-8aa2-20c4fdab9507",
+        "entryId": "c46e16cd-4e39-4228-8071-558fb8435455",
+        "accountId": "131a46a5-fbf0-4e51-9f51-3d21c2d9c42f",
+        "debit": "20000",
+        "credit": "0",
+        "partyType": null,
+        "partyId": null
+      },
+      {
+        "id": "379c1cd5-14d3-48bf-b73e-18988ece0dae",
+        "entryId": "c46e16cd-4e39-4228-8071-558fb8435455",
+        "accountId": "6fb65161-7177-4221-af4d-0b98b16766ee",
+        "debit": "0",
+        "credit": "20000",
+        "partyType": null,
+        "partyId": null
+      },
+      {
+        "id": "fa229422-d0a8-43c9-8190-6f8699b4c66d",
+        "entryId": "9bab9545-b882-4190-b646-d31963bd6775",
+        "accountId": "cdd8aadf-44e2-4807-afc9-20efb449ff85",
+        "debit": "77000",
+        "credit": "0",
+        "partyType": null,
+        "partyId": null
+      },
+      {
+        "id": "49ca4418-44a0-456d-82e7-f4f1cabb12bf",
+        "entryId": "9bab9545-b882-4190-b646-d31963bd6775",
+        "accountId": "385c7a10-cdc2-4f5c-b58f-0b2569042521",
+        "debit": "0",
+        "credit": "77000",
+        "partyType": null,
+        "partyId": null
+      },
+      {
+        "id": "8517cb7c-47a6-48fc-99e5-23a1d28959b3",
+        "entryId": "9bab9545-b882-4190-b646-d31963bd6775",
+        "accountId": "131a46a5-fbf0-4e51-9f51-3d21c2d9c42f",
+        "debit": "70000",
+        "credit": "0",
+        "partyType": null,
+        "partyId": null
+      },
+      {
+        "id": "a3a6cc72-7b2f-437f-9676-b46cf3001a63",
+        "entryId": "9bab9545-b882-4190-b646-d31963bd6775",
+        "accountId": "6fb65161-7177-4221-af4d-0b98b16766ee",
+        "debit": "0",
+        "credit": "70000",
+        "partyType": null,
+        "partyId": null
+      },
+      {
+        "id": "58227491-b8e0-4e72-9746-2fa107219312",
+        "entryId": "6a9abcad-6b6c-427f-9315-283892599753",
+        "accountId": "cdd8aadf-44e2-4807-afc9-20efb449ff85",
+        "debit": "110000",
+        "credit": "0",
+        "partyType": null,
+        "partyId": null
+      },
+      {
+        "id": "50c13bff-5924-40d6-a086-5177cbcdf8b7",
+        "entryId": "6a9abcad-6b6c-427f-9315-283892599753",
+        "accountId": "385c7a10-cdc2-4f5c-b58f-0b2569042521",
+        "debit": "0",
+        "credit": "110000",
+        "partyType": null,
+        "partyId": null
+      },
+      {
+        "id": "4e465c61-8b53-4ae0-b0b4-bb0fc0e45195",
+        "entryId": "6a9abcad-6b6c-427f-9315-283892599753",
+        "accountId": "131a46a5-fbf0-4e51-9f51-3d21c2d9c42f",
+        "debit": "100000",
+        "credit": "0",
+        "partyType": null,
+        "partyId": null
+      },
+      {
+        "id": "37054553-434e-401f-a899-47d134edd139",
+        "entryId": "6a9abcad-6b6c-427f-9315-283892599753",
+        "accountId": "6fb65161-7177-4221-af4d-0b98b16766ee",
+        "debit": "0",
+        "credit": "100000",
+        "partyType": null,
+        "partyId": null
+      },
+      {
+        "id": "3f474767-bb53-412e-bf57-0f59cc9bc98a",
+        "entryId": "2c55507e-2dea-4572-876e-a2b78478ad16",
+        "accountId": "cdd8aadf-44e2-4807-afc9-20efb449ff85",
+        "debit": "8855000",
+        "credit": "0",
+        "partyType": null,
+        "partyId": null
+      },
+      {
+        "id": "3d106986-2d2f-4e99-971d-a2937c15744d",
+        "entryId": "2c55507e-2dea-4572-876e-a2b78478ad16",
+        "accountId": "385c7a10-cdc2-4f5c-b58f-0b2569042521",
+        "debit": "0",
+        "credit": "8855000",
+        "partyType": null,
+        "partyId": null
+      },
+      {
+        "id": "a97d341b-b471-4661-a526-13304ab8c73d",
+        "entryId": "2c55507e-2dea-4572-876e-a2b78478ad16",
+        "accountId": "131a46a5-fbf0-4e51-9f51-3d21c2d9c42f",
+        "debit": "8050000",
+        "credit": "0",
+        "partyType": null,
+        "partyId": null
+      },
+      {
+        "id": "f438b43a-7fc4-400b-ba62-a4564fa53741",
+        "entryId": "2c55507e-2dea-4572-876e-a2b78478ad16",
+        "accountId": "6fb65161-7177-4221-af4d-0b98b16766ee",
+        "debit": "0",
+        "credit": "8050000",
+        "partyType": null,
+        "partyId": null
+      }
+    ]
+  }
+}

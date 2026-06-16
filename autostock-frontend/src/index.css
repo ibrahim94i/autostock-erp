@@ -1,0 +1,291 @@
+@import 'tailwindcss';
+@config '../tailwind.config.ts';
+@custom-variant dark (&:where(.dark, .dark *));
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+  background: #f1f5f9;
+  color: #0f172a;
+  direction: rtl;
+}
+
+.dark body {
+  background: #111827;
+  color: #f3f4f6;
+}
+
+/* Dark mode — common surfaces (cards, panels) without per-page edits */
+.dark .bg-white {
+  background-color: #1f2937;
+}
+
+.dark .bg-slate-50 {
+  background-color: #374151;
+}
+
+.dark .bg-slate-100 {
+  background-color: #111827;
+}
+
+.dark .border-slate-200,
+.dark .border-slate-100,
+.dark .border-slate-300 {
+  border-color: #374151;
+}
+
+.dark .text-slate-900 {
+  color: #f3f4f6;
+}
+
+.dark .text-slate-700,
+.dark .text-slate-600 {
+  color: #d1d5db;
+}
+
+.dark .text-slate-500,
+.dark .text-slate-400 {
+  color: #9ca3af;
+}
+
+.dark .shadow-sm {
+  --tw-shadow-color: rgb(0 0 0 / 0.3);
+}
+
+#root {
+  min-height: 100vh;
+}
+
+@media print {
+  aside,
+  header,
+  .no-print {
+    display: none !important;
+  }
+
+  body {
+    background: #fff !important;
+    color: #111 !important;
+    font-family: 'Segoe UI', Tahoma, 'Arial Unicode MS', Arial, sans-serif !important;
+    direction: rtl !important;
+  }
+
+  main {
+    padding: 0 !important;
+    overflow: visible !important;
+  }
+
+  @page {
+    size: A4;
+    margin: 12mm 14mm;
+  }
+
+  .print-page {
+    position: relative;
+    z-index: 1;
+  }
+
+  .doc-watermark {
+    display: flex !important;
+    position: fixed;
+    inset: 0;
+    align-items: center;
+    justify-content: center;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .doc-watermark img {
+    width: 440px;
+    height: auto;
+    opacity: 0.1;
+    object-fit: contain;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  .doc-letterhead {
+    display: block !important;
+    position: relative;
+    z-index: 2;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #1e3a5f;
+  }
+
+  .doc-letterhead__row {
+    display: flex !important;
+    align-items: center;
+    gap: 16px;
+    direction: rtl;
+  }
+
+  .doc-letterhead__logo img {
+    width: 72px;
+    height: 72px;
+    object-fit: contain;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  .doc-letterhead__info {
+    flex: 1;
+    text-align: right;
+  }
+
+  .doc-letterhead__name {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 800;
+    color: #1e3a5f;
+    line-height: 1.35;
+  }
+
+  .doc-letterhead__tagline,
+  .doc-letterhead__warehouse,
+  .doc-letterhead__address {
+    margin: 2px 0 0;
+    font-size: 11px;
+    color: #475569;
+    line-height: 1.45;
+  }
+
+  .doc-letterhead__phones {
+    margin: 2px 0 0;
+    font-size: 11px;
+    font-weight: 600;
+    color: #334155;
+    direction: ltr;
+    unicode-bidi: embed;
+    text-align: right;
+  }
+
+  .doc-letterhead__title {
+    margin: 10px 0 0;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 700;
+    color: #1e3a5f;
+  }
+
+  .doc-letterhead__period {
+    margin: 4px 0 0;
+    text-align: center;
+    font-size: 12px;
+    color: #64748b;
+  }
+
+  .print-area {
+    position: relative;
+    z-index: 1;
+    break-inside: avoid;
+  }
+
+  .print-area .rounded-xl,
+  .print-area .shadow-sm {
+    box-shadow: none !important;
+    border-color: #cbd5e1 !important;
+  }
+
+  .print-area .bg-emerald-50,
+  .print-area .bg-amber-50,
+  .print-area .bg-slate-50,
+  .print-area .bg-white {
+    background: #fff !important;
+    -webkit-print-color-adjust: economy;
+    print-color-adjust: economy;
+  }
+
+  .print-area table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11px;
+  }
+
+  .print-area th,
+  .print-area td {
+    border: 1px solid #cbd5e1 !important;
+    padding: 6px 8px !important;
+    color: #111 !important;
+  }
+
+  .print-area th {
+    background: #f1f5f9 !important;
+    color: #1e3a5f !important;
+    font-weight: 700;
+  }
+
+  .print-summary-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 8px !important;
+  }
+
+  .print-summary-card {
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 6px !important;
+    padding: 10px !important;
+    background: #fff !important;
+    box-shadow: none !important;
+  }
+
+  .print-summary-card__label {
+    font-size: 10px;
+    color: #64748b;
+  }
+
+  .print-summary-card__value {
+    margin-top: 4px;
+    font-size: 14px;
+    font-weight: 800;
+    color: #1e3a5f;
+  }
+
+  .print-only-footer,
+  .print-only-signature {
+    display: block !important;
+  }
+
+  .doc-footer {
+    margin-top: 24px;
+    padding-top: 12px;
+    border-top: 1px dashed #94a3b8;
+    text-align: center;
+    font-size: 11px;
+    color: #64748b;
+    position: relative;
+    z-index: 2;
+  }
+
+  .doc-signature {
+    margin-top: 32px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .doc-signature__line {
+    text-align: center;
+    font-size: 12px;
+    color: #334155;
+    padding-top: 28px;
+    border-top: 1px solid #cbd5e1;
+    max-width: 240px;
+    margin: 0 auto;
+  }
+
+  .recharts-responsive-container,
+  .h-72 {
+    display: none !important;
+  }
+}
+
+.doc-watermark,
+.doc-letterhead,
+.print-only-footer,
+.print-only-signature {
+  display: none;
+}
