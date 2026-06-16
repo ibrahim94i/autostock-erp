@@ -4,7 +4,14 @@ import { PrismaPg } from '@prisma/adapter-pg';
 import { Pool } from 'pg';
 import * as bcrypt from 'bcryptjs';
 
-const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+const useSsl =
+  process.env.NODE_ENV === 'production' ||
+  process.env.DATABASE_URL?.includes('railway.app') ||
+  process.env.DATABASE_URL?.includes('sslmode=');
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ...(useSsl && { ssl: { rejectUnauthorized: false } }),
+});
 const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter });
 

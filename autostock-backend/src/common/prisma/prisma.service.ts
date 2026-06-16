@@ -3,10 +3,22 @@ import { PrismaClient } from '@prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { Pool } from 'pg';
 
+function createPgPool(): Pool {
+  const connectionString = process.env.DATABASE_URL;
+  const useSsl =
+    process.env.NODE_ENV === 'production' ||
+    connectionString?.includes('railway.app') ||
+    connectionString?.includes('sslmode=');
+  return new Pool({
+    connectionString,
+    ...(useSsl && { ssl: { rejectUnauthorized: false } }),
+  });
+}
+
 @Injectable()
 export class PrismaService extends PrismaClient implements OnModuleInit {
   constructor() {
-    const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+    const pool = createPgPool();
     const adapter = new PrismaPg(pool);
     super({ adapter });
   }
