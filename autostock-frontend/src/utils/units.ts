@@ -57,3 +57,35 @@ export function formatQty(n: number): string {
 export function receiptUnitLabel(unit: QtyUnit): string {
   return unit === 'carton' ? 'كارتونة' : 'قطعة';
 }
+
+/** Plural unit label for qty display. */
+export function qtyUnitLabel(unit: QtyUnit, qty: number): string {
+  if (unit === 'carton') {
+    return qty === 1 ? 'كارتونة' : 'كراتين';
+  }
+  return qty === 1 ? 'قطعة' : 'قطع';
+}
+
+/** Convert stored piece qty to display qty in the chosen unit. */
+export function piecesToDisplayQty(pieces: number, unit: QtyUnit, unitsPerCarton: number): number {
+  const upc = productUnitsPerCarton(unitsPerCarton);
+  if (unit === 'carton' && upc > 1) {
+    return pieces / upc;
+  }
+  return pieces;
+}
+
+/** Max returnable qty in the chosen unit (carton mode = full cartons only). */
+export function maxReturnableInUnit(
+  soldPieces: number,
+  returnedPieces: number,
+  unit: QtyUnit,
+  unitsPerCarton: number,
+): number {
+  const remaining = Math.max(0, soldPieces - returnedPieces);
+  const upc = productUnitsPerCarton(unitsPerCarton);
+  if (unit === 'carton' && upc > 1) {
+    return Math.floor(remaining / upc);
+  }
+  return remaining;
+}
