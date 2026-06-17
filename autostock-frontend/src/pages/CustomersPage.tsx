@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { useNavigate } from 'react-router-dom';
 
-import { useMutation, useQueries, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { Plus, Search, Pencil, Trash2 } from 'lucide-react';
 
@@ -14,7 +14,7 @@ import {
 
   createPayment,
 
-  fetchCustomerBalance,
+  fetchCustomerBalancesBulk,
 
   fetchCustomers,
 
@@ -158,41 +158,25 @@ export function CustomersPage() {
 
   const customerItems = customersQuery.data?.items ?? [];
 
+  const customerIds = useMemo(
+    () => customerItems.map((customer) => customer.id),
+    [customerItems],
+  );
 
-
-  const balanceQueries = useQueries({
-
-    queries: customerItems.map((customer) => ({
-
-      queryKey: ['customers', customer.id, 'balance'],
-
-      queryFn: () => fetchCustomerBalance(customer.id),
-
-      enabled: customerItems.length > 0,
-
-    })),
-
+  const balancesQuery = useQuery({
+    queryKey: ['customers', 'balances', 'bulk', customerIds],
+    queryFn: () => fetchCustomerBalancesBulk(customerIds),
+    enabled: customerIds.length > 0,
+    staleTime: 30_000,
   });
 
-
-
   const balanceByCustomerId = useMemo(() => {
-
     const map = new Map<string, number>();
-
-    for (const query of balanceQueries) {
-
-      if (query.data) {
-
-        map.set(query.data.customerId, parseQuantity(query.data.balance));
-
-      }
-
+    for (const row of balancesQuery.data ?? []) {
+      map.set(row.customerId, parseQuantity(row.balance));
     }
-
     return map;
-
-  }, [balanceQueries]);
+  }, [balancesQuery.data]);
 
 
 
@@ -344,7 +328,7 @@ export function CustomersPage() {
 
       void queryClient.invalidateQueries({ queryKey: ['customers'] });
 
-      void queryClient.invalidateQueries({ queryKey: ['customers', customer.id, 'balance'] });
+      void queryClient.invalidateQueries({ queryKey: ['customers', 'balances', 'bulk'] });
 
       void queryClient.invalidateQueries({ queryKey: ['customers', customer.id, 'statement'] });
 
@@ -378,7 +362,7 @@ export function CustomersPage() {
 
 
 
-  const balancesLoading = balanceQueries.some((q) => q.isLoading);
+  const balancesLoading = balancesQuery.isLoading;
 
 
 

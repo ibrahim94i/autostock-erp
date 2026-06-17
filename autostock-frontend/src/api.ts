@@ -93,7 +93,7 @@ export function apiUrl(path: string): string {
 
 export async function checkBackendConnection(): Promise<boolean> {
   try {
-    const res = await fetch(apiUrl('/'));
+    const res = await fetch(apiUrl('/health'));
     return res.ok;
   } catch {
     return false;
@@ -559,6 +559,18 @@ export async function fetchCustomerBalance(id: string): Promise<CustomerBalanceR
   return res.json() as Promise<CustomerBalanceResponse>;
 }
 
+export async function fetchCustomerBalancesBulk(
+  ids: string[],
+): Promise<CustomerBalanceResponse[]> {
+  const res = await authedFetch(`/customers/balances/bulk?ids=${ids.join(',')}`);
+
+  if (!res.ok) {
+    throw new Error(await parseApiError(res));
+  }
+
+  return res.json() as Promise<CustomerBalanceResponse[]>;
+}
+
 export async function fetchCustomerStatement(id: string): Promise<CustomerStatementLine[]> {
   const res = await authedFetch(`/customers/${id}/statement`);
 
@@ -844,6 +856,18 @@ export async function fetchSupplierBalance(id: string): Promise<SupplierBalanceR
   }
 
   return res.json() as Promise<SupplierBalanceResponse>;
+}
+
+export async function fetchSupplierBalancesBulk(
+  ids: string[],
+): Promise<SupplierBalanceResponse[]> {
+  const res = await authedFetch(`/suppliers/balances/bulk?ids=${ids.join(',')}`);
+
+  if (!res.ok) {
+    throw new Error(await parseApiError(res));
+  }
+
+  return res.json() as Promise<SupplierBalanceResponse[]>;
 }
 
 export async function createSupplier(payload: CreateSupplierPayload): Promise<Supplier> {

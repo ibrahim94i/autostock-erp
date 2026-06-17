@@ -1,13 +1,13 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useMutation, useQueries, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Plus, Search, Pencil, Trash2 } from 'lucide-react';
 import {
   balanceColorClass,
   createPayment,
   createSupplier,
   deleteSupplier,
-  fetchSupplierBalance,
+  fetchSupplierBalancesBulk,
   fetchSuppliers,
   formatPrice,
   parseQuantity,
@@ -75,23 +75,25 @@ export function SuppliersPage() {
 
   const supplierItems = suppliersQuery.data?.items ?? [];
 
-  const balanceQueries = useQueries({
-    queries: supplierItems.map((supplier) => ({
-      queryKey: ['suppliers', supplier.id, 'balance'],
-      queryFn: () => fetchSupplierBalance(supplier.id),
-      enabled: supplierItems.length > 0,
-    })),
+  const supplierIds = useMemo(
+    () => supplierItems.map((supplier) => supplier.id),
+    [supplierItems],
+  );
+
+  const balancesQuery = useQuery({
+    queryKey: ['suppliers', 'balances', 'bulk', supplierIds],
+    queryFn: () => fetchSupplierBalancesBulk(supplierIds),
+    enabled: supplierIds.length > 0,
+    staleTime: 30_000,
   });
 
   const balanceBySupplierId = useMemo(() => {
     const map = new Map<string, number>();
-    for (const query of balanceQueries) {
-      if (query.data) {
-        map.set(query.data.supplierId, parseQuantity(query.data.balance));
-      }
+    for (const row of balancesQuery.data ?? []) {
+      map.set(row.supplierId, parseQuantity(row.balance));
     }
     return map;
-  }, [balanceQueries]);
+  }, [balancesQuery.data]);
 
   useEffect(() => {
     if (suppliersQuery.error instanceof UnauthorizedError) {
@@ -163,9 +165,9 @@ export function SuppliersPage() {
 
       return supplier;
     },
-    onSuccess: (supplier) => {
+    onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ['suppliers'] });
-      void queryClient.invalidateQueries({ queryKey: ['suppliers', supplier.id, 'balance'] });
+      void queryClient.invalidateQueries({ queryKey: ['suppliers', 'balances', 'bulk'] });
       paymentUuidRef.current = newClientUuid();
       setPayTarget(null);
       setPayError('');
@@ -181,7 +183,7 @@ export function SuppliersPage() {
     setPayTarget({ supplier, balance });
   }
 
-  const balancesLoading = balanceQueries.some((q) => q.isLoading);
+  const balancesLoading = balancesQuery.isLoading;
 
   return (
     <div>
