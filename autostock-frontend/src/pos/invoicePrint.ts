@@ -1,5 +1,5 @@
 import type { PriceType } from './cartReducer';
-import { COMPANY_FOOTER, COMPANY_RECEIPT_MANAGEMENT } from '../utils/companyInfo';
+import { COMPANY_FOOTER, COMPANY_RECEIPT_MANAGEMENT, COMPANY_RIGHTS } from '../utils/companyInfo';
 import {
   printBrandingHtml,
   printBrandingStyles,
@@ -268,6 +268,7 @@ export function buildInvoiceHtml(data: InvoiceData, size: ReceiptSize): string {
     <footer class="doc-footer">
       <p>${escapeHtml(footerText)}</p>
       <p class="doc-footer__management">${escapeHtml(COMPANY_RECEIPT_MANAGEMENT)}</p>
+      <p class="doc-footer__rights">${escapeHtml(COMPANY_RIGHTS)}</p>
     </footer>
   </div>
 </body>

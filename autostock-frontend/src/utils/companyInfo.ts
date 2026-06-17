@@ -1,4 +1,6 @@
 /** Official company information for all printed documents */
+export const COMPANY_BRAND = 'HEMA';
+export const COMPANY_RIGHTS = 'ibrahim alkhegane - 07719936448';
 export const COMPANY_FULL_NAME = 'شركة حرير البصرة';
 export const COMPANY_TAGLINE = 'للتجارة العامة والخدمات العامة والنقل العام';
 export const COMPANY_LEGAL_NAME =

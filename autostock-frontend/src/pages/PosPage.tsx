@@ -268,6 +268,19 @@ export function PosPage() {
     searchInputRef.current?.focus();
   }
 
+  useEffect(() => {
+    if (invoiceData === null) return;
+
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key === 'Escape') {
+        handleNewSale();
+      }
+    }
+
+    document.addEventListener('keydown', onKeyDown);
+    return () => document.removeEventListener('keydown', onKeyDown);
+  }, [invoiceData]);
+
   async function handlePrintInvoice() {
     if (!invoiceData) return;
     setPrintError('');

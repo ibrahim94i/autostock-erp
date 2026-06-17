@@ -1,9 +1,10 @@
 import { COMPANY_LOGO_DATA_URL } from './companyLogoDataUrl';
 import {
   COMPANY_ADDRESS,
+  COMPANY_BRAND,
   COMPANY_FOOTER,
-  COMPANY_FULL_NAME,
   COMPANY_PHONES,
+  COMPANY_RIGHTS,
   COMPANY_WAREHOUSE,
 } from './companyInfo';
 import { printFontFamilyCss } from './typography';
@@ -31,7 +32,6 @@ function escapeHtml(value: string): string {
 
 export function printBrandingStyles(options?: PrintBrandingOptions): string {
   const compact = options?.compact ?? false;
-  const logoWidth = compact ? 100 : 175;
   const watermarkSize = compact ? 200 : 540;
 
   return `
@@ -65,15 +65,24 @@ export function printBrandingStyles(options?: PrintBrandingOptions): string {
     .doc-letterhead__logo-center {
       display: flex;
       justify-content: center;
+      align-items: center;
+      gap: ${compact ? '6px' : '12px'};
       margin-bottom: ${compact ? '4px' : '8px'};
     }
     .doc-letterhead__logo-center img {
-      width: ${logoWidth}px;
+      width: ${compact ? 48 : 72}px;
       max-width: 92%;
       height: auto;
       object-fit: contain;
       display: block;
-      margin: 0 auto;
+      flex-shrink: 0;
+    }
+    .doc-letterhead__brand-name {
+      font-family: 'Poppins', 'Cairo', sans-serif;
+      font-size: ${compact ? '18px' : '28px'};
+      font-weight: 800;
+      color: #002147;
+      letter-spacing: 0.06em;
     }
     .doc-letterhead__info {
       text-align: center;
@@ -121,6 +130,13 @@ export function printBrandingStyles(options?: PrintBrandingOptions): string {
       font-size: ${compact ? '10px' : '13px'};
       font-weight: 800;
       color: #1e3a5f;
+    }
+    .doc-footer__rights {
+      margin: ${compact ? '4px 0 0' : '6px 0 0'};
+      font-size: ${compact ? '9px' : '11px'};
+      color: #64748b;
+      direction: ltr;
+      unicode-bidi: embed;
     }
     .doc-signature {
       margin-top: ${compact ? '16px' : '32px'};
@@ -251,7 +267,8 @@ export function printBrandingHtml(
     </div>
     <header class="doc-letterhead">
       <div class="doc-letterhead__logo-center">
-        <img src="${safeSrc}" alt="${escapeHtml(COMPANY_FULL_NAME)}" />
+        <img src="${safeSrc}" alt="${escapeHtml(COMPANY_BRAND)}" />
+        <span class="doc-letterhead__brand-name">${escapeHtml(COMPANY_BRAND)}</span>
       </div>
       <div class="doc-letterhead__info">
         ${compact ? '' : `<p class="doc-letterhead__warehouse">${escapeHtml(COMPANY_WAREHOUSE)}</p>`}
@@ -265,7 +282,7 @@ export function printBrandingHtml(
 }
 
 export function printFooterHtml(): string {
-  return `<footer class="doc-footer">${escapeHtml(COMPANY_FOOTER)}</footer>`;
+  return `<footer class="doc-footer"><p>${escapeHtml(COMPANY_FOOTER)}</p><p class="doc-footer__rights">${escapeHtml(COMPANY_RIGHTS)}</p></footer>`;
 }
 
 export function printSignatureHtml(

@@ -23,6 +23,7 @@ import {
 } from '../utils/units';
 
 interface ReturnLineState {
+  lineId: string;
   productId: string;
   productName: string;
   sku: string;
@@ -50,12 +51,13 @@ function buildReturnLines(invoice: SaleInvoiceResponse): ReturnLineState[] {
   const returnedMap = invoice.returnedByProduct ?? {};
   const saleType = invoice.sale.type;
 
-  return invoice.items.map((item) => {
+  return invoice.items.map((item, index) => {
     const soldQty = parseQuantity(item.qty);
     const returnedQty = parseQuantity(returnedMap[item.productId] ?? 0);
     const unitsPerCarton = productUnitsPerCarton(item.product.unitsPerCarton ?? undefined);
 
     return {
+      lineId: item.id ?? `${item.productId}-${index}`,
       productId: item.productId,
       productName: item.product.name,
       sku: item.product.sku,
@@ -77,6 +79,35 @@ function formatQtyDisplay(pieces: number, unit: QtyUnit, unitsPerCarton: number)
   return `${formatted} ${label}`;
 }
 
+function aggregateReturnItems(
+  lines: ReturnLineState[],
+  locationId: string,
+): CreateSaleReturnPayload['items'] {
+  const byProduct = new Map<
+    string,
+    { productId: string; locationId: string; qty: number; unitCost: number }
+  >();
+
+  for (const line of lines) {
+    const pieces = returnQtyPieces(line);
+    if (pieces <= 0) continue;
+
+    const existing = byProduct.get(line.productId);
+    if (existing) {
+      existing.qty += pieces;
+    } else {
+      byProduct.set(line.productId, {
+        productId: line.productId,
+        locationId,
+        qty: pieces,
+        unitCost: line.unitCost,
+      });
+    }
+  }
+
+  return [...byProduct.values()];
+}
+
 export function SalesReturnsPage() {
   const [searchInput, setSearchInput] = useState('');
   const [appliedSearch, setAppliedSearch] = useState('');
@@ -85,8 +116,6 @@ export function SalesReturnsPage() {
   const [reason, setReason] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-  const [lastRequest, setLastRequest] = useState('');
-  const [lastResponse, setLastResponse] = useState('');
 
   const receiptsQuery = useQuery({
     queryKey: ['sales-return-search', appliedSearch],
@@ -152,26 +181,17 @@ export function SalesReturnsPage() {
         invoiceQuery.data.sale.paymentType === 'debt' ? 'credit' : 'cash';
 
       const payload: CreateSaleReturnPayload = {
-        items: selectedLines.map((line) => ({
-          productId: line.productId,
-          locationId,
-          qty: returnQtyPieces(line),
-          unitCost: line.unitCost,
-        })),
+        items: aggregateReturnItems(selectedLines, locationId),
         refundMethod,
         reason: reason.trim(),
         refundAmount,
       };
-
-      setLastRequest(JSON.stringify(payload, null, 2));
 
       const result = await createSaleReturn(
         selectedReceipt.saleId,
         payload,
         crypto.randomUUID(),
       );
-
-      setLastResponse(JSON.stringify(result, null, 2));
 
       if (result.status === 'REJECTED') {
         throw new Error(result.reason ?? 'تم رفض المرتجع');
@@ -196,10 +216,10 @@ export function SalesReturnsPage() {
     setSuccess('');
   }
 
-  function setLineQty(productId: string, value: number) {
+  function setLineQty(lineId: string, value: number) {
     setLines((prev) =>
       prev.map((line) => {
-        if (line.productId !== productId) return line;
+        if (line.lineId !== lineId) return line;
         const maxReturnable = maxReturnableInUnit(
           line.soldQty,
           line.returnedQty,
@@ -212,10 +232,10 @@ export function SalesReturnsPage() {
     );
   }
 
-  function setLineUnit(productId: string, returnUnit: QtyUnit) {
+  function setLineUnit(lineId: string, returnUnit: QtyUnit) {
     setLines((prev) =>
       prev.map((line) => {
-        if (line.productId !== productId) return line;
+        if (line.lineId !== lineId) return line;
         const maxReturnable = maxReturnableInUnit(
           line.soldQty,
           line.returnedQty,
@@ -377,34 +397,31 @@ export function SalesReturnsPage() {
                     line.returnUnit,
                     line.unitsPerCarton,
                   );
-                  const canToggleUnit = supportsCarton(line.unitsPerCarton) && !isWholesale;
+                  const canToggleUnit = supportsCarton(line.unitsPerCarton);
                   const piecesReturning = returnQtyPieces(line);
+                  const remainingPieces = Math.max(0, line.soldQty - line.returnedQty);
 
                   return (
-                    <tr key={line.productId}>
+                    <tr key={line.lineId}>
                       <td className="px-3 py-2 text-sm">{line.productName}</td>
                       <td className="px-3 py-2 text-sm">{line.sku}</td>
                       <td className="px-3 py-2 text-sm">
-                        {formatQtyDisplay(line.soldQty, line.returnUnit, line.unitsPerCarton)}
+                        {formatQtyDisplay(line.soldQty, 'piece', line.unitsPerCarton)}
                       </td>
                       <td className="px-3 py-2 text-sm">
-                        {formatQtyDisplay(line.returnedQty, line.returnUnit, line.unitsPerCarton)}
+                        {formatQtyDisplay(line.returnedQty, 'piece', line.unitsPerCarton)}
                       </td>
                       <td className="px-3 py-2 text-sm">
-                        {formatQtyDisplay(
-                          line.soldQty - line.returnedQty,
-                          line.returnUnit,
-                          line.unitsPerCarton,
-                        )}
+                        {formatQtyDisplay(remainingPieces, 'piece', line.unitsPerCarton)}
                       </td>
                       <td className="px-3 py-2 text-sm">
                         {canToggleUnit ? (
                           <div className="inline-flex rounded-lg border border-gray-300 dark:border-gray-600">
                             {(['piece', 'carton'] as const).map((unit) => (
                               <button
-                                key={unit}
+                                key={`${line.lineId}-${unit}`}
                                 type="button"
-                                onClick={() => setLineUnit(line.productId, unit)}
+                                onClick={() => setLineUnit(line.lineId, unit)}
                                 className={`px-2 py-1 text-xs ${
                                   line.returnUnit === unit
                                     ? 'bg-blue-600 text-white'
@@ -416,9 +433,7 @@ export function SalesReturnsPage() {
                             ))}
                           </div>
                         ) : (
-                          <span className="text-gray-600 dark:text-gray-400">
-                            {line.returnUnit === 'carton' ? 'كارتون' : 'قطعة'}
-                          </span>
+                          <span className="text-gray-600 dark:text-gray-400">قطعة</span>
                         )}
                       </td>
                       <td className="px-3 py-2 text-sm">
@@ -430,7 +445,7 @@ export function SalesReturnsPage() {
                           value={line.inputReturnQty || ''}
                           disabled={maxReturnable === 0}
                           onChange={(event) =>
-                            setLineQty(line.productId, Number(event.target.value))
+                            setLineQty(line.lineId, Number(event.target.value))
                           }
                           className="w-24 rounded border border-gray-300 px-2 py-1 dark:border-gray-600 dark:bg-gray-800"
                         />
@@ -475,14 +490,18 @@ export function SalesReturnsPage() {
               </p>
               {isWholesale && (
                 <p className="text-xs text-amber-700 dark:text-amber-400">
-                  فاتورة جملة: الإرجاع بالكارتون فقط — لا تُرجَع قطع مفردة تلقائياً.
+                  فاتورة جملة: يُفضَّل الإرجاع بالكارتون — يمكنك اختيار قطعة لكل صنف على حدة.
                 </p>
               )}
             </div>
           </div>
 
           {error && <p className="text-sm text-red-600">{error}</p>}
-          {success && <p className="text-sm text-green-600">{success}</p>}
+          {success && (
+            <p className="rounded-lg bg-green-50 px-3 py-2 text-sm text-green-700 dark:bg-green-900/30 dark:text-green-300">
+              {success}
+            </p>
+          )}
 
           <button
             type="button"
@@ -493,23 +512,6 @@ export function SalesReturnsPage() {
             {returnMutation.isPending && <Loader2 className="h-4 w-4 animate-spin" />}
             تأكيد المرتجع
           </button>
-
-          {(lastRequest || lastResponse) && (
-            <div className="grid gap-3 md:grid-cols-2">
-              <div>
-                <p className="mb-1 text-xs font-medium text-gray-500">Request Payload</p>
-                <pre className="max-h-48 overflow-auto rounded bg-gray-100 p-2 text-xs dark:bg-gray-800">
-                  {lastRequest}
-                </pre>
-              </div>
-              <div>
-                <p className="mb-1 text-xs font-medium text-gray-500">Response Body</p>
-                <pre className="max-h-48 overflow-auto rounded bg-gray-100 p-2 text-xs dark:bg-gray-800">
-                  {lastResponse}
-                </pre>
-              </div>
-            </div>
-          )}
         </div>
       )}
     </div>

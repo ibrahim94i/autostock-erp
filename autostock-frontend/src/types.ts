@@ -547,6 +547,7 @@ export interface SaleInvoiceResponse {
     customer?: { name: string } | null;
   };
   items: Array<{
+    id?: string;
     productId: string;
     qty: string | number;
     unitPrice: string | number;

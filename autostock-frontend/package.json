@@ -44,7 +44,7 @@
   },
   "build": {
     "appId": "com.autostock.erp",
-    "productName": "AutoStock ERP",
+    "productName": "HEMA",
     "icon": "build/icon.ico",
     "files": [
       "dist/**/*",

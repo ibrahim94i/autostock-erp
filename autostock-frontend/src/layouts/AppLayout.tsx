@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard,
@@ -30,6 +30,8 @@ import {
   canAccessExpenses,
   canAccessReceipts,
 } from '../api';
+import { COMPANY_BRAND, COMPANY_RIGHTS } from '../utils/companyInfo';
+import { COMPANY_LOGO_URL } from '../utils/companyLogoDataUrl';
 
 const THEME_KEY = 'theme';
 
@@ -41,6 +43,19 @@ function getInitialTheme(): 'light' | 'dark' {
 function applyTheme(theme: 'light' | 'dark') {
   document.documentElement.classList.toggle('dark', theme === 'dark');
   localStorage.setItem(THEME_KEY, theme);
+}
+
+function SidebarBrand() {
+  return (
+    <div className="flex items-center gap-3">
+      <img
+        src={COMPANY_LOGO_URL}
+        alt={COMPANY_BRAND}
+        className="h-10 w-10 shrink-0 object-contain"
+      />
+      <p className="text-lg font-bold text-slate-900 dark:text-gray-100">{COMPANY_BRAND}</p>
+    </div>
+  );
 }
 
 const navItems = [
@@ -186,57 +201,60 @@ export function AppLayout() {
     setSidebarOpen(false);
   }
 
+  useEffect(() => {
+    if (!sidebarOpen) return;
+
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key === 'Escape') {
+        setSidebarOpen(false);
+      }
+    }
+
+    document.addEventListener('keydown', onKeyDown);
+    return () => document.removeEventListener('keydown', onKeyDown);
+  }, [sidebarOpen]);
+
   return (
     <div className="flex min-h-screen bg-slate-100 dark:bg-gray-900">
       {/* Desktop sidebar */}
       <aside className="hidden w-64 shrink-0 flex-col border-s border-slate-200 bg-white shadow-sm lg:flex dark:border-gray-700 dark:bg-gray-800">
         <div className="border-b border-slate-200 px-5 py-5 dark:border-gray-700">
-          <p className="text-xs font-medium text-slate-500 dark:text-gray-400">AutoStock</p>
-          <p className="text-lg font-bold text-slate-900 dark:text-gray-100">نظام ERP</p>
+          <SidebarBrand />
         </div>
         <SidebarNav />
         <div className="border-t border-slate-200 p-4 text-xs text-slate-400 dark:border-gray-700 dark:text-gray-500">
-          v0.1 — AutoStock ERP
+          v0.1 — {COMPANY_BRAND}
         </div>
       </aside>
 
-      {/* Mobile drawer backdrop */}
+      {/* Mobile drawer — mounted only while open so nothing invisible blocks inputs */}
       {sidebarOpen && (
-        <button
-          type="button"
-          aria-label="إغلاق القائمة"
-          className="fixed inset-0 z-40 bg-black/40 lg:hidden"
-          onClick={closeSidebar}
-        />
-      )}
-
-      {/* Mobile drawer — anchored to physical right (RTL menu) */}
-      <aside
-        className={[
-          'fixed inset-y-0 right-0 z-50 flex w-64 flex-col border-s border-slate-200 bg-white shadow-xl transition-transform duration-200 lg:hidden dark:border-gray-700 dark:bg-gray-800',
-          sidebarOpen ? 'translate-x-0' : 'hidden pointer-events-none',
-        ].join(' ')}
-        aria-hidden={!sidebarOpen}
-      >
-        <div className="flex items-center justify-between border-b border-slate-200 px-5 py-4 dark:border-gray-700">
-          <div>
-            <p className="text-xs font-medium text-slate-500 dark:text-gray-400">AutoStock</p>
-            <p className="text-lg font-bold text-slate-900 dark:text-gray-100">نظام ERP</p>
-          </div>
+        <>
           <button
             type="button"
-            onClick={closeSidebar}
-            className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-lg text-slate-600 hover:bg-slate-100 dark:text-gray-300 dark:hover:bg-gray-700"
             aria-label="إغلاق القائمة"
-          >
-            <X className="h-5 w-5" />
-          </button>
-        </div>
-        <SidebarNav onNavigate={closeSidebar} />
-        <div className="border-t border-slate-200 p-4 text-xs text-slate-400 dark:border-gray-700 dark:text-gray-500">
-          v0.1 — AutoStock ERP
-        </div>
-      </aside>
+            className="fixed inset-0 z-40 bg-black/40 lg:hidden"
+            onClick={closeSidebar}
+          />
+          <aside className="fixed inset-y-0 right-0 z-50 flex w-64 flex-col border-s border-slate-200 bg-white shadow-xl lg:hidden dark:border-gray-700 dark:bg-gray-800">
+            <div className="flex items-center justify-between border-b border-slate-200 px-5 py-4 dark:border-gray-700">
+              <SidebarBrand />
+              <button
+                type="button"
+                onClick={closeSidebar}
+                className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-lg text-slate-600 hover:bg-slate-100 dark:text-gray-300 dark:hover:bg-gray-700"
+                aria-label="إغلاق القائمة"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+            <SidebarNav onNavigate={closeSidebar} />
+            <div className="border-t border-slate-200 p-4 text-xs text-slate-400 dark:border-gray-700 dark:text-gray-500">
+              v0.1 — {COMPANY_BRAND}
+            </div>
+          </aside>
+        </>
+      )}
 
       {/* Main area */}
       <div className="flex min-w-0 flex-1 flex-col">
@@ -250,7 +268,14 @@ export function AppLayout() {
             >
               <Menu className="h-5 w-5" />
             </button>
-            <h1 className="text-lg font-bold text-slate-900 dark:text-gray-100">AutoStock ERP</h1>
+            <div className="flex items-center gap-2">
+              <img
+                src={COMPANY_LOGO_URL}
+                alt={COMPANY_BRAND}
+                className="hidden h-8 w-8 object-contain sm:block"
+              />
+              <h1 className="text-lg font-bold text-slate-900 dark:text-gray-100">{COMPANY_BRAND}</h1>
+            </div>
           </div>
 
           <div className="flex items-center gap-2 lg:gap-3">
@@ -280,6 +305,9 @@ export function AppLayout() {
         <main className="flex-1 overflow-auto bg-slate-100 p-4 lg:p-6 dark:bg-gray-900">
           <Outlet />
         </main>
+        <footer className="border-t border-slate-200 bg-white px-4 py-2 text-center text-xs text-slate-400 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-500">
+          {COMPANY_RIGHTS}
+        </footer>
       </div>
     </div>
   );

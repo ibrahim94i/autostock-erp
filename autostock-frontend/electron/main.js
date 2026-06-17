@@ -232,7 +232,7 @@ function createWindow() {
     height: 900,
     minWidth: 1200,
     minHeight: 700,
-    title: 'AutoStock ERP',
+    title: 'HEMA',
     webPreferences: {
       contextIsolation: true,
       nodeIntegration: false,
