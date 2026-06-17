@@ -1,64 +1,57 @@
-"""Process company logo: clean background, tight crop, optimize size."""
+"""Process company logo: remove black background, tight crop, optimize size."""
 from __future__ import annotations
 
-import math
 from pathlib import Path
 
 from PIL import Image, ImageFilter
 
 ROOT = Path(__file__).resolve().parents[1]
-SRC = Path(
-    r'C:\Users\hp\.cursor\projects\c-Users-hp-Desktop\assets'
-    r'\c__Users_hp_AppData_Roaming_Cursor_User_workspaceStorage_27cca3ec5b27f21d3ab1f8fe891ff205_images_image-a99cefea-e09c-4239-8d52-d31999dd5ff6.png'
-)
+SRC = ROOT / 'public' / 'company-logo.png'
 OUT_PNG = ROOT / 'src' / 'assets' / 'company-logo.png'
 OUT_PUBLIC = ROOT / 'public' / 'company-logo.png'
-OUT_DATAURL = ROOT / 'src' / 'utils' / 'companyLogoDataUrl.ts'
 
 
-def dist(c1: tuple[int, int, int], c2: tuple[int, int, int]) -> float:
-    return math.sqrt(sum((a - b) ** 2 for a, b in zip(c1, c2)))
+def saturation(r: int, g: int, b: int) -> float:
+    mx = max(r, g, b)
+    mn = min(r, g, b)
+    return 0.0 if mx == 0 else (mx - mn) / mx
 
 
-def sample_background(img: Image.Image) -> tuple[int, int, int]:
-    rgb = img.convert('RGB')
-    w, h = rgb.size
-    points = []
-    step = max(1, min(w, h) // 40)
-    for x in range(0, w, step):
-        points.append(rgb.getpixel((x, 0)))
-        points.append(rgb.getpixel((x, h - 1)))
-    for y in range(0, h, step):
-        points.append(rgb.getpixel((0, y)))
-        points.append(rgb.getpixel((w - 1, y)))
-    avg = tuple(int(sum(p[i] for p in points) / len(points)) for i in range(3))
-    return avg
-
-
-def remove_background(img: Image.Image) -> Image.Image:
-    bg = sample_background(img)
+def remove_black_background(img: Image.Image) -> Image.Image:
     rgba = img.convert('RGBA')
     px = rgba.load()
     w, h = rgba.size
+
     for y in range(h):
         for x in range(w):
-            r, g, b, a = px[x, y]
-            d = dist((r, g, b), bg)
-            # soft edge for anti-aliased background
-            if d < 28:
+            r, g, b, _ = px[x, y]
+            mx = max(r, g, b)
+            lum = 0.2126 * r + 0.7152 * g + 0.0722 * b
+            sat = saturation(r, g, b)
+
+            # Pure/near-black background
+            if mx <= 18:
                 alpha = 0
-            elif d < 48:
-                alpha = int(255 * (d - 28) / 20)
-            else:
+            # Dark desaturated pixels = background bleed
+            elif mx <= 55 and sat < 0.22 and lum < 40:
+                alpha = 0
+            # Soft edge between black bg and gold/bronze logo
+            elif mx <= 55 and sat < 0.22:
+                alpha = int(255 * max(0.0, (mx - 18) / 37))
+            # Keep gold tones including bronze shadows (warm hue)
+            elif r >= b and r >= g * 0.55:
                 alpha = 255
-            # also drop near-white pixels
-            if r > 240 and g > 235 and b > 225:
-                alpha = 0
-            px[x, y] = (r, g, b, min(a, alpha))
+            elif lum >= 35:
+                alpha = 255
+            else:
+                alpha = int(255 * min(1.0, lum / 35))
+
+            px[x, y] = (r, g, b, alpha)
+
     return rgba
 
 
-def crop_to_content(img: Image.Image, padding: int = 12) -> Image.Image:
+def crop_to_content(img: Image.Image, padding: int = 16) -> Image.Image:
     bbox = img.getbbox()
     if not bbox:
         return img
@@ -72,28 +65,21 @@ def crop_to_content(img: Image.Image, padding: int = 12) -> Image.Image:
 
 def main() -> None:
     img = Image.open(SRC)
-    cleaned = remove_background(img)
+    cleaned = remove_black_background(img)
     cleaned = cleaned.filter(ImageFilter.SHARPEN)
-    cropped = crop_to_content(cleaned, padding=8)
+    cropped = crop_to_content(cleaned, padding=12)
 
-    # keep quality but limit max dimension for app bundle
-    max_dim = 640
+    max_dim = 900
     if max(cropped.size) > max_dim:
         cropped.thumbnail((max_dim, max_dim), Image.Resampling.LANCZOS)
 
     OUT_PNG.parent.mkdir(parents=True, exist_ok=True)
-    OUT_PUBLIC.parent.mkdir(parents=True, exist_ok=True)
     cropped.save(OUT_PNG, 'PNG', optimize=True)
     cropped.save(OUT_PUBLIC, 'PNG', optimize=True)
-
-    OUT_DATAURL.write_text(
-        '/** Default company logo — served from public/ to keep JS bundles small. */\n'
-        "export const COMPANY_LOGO_URL = '/company-logo.png';\n\n"
-        '/** Fallback when settings have no custom logo (img src accepts URL or data URL). */\n'
-        'export const COMPANY_LOGO_DATA_URL = COMPANY_LOGO_URL;\n',
-        encoding='utf-8',
+    print(
+        f'Saved transparent logo {cropped.size[0]}x{cropped.size[1]} '
+        f'({OUT_PUBLIC.stat().st_size // 1024}KB) mode=RGBA'
     )
-    print(f'Saved {OUT_PNG} ({cropped.size[0]}x{cropped.size[1]}, {OUT_PNG.stat().st_size // 1024}KB)')
 
 
 if __name__ == '__main__':

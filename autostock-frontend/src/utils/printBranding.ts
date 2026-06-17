@@ -31,7 +31,7 @@ function escapeHtml(value: string): string {
 export function printBrandingStyles(options?: PrintBrandingOptions): string {
   const compact = options?.compact ?? false;
   const logoWidth = compact ? 120 : 220;
-  const watermarkSize = compact ? 160 : 440;
+  const watermarkSize = compact ? 200 : 540;
 
   return `
     .doc-sheet { position: relative; z-index: 1; }
