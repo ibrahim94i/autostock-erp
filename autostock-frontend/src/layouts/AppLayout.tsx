@@ -31,7 +31,7 @@ import {
   canAccessReceipts,
 } from '../api';
 import { COMPANY_BRAND, COMPANY_RIGHTS } from '../utils/companyInfo';
-import { COMPANY_LOGO_URL } from '../utils/companyLogoDataUrl';
+import { APP_LOGO_URL } from '../utils/companyLogoDataUrl';
 
 const THEME_KEY = 'theme';
 
@@ -49,7 +49,7 @@ function SidebarBrand() {
   return (
     <div className="flex items-center gap-3">
       <img
-        src={COMPANY_LOGO_URL}
+        src={APP_LOGO_URL}
         alt={COMPANY_BRAND}
         className="h-10 w-10 shrink-0 object-contain"
       />
@@ -215,9 +215,12 @@ export function AppLayout() {
   }, [sidebarOpen]);
 
   return (
-    <div className="flex min-h-screen bg-slate-100 dark:bg-gray-900">
+    <div className="relative flex min-h-screen bg-slate-100 dark:bg-gray-900">
+      <div className="app-watermark pointer-events-none fixed inset-0 z-0 flex items-center justify-center" aria-hidden="true">
+        <img src={APP_LOGO_URL} alt="" className="max-w-[min(540px,80vw)] opacity-10" />
+      </div>
       {/* Desktop sidebar */}
-      <aside className="hidden w-64 shrink-0 flex-col border-s border-slate-200 bg-white shadow-sm lg:flex dark:border-gray-700 dark:bg-gray-800">
+      <aside className="relative z-10 hidden w-64 shrink-0 flex-col border-s border-slate-200 bg-white shadow-sm lg:flex dark:border-gray-700 dark:bg-gray-800">
         <div className="border-b border-slate-200 px-5 py-5 dark:border-gray-700">
           <SidebarBrand />
         </div>
@@ -257,7 +260,7 @@ export function AppLayout() {
       )}
 
       {/* Main area */}
-      <div className="flex min-w-0 flex-1 flex-col">
+      <div className="relative z-10 flex min-w-0 flex-1 flex-col">
         <header className="flex h-16 items-center justify-between border-b border-slate-200 bg-white px-4 shadow-sm lg:px-6 dark:border-gray-700 dark:bg-gray-800">
           <div className="flex items-center gap-3">
             <button
@@ -270,7 +273,7 @@ export function AppLayout() {
             </button>
             <div className="flex items-center gap-2">
               <img
-                src={COMPANY_LOGO_URL}
+                src={APP_LOGO_URL}
                 alt={COMPANY_BRAND}
                 className="hidden h-8 w-8 object-contain sm:block"
               />

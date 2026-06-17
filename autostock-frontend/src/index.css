@@ -82,6 +82,10 @@ select {
     display: none !important;
     pointer-events: none !important;
   }
+
+  .app-watermark {
+    pointer-events: none;
+  }
 }
 
 @media print {
@@ -147,26 +151,16 @@ select {
   .doc-letterhead__logo-center--brand {
     display: flex;
     justify-content: center;
-    align-items: center;
-    gap: 12px;
     margin-bottom: 8px;
   }
 
   .doc-letterhead__logo-center img {
-    width: 72px;
+    width: 175px;
     max-width: 92%;
     height: auto;
     object-fit: contain;
     print-color-adjust: exact;
     -webkit-print-color-adjust: exact;
-  }
-
-  .doc-letterhead__brand-name {
-    font-family: 'Poppins', 'Cairo', sans-serif;
-    font-size: 28px;
-    font-weight: 800;
-    color: #002147;
-    letter-spacing: 0.06em;
   }
 
   .doc-letterhead__info--center,
@@ -294,14 +288,6 @@ select {
     font-size: 12px;
     font-weight: 700;
     color: #1e3a5f;
-  }
-
-  .doc-footer__rights {
-    margin: 6px 0 0;
-    font-size: 11px;
-    color: #64748b;
-    direction: ltr;
-    unicode-bidi: embed;
   }
 
   .doc-signature {

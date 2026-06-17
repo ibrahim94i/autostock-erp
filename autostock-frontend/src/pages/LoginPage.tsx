@@ -2,7 +2,7 @@ import { useEffect, useState, type FormEvent } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { getToken, login, setToken, setUsername } from '../api';
 import { COMPANY_BRAND, COMPANY_RIGHTS } from '../utils/companyInfo';
-import { COMPANY_LOGO_URL } from '../utils/companyLogoDataUrl';
+import { APP_LOGO_URL } from '../utils/companyLogoDataUrl';
 
 export function LoginPage() {
   const navigate = useNavigate();
@@ -41,12 +41,15 @@ export function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col bg-slate-100">
-      <div className="flex flex-1 items-center justify-center p-4">
+    <div className="relative flex min-h-screen flex-col bg-slate-100">
+      <div className="app-watermark pointer-events-none fixed inset-0 z-0 flex items-center justify-center" aria-hidden="true">
+        <img src={APP_LOGO_URL} alt="" className="max-w-[min(540px,80vw)] opacity-10" />
+      </div>
+      <div className="relative z-10 flex flex-1 items-center justify-center p-4">
         <div className="w-full max-w-md rounded-xl border border-slate-200 bg-white p-8 shadow-lg">
           <div className="flex items-center justify-center gap-3">
             <img
-              src={COMPANY_LOGO_URL}
+              src={APP_LOGO_URL}
               alt={COMPANY_BRAND}
               className="h-14 w-14 object-contain"
             />
@@ -99,7 +102,7 @@ export function LoginPage() {
           </form>
         </div>
       </div>
-      <footer className="py-3 text-center text-xs text-slate-400">{COMPANY_RIGHTS}</footer>
+      <footer className="relative z-10 py-3 text-center text-xs text-slate-400">{COMPANY_RIGHTS}</footer>
     </div>
   );
 }

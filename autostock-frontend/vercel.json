@@ -12,7 +12,7 @@
   ],
   "rewrites": [
     {
-      "source": "/((?!company-logo\\.png|favicon\\.ico|assets/).*)",
+      "source": "/((?!company-logo\\.png|hema-logo\\.png|favicon\\.ico|assets/).*)",
       "destination": "/index.html"
     }
   ]
