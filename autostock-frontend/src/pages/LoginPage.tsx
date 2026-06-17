@@ -41,7 +41,7 @@ export function LoginPage() {
   }
 
   return (
-    <div className="relative flex min-h-screen flex-col bg-slate-100">
+    <div className="app-shell relative flex min-h-screen flex-col">
       <div className="relative z-10 flex flex-1 items-center justify-center p-4">
         <div className="w-full max-w-md rounded-xl border border-slate-200 bg-white p-8 shadow-lg">
           <div className="flex items-center justify-center gap-3">

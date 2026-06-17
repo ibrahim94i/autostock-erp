@@ -59,6 +59,50 @@ body {
 
 #root {
   min-height: 100vh;
+  position: relative;
+}
+
+.app-root {
+  isolation: isolate;
+}
+
+/* HEMA app watermark — inside #root so semi-transparent pages reveal it */
+.app-watermark {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.app-watermark img {
+  width: min(820px, 92vw);
+  max-height: 92vh;
+  height: auto;
+  object-fit: contain;
+  opacity: 0.14;
+  user-select: none;
+}
+
+.app-shell {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+}
+
+.app-main {
+  background: rgb(241 245 249 / 0.55);
+}
+
+.dark .app-main {
+  background: rgb(17 24 39 / 0.55);
+}
+
+.app-shell:has(.app-main) {
+  background: transparent;
 }
 
 input:not([type='checkbox']):not([type='radio']):not([type='range']):not([type='button']):not([type='submit']),
@@ -81,26 +125,6 @@ select {
   .doc-letterhead {
     display: none !important;
     pointer-events: none !important;
-  }
-
-  .app-watermark {
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    pointer-events: none;
-    overflow: hidden;
-  }
-
-  .app-watermark img {
-    width: min(780px, 88vw);
-    max-height: 88vh;
-    height: auto;
-    object-fit: contain;
-    opacity: 0.12;
-    user-select: none;
   }
 }
 

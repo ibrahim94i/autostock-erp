@@ -60,7 +60,7 @@ const Router = isElectronFile ? HashRouter : BrowserRouter;
 
 function AppRoutes() {
   return (
-    <>
+    <div className="app-root relative min-h-screen">
       <AppWatermark />
       <SessionWarning />
       <BackendKeepAlive />
@@ -105,7 +105,7 @@ function AppRoutes() {
           <Route path="*" element={<Navigate to="/dashboard" replace />} />
         </Routes>
       </Suspense>
-    </>
+    </div>
   );
 }
 

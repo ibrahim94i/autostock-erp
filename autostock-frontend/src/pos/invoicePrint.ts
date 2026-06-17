@@ -4,7 +4,7 @@ import {
   printBrandingHtml,
   printBrandingStyles,
   printDocumentBaseStyles,
-  resolvePrintLogoUrl,
+  COMPANY_LOGO_DATA_URL,
 } from '../utils/printBranding';
 import { printFontsLinkHtml } from '../utils/typography';
 import {
@@ -162,7 +162,7 @@ function buildStyles(size: ReceiptSize): string {
 
 export function buildInvoiceHtml(data: InvoiceData, size: ReceiptSize): string {
   const currency = data.currency || 'د.ع';
-  const logoUrl = resolvePrintLogoUrl(data.companyLogo);
+  const logoUrl = COMPANY_LOGO_DATA_URL;
   const compact = size === '58mm' || size === '80mm';
   const invoiceNo =
     data.invoiceNumber && data.invoiceNumber !== '—'
