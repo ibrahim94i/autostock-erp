@@ -8,7 +8,8 @@
 
 body {
   margin: 0;
-  font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+  font-family: 'Cairo', 'Segoe UI', Tahoma, sans-serif;
+  font-weight: 500;
   background: #f1f5f9;
   color: #0f172a;
   direction: rtl;
@@ -70,7 +71,8 @@ body {
   body {
     background: #fff !important;
     color: #111 !important;
-    font-family: 'Segoe UI', Tahoma, 'Arial Unicode MS', Arial, sans-serif !important;
+    font-family: 'Cairo', 'Segoe UI', Tahoma, sans-serif !important;
+    font-weight: 500 !important;
     direction: rtl !important;
   }
 
@@ -125,7 +127,7 @@ body {
   }
 
   .doc-letterhead__logo-center img {
-    width: 220px;
+    width: 175px;
     max-width: 92%;
     height: auto;
     object-fit: contain;
@@ -141,15 +143,16 @@ body {
   .doc-letterhead__warehouse,
   .doc-letterhead__address {
     margin: 2px 0 0;
-    font-size: 11px;
+    font-size: 12px;
     color: #475569;
     line-height: 1.45;
   }
 
   .doc-letterhead__phones {
     margin: 2px 0 0;
-    font-size: 11px;
-    font-weight: 600;
+    font-size: 12px;
+    font-weight: 700;
+    font-family: 'Poppins', 'Cairo', sans-serif;
     color: #334155;
     direction: ltr;
     unicode-bidi: embed;
@@ -158,8 +161,8 @@ body {
   .doc-letterhead__title {
     margin: 10px 0 0;
     text-align: center;
-    font-size: 14px;
-    font-weight: 700;
+    font-size: 16px;
+    font-weight: 800;
     color: #1e3a5f;
   }
 

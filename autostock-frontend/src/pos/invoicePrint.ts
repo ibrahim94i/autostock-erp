@@ -6,6 +6,7 @@ import {
   printDocumentBaseStyles,
   resolvePrintLogoUrl,
 } from '../utils/printBranding';
+import { printFontsLinkHtml } from '../utils/typography';
 import {
   type InvoiceData,
   type ReceiptSize,
@@ -65,15 +66,15 @@ function buildStyles(size: ReceiptSize): string {
     printDocumentBaseStyles() +
     printBrandingStyles({ compact }) +
     `
-    body.size-58mm { width: 58mm; max-width: 58mm; padding: 3mm 2mm; font-size: 10px; }
-    body.size-80mm { width: 80mm; max-width: 80mm; padding: 4mm 3mm; font-size: 11px; }
+    body.size-58mm { width: 58mm; max-width: 58mm; padding: 3mm 2mm; font-size: 11px; }
+    body.size-80mm { width: 80mm; max-width: 80mm; padding: 4mm 3mm; font-size: 12px; }
     body.size-a4 {
       width: 100%;
       max-width: 210mm;
       min-height: auto;
       margin: 0 auto;
       padding: 8mm 10mm;
-      font-size: 12px;
+      font-size: 14px;
       overflow-x: hidden;
     }
     .invoice-meta {
@@ -85,7 +86,7 @@ function buildStyles(size: ReceiptSize): string {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 8px;
-      font-size: ${compact ? '9px' : '12px'};
+      font-size: ${compact ? '10px' : '14px'};
       color: #334155;
       margin-bottom: 4px;
     }
@@ -94,9 +95,9 @@ function buildStyles(size: ReceiptSize): string {
       overflow-wrap: anywhere;
     }
     .invoice-no {
-      font-family: 'Courier New', monospace;
+      font-family: 'Poppins', 'Cairo', sans-serif;
       font-weight: 800;
-      font-size: ${compact ? '11px' : '15px'};
+      font-size: ${compact ? '12px' : '17px'};
       color: #1e3a5f;
       text-align: center;
       margin: 6px 0;
@@ -108,20 +109,20 @@ function buildStyles(size: ReceiptSize): string {
       border: 1px solid #e2e8f0;
       border-radius: 4px;
       background: #f8fafc;
-      font-size: ${compact ? '9px' : '12px'};
+      font-size: ${compact ? '10px' : '14px'};
       position: relative;
       z-index: 2;
     }
     .payment-row {
       margin-top: 8px;
-      font-size: ${compact ? '9px' : '12px'};
+      font-size: ${compact ? '10px' : '14px'};
       position: relative;
       z-index: 2;
     }
     .total-row {
       display: flex;
       justify-content: space-between;
-      font-size: ${compact ? '9px' : '12px'};
+      font-size: ${compact ? '10px' : '14px'};
       margin-top: 4px;
       position: relative;
       z-index: 2;
@@ -146,8 +147,8 @@ function buildStyles(size: ReceiptSize): string {
     .line-sku {
       display: block;
       margin-top: 2px;
-      font-family: 'Courier New', monospace;
-      font-size: ${compact ? '8px' : '10px'};
+      font-family: 'Poppins', 'Cairo', sans-serif;
+      font-size: ${compact ? '9px' : '12px'};
       color: #64748b;
       letter-spacing: 0.02em;
     }
@@ -224,6 +225,7 @@ export function buildInvoiceHtml(data: InvoiceData, size: ReceiptSize): string {
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>فاتورة ${escapeHtml(invoiceNo)}</title>
+  ${printFontsLinkHtml()}
   <style>${buildStyles(size)}</style>
 </head>
 <body class="${sizeBodyClass(size)}">

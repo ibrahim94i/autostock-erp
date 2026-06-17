@@ -1,12 +1,10 @@
 import {
-
   printBrandingHtml,
-
   printBrandingStyles,
-
+  printDocumentBaseStyles,
   resolvePrintLogoUrl,
-
 } from '../utils/printBranding';
+import { printFontsLinkHtml } from '../utils/typography';
 
 
 
@@ -79,45 +77,28 @@ function buildHtml(data: InventoryVoucherData): string {
   <meta charset="utf-8" />
 
   <title>${escapeHtml(title)}</title>
-
+  ${printFontsLinkHtml()}
   <style>
-
-    body { font-family: 'Segoe UI', Tahoma, Arial, sans-serif; margin: 24px; color: #111; direction: rtl; background: #fff; }
-
-    .voucher-meta { text-align: center; margin-bottom: 16px; color: #64748b; font-size: 13px; line-height: 1.6; }
-
-    .voucher-no { font-family: monospace; font-weight: 700; color: #1e3a5f; font-size: 14px; }
-
+    ${printDocumentBaseStyles()}
+    body { margin: 24px; }
+    .voucher-meta { text-align: center; margin-bottom: 16px; color: #64748b; font-size: 14px; line-height: 1.6; }
+    .voucher-no { font-family: 'Poppins', 'Cairo', sans-serif; font-weight: 800; color: #1e3a5f; font-size: 16px; }
     table { width: 100%; border-collapse: collapse; margin-top: 12px; }
-
-    td, th { border: 1px solid #cbd5e1; padding: 10px; text-align: right; font-size: 14px; }
-
-    th { background: #f1f5f9; color: #1e3a5f; width: 35%; font-weight: 700; }
-
+    td, th { border: 1px solid #cbd5e1; padding: 10px; text-align: right; font-size: 15px; }
+    th { background: #f1f5f9; color: #1e3a5f; width: 35%; font-weight: 800; }
     .stamp {
-
       margin-top: 24px;
-
       padding: 12px;
-
       text-align: center;
-
-      font-weight: 700;
-
+      font-weight: 800;
+      font-size: 15px;
       border-radius: 8px;
-
       color: ${data.type === 'delete' ? '#b91c1c' : '#1d4ed8'};
-
       background: ${data.type === 'delete' ? '#fef2f2' : '#eff6ff'};
-
       border: 1px solid ${data.type === 'delete' ? '#fecaca' : '#bfdbfe'};
-
     }
-
     ${printBrandingStyles()}
-
     @media print { @page { margin: 15mm; } }
-
   </style>
 
 </head>

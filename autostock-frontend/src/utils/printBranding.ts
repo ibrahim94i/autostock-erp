@@ -6,6 +6,7 @@ import {
   COMPANY_PHONES,
   COMPANY_WAREHOUSE,
 } from './companyInfo';
+import { printFontFamilyCss } from './typography';
 
 export { COMPANY_LOGO_DATA_URL };
 
@@ -30,7 +31,7 @@ function escapeHtml(value: string): string {
 
 export function printBrandingStyles(options?: PrintBrandingOptions): string {
   const compact = options?.compact ?? false;
-  const logoWidth = compact ? 120 : 220;
+  const logoWidth = compact ? 100 : 175;
   const watermarkSize = compact ? 200 : 540;
 
   return `
@@ -82,12 +83,12 @@ export function printBrandingStyles(options?: PrintBrandingOptions): string {
     .doc-letterhead__address,
     .doc-letterhead__phones {
       margin: ${compact ? '1px 0 0' : '2px 0 0'};
-      font-size: ${compact ? '8px' : '11px'};
+      font-size: ${compact ? '9px' : '13px'};
       color: #475569;
       line-height: 1.45;
     }
     .doc-letterhead__phones {
-      font-weight: 600;
+      font-weight: 700;
       color: #334155;
       direction: ltr;
       unicode-bidi: embed;
@@ -95,14 +96,14 @@ export function printBrandingStyles(options?: PrintBrandingOptions): string {
     .doc-letterhead__title {
       margin: ${compact ? '6px 0 0' : '10px 0 0'};
       text-align: center;
-      font-size: ${compact ? '10px' : '14px'};
-      font-weight: 700;
+      font-size: ${compact ? '11px' : '16px'};
+      font-weight: 800;
       color: #1e3a5f;
     }
     .doc-letterhead__period {
       margin: 4px 0 0;
       text-align: center;
-      font-size: ${compact ? '9px' : '12px'};
+      font-size: ${compact ? '10px' : '13px'};
       color: #64748b;
     }
     .doc-footer {
@@ -110,15 +111,15 @@ export function printBrandingStyles(options?: PrintBrandingOptions): string {
       padding-top: ${compact ? '8px' : '12px'};
       border-top: 1px dashed #94a3b8;
       text-align: center;
-      font-size: ${compact ? '9px' : '11px'};
+      font-size: ${compact ? '10px' : '12px'};
       color: #64748b;
       position: relative;
       z-index: 2;
     }
     .doc-footer__management {
       margin: ${compact ? '4px 0 0' : '6px 0 0'};
-      font-size: ${compact ? '9px' : '12px'};
-      font-weight: 700;
+      font-size: ${compact ? '10px' : '13px'};
+      font-weight: 800;
       color: #1e3a5f;
     }
     .doc-signature {
@@ -132,7 +133,7 @@ export function printBrandingStyles(options?: PrintBrandingOptions): string {
     .doc-signature__line {
       flex: 1;
       text-align: center;
-      font-size: ${compact ? '9px' : '12px'};
+      font-size: ${compact ? '10px' : '13px'};
       color: #334155;
       padding-top: 28px;
       border-top: 1px solid #cbd5e1;
@@ -152,12 +153,12 @@ export function printBrandingStyles(options?: PrintBrandingOptions): string {
       background: #f8fafc;
     }
     .doc-meta-item__label {
-      font-size: 10px;
+      font-size: 11px;
       color: #64748b;
       margin-bottom: 2px;
     }
     .doc-meta-item__value {
-      font-size: 12px;
+      font-size: 13px;
       font-weight: 700;
       color: #1e293b;
     }
@@ -167,7 +168,7 @@ export function printBrandingStyles(options?: PrintBrandingOptions): string {
       margin: 12px 0;
       position: relative;
       z-index: 2;
-      font-size: ${compact ? '9px' : '12px'};
+      font-size: ${compact ? '10px' : '13px'};
     }
     .doc-table th,
     .doc-table td {
@@ -196,7 +197,7 @@ export function printBrandingStyles(options?: PrintBrandingOptions): string {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: ${compact ? '11px' : '16px'};
+      font-size: ${compact ? '12px' : '18px'};
       font-weight: 800;
       color: #1e3a5f;
       position: relative;
@@ -216,8 +217,8 @@ export function printDocumentBaseStyles(): string {
   return `
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { direction: rtl; }
+    ${printFontFamilyCss()}
     body {
-      font-family: 'Segoe UI', Tahoma, 'Arial Unicode MS', Arial, sans-serif;
       color: #111;
       background: #fff;
       line-height: 1.5;

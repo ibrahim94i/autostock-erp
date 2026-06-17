@@ -6,6 +6,7 @@ import {
   printSignatureHtml,
   resolvePrintLogoUrl,
 } from '../utils/printBranding';
+import { printFontsLinkHtml } from '../utils/typography';
 
 export interface CustomerStatementPrintLine {
   entryDate: string;
@@ -94,6 +95,7 @@ function buildHtml(data: CustomerStatementPrintData): string {
 <head>
   <meta charset="UTF-8" />
   <title>كشف حساب — ${escapeHtml(data.customerName)}</title>
+  ${printFontsLinkHtml()}
   <style>${buildStyles()}</style>
 </head>
 <body>
