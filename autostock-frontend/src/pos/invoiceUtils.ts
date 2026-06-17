@@ -1,4 +1,6 @@
 import type { PriceType } from './cartReducer';
+import { cartLineTotal, effectiveUnitPrice, type CartLine } from './cartReducer';
+import { productUnitsPerCarton, receiptUnitLabel } from '../utils/units';
 
 export type ReceiptSize = '58mm' | '80mm' | 'a4';
 
@@ -50,5 +52,63 @@ export function computeInvoiceTotals(subtotal: number, taxRate: number) {
     taxRate,
     taxAmount,
     total: subtotal + taxAmount,
+  };
+}
+
+export function invoiceLineFromCart(line: CartLine): InvoiceLine {
+  return {
+    productName: line.product.name,
+    sku: line.product.sku,
+    qty: line.inputQty,
+    unit: receiptUnitLabel(line.saleUnit),
+    unitPrice: effectiveUnitPrice(line),
+    lineTotal: cartLineTotal(line),
+  };
+}
+
+export interface SaleInvoiceItemSource {
+  qty: string | number;
+  unitPrice: string | number;
+  product: {
+    name: string;
+    sku: string;
+    unitsPerCarton?: number | null;
+  };
+}
+
+function parseInvoiceNumber(value: string | number): number {
+  return typeof value === 'string' ? parseFloat(value) : value;
+}
+
+/** Reconstruct receipt line from stored sale (piece qty in DB). */
+export function invoiceLineFromSaleItem(
+  item: SaleInvoiceItemSource,
+  saleType: string,
+): InvoiceLine {
+  const qtyPieces = parseInvoiceNumber(item.qty);
+  const unitPricePiece = parseInvoiceNumber(item.unitPrice);
+  const upc = productUnitsPerCarton(item.product.unitsPerCarton ?? undefined);
+  const soldAsCarton = saleType === 'wholesale' && upc > 1;
+
+  if (soldAsCarton) {
+    const cartonQty = qtyPieces / upc;
+    const unitPriceCarton = unitPricePiece * upc;
+    return {
+      productName: item.product.name,
+      sku: item.product.sku,
+      qty: cartonQty,
+      unit: receiptUnitLabel('carton'),
+      unitPrice: unitPriceCarton,
+      lineTotal: cartonQty * unitPriceCarton,
+    };
+  }
+
+  return {
+    productName: item.product.name,
+    sku: item.product.sku,
+    qty: qtyPieces,
+    unit: receiptUnitLabel('piece'),
+    unitPrice: unitPricePiece,
+    lineTotal: qtyPieces * unitPricePiece,
   };
 }

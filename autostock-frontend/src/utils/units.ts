@@ -48,7 +48,12 @@ export function formatCartonConversion(
   return `${formatQty(inputQty)} كارتون = ${formatQty(pieces)} قطعة`;
 }
 
-function formatQty(n: number): string {
+export function formatQty(n: number): string {
   if (Number.isInteger(n)) return String(n);
   return n.toLocaleString('ar-EG', { maximumFractionDigits: 4 });
+}
+
+/** Receipt / invoice unit column label (singular). */
+export function receiptUnitLabel(unit: QtyUnit): string {
+  return unit === 'carton' ? 'كارتونة' : 'قطعة';
 }

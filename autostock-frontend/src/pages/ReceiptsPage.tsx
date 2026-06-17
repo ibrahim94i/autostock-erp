@@ -15,6 +15,7 @@ import { useSettings, normalizeReceiptSize } from '../context/SettingsContext';
 import type { CompanySettings, Receipt, SaleInvoiceResponse } from '../types';
 import {
   computeInvoiceTotals,
+  invoiceLineFromSaleItem,
   type InvoiceData,
   type ReceiptSize,
 } from '../pos/invoiceUtils';
@@ -45,17 +46,9 @@ function buildInvoiceFromSale(
     priceType,
     customerId: invoice.sale.customerId ?? undefined,
     customerName: receipt.customerName ?? invoice.sale.customer?.name ?? undefined,
-    lines: invoice.items.map((item) => {
-      const qty = parseQuantity(item.qty);
-      const unitPrice = parseQuantity(item.unitPrice);
-      return {
-        productName: item.product.name,
-        sku: item.product.sku,
-        qty,
-        unitPrice,
-        lineTotal: qty * unitPrice,
-      };
-    }),
+    lines: invoice.items.map((item) =>
+      invoiceLineFromSaleItem(item, invoice.sale.type),
+    ),
     ...totals,
   };
 }

@@ -40,6 +40,7 @@ import {
 } from '../pos/cartReducer';
 import {
   computeInvoiceTotals,
+  invoiceLineFromCart,
   VISIBLE_RECEIPT_SIZES,
   RECEIPT_SIZE_LABELS,
   type InvoiceData,
@@ -89,17 +90,7 @@ function buildInvoiceDataFromCart(
     customerName: customerName || undefined,
     cashCustomerName: cashCustomerName || undefined,
     cashCustomerPhone: cashCustomerPhone || undefined,
-    lines: lines.map((line) => ({
-      productName:
-        line.saleUnit === 'carton'
-          ? `${line.product.name} (${line.inputQty} ${lineQtyLabel(line)})`
-          : line.product.name,
-      sku: line.product.sku,
-      qty: line.qty,
-      unit: line.product.unit ?? 'قطعة',
-      unitPrice: lineApiUnitPrice(line),
-      lineTotal: cartLineTotal(line),
-    })),
+    lines: lines.map(invoiceLineFromCart),
     ...totals,
   };
 }

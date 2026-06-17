@@ -551,7 +551,7 @@ export interface SaleInvoiceResponse {
     qty: string | number;
     unitPrice: string | number;
     unitCost: string | number;
-    product: { id: string; name: string; sku: string };
+    product: { id: string; name: string; sku: string; unitsPerCarton?: number };
   }>;
   returns?: Array<{
     id: string;
