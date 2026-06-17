@@ -129,32 +129,56 @@ export class InventoryService {
   }
 
   async getLowAlerts(): Promise<LowStockAlert[]> {
-    const balances = await this.prisma.stockBalanceView.findMany({
-      include: {
-        product: {
-          select: { id: true, sku: true, name: true, minStockAlert: true },
-        },
-        location: {
-          select: { id: true, zone: true, shelf: true, code: true },
-        },
-      },
-    });
+    const rows = await this.prisma.$queryRaw<
+      Array<{
+        productId: string;
+        locationId: string;
+        quantity: Prisma.Decimal;
+        minStockAlert: number;
+        product_id: string;
+        sku: string;
+        product_name: string;
+        location_id: string;
+        zone: string;
+        shelf: string;
+        code: string;
+      }>
+    >`
+      SELECT
+        sb."productId",
+        sb."locationId",
+        sb.quantity,
+        p."minStockAlert",
+        p.id AS product_id,
+        p.sku,
+        p.name AS product_name,
+        l.id AS location_id,
+        l.zone,
+        l.shelf,
+        l.code
+      FROM "StockBalanceView" sb
+      INNER JOIN "Product" p ON p.id = sb."productId"
+      INNER JOIN "Location" l ON l.id = sb."locationId"
+      WHERE sb.quantity < p."minStockAlert"
+      ORDER BY sb."productId", sb."locationId"
+    `;
 
-    return balances
-      .filter((balance) =>
-        new Prisma.Decimal(balance.quantity).lt(balance.product.minStockAlert),
-      )
-      .map((balance) => ({
-        productId: balance.productId,
-        locationId: balance.locationId,
-        quantity: balance.quantity,
-        minStockAlert: balance.product.minStockAlert,
-        product: {
-          id: balance.product.id,
-          sku: balance.product.sku,
-          name: balance.product.name,
-        },
-        location: balance.location,
-      }));
+    return rows.map((row) => ({
+      productId: row.productId,
+      locationId: row.locationId,
+      quantity: row.quantity,
+      minStockAlert: row.minStockAlert,
+      product: {
+        id: row.product_id,
+        sku: row.sku,
+        name: row.product_name,
+      },
+      location: {
+        id: row.location_id,
+        zone: row.zone,
+        shelf: row.shelf,
+        code: row.code,
+      },
+    }));
   }
 }

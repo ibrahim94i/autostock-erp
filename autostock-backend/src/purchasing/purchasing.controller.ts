@@ -73,6 +73,18 @@ export class PurchasingController {
     return this.suppliersService.remove(id);
   }
 
+  @Get('suppliers/balances/bulk')
+  @UseGuards(JwtAuthGuard)
+  getSupplierBalancesBulk(@Query('ids') ids?: string) {
+    const idList = ids
+      ? ids
+          .split(',')
+          .map((value) => value.trim())
+          .filter(Boolean)
+      : undefined;
+    return this.suppliersService.getBalancesBulk(idList);
+  }
+
   @Get('suppliers/:id/balance')
   @UseGuards(JwtAuthGuard)
   getSupplierBalance(@Param('id', ParseUUIDPipe) id: string) {

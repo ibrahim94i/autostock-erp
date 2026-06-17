@@ -35,6 +35,8 @@ model Product {
   saleItems      SaleItem[]
   purchaseItems  PurchaseItem[]
   returns        Return[]
+
+  @@index([name])
 }
 
 model Location {
@@ -70,6 +72,8 @@ model Customer {
   type   String
   sales  Sale[]
   balance CustomerBalanceView?
+
+  @@index([name])
 }
 
 model Supplier {
@@ -130,6 +134,7 @@ model StockMovement {
 
   @@index([productId, locationId])
   @@index([eventId])
+  @@index([createdAt])
 }
 
 model StockBalanceView {
@@ -200,6 +205,8 @@ model Sale {
   createdAt   DateTime   @default(now())
   items       SaleItem[]
   returns     Return[]
+
+  @@index([createdAt])
 }
 
 model SaleItem {
@@ -255,6 +262,8 @@ model Payment {
   method     String
   direction  String
   createdAt  DateTime @default(now())
+
+  @@index([createdAt])
 }
 
 model DashboardAggregate {

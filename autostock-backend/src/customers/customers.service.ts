@@ -136,6 +136,26 @@ export class CustomersService {
     };
   }
 
+  async getBalancesBulk(ids?: string[]): Promise<CustomerBalanceResponse[]> {
+    const where =
+      ids && ids.length > 0 ? { customerId: { in: ids } } : undefined;
+
+    const rows = await this.prisma.customerBalanceView.findMany({ where });
+    const balanceById = new Map(rows.map((row) => [row.customerId, row.balance]));
+
+    if (ids && ids.length > 0) {
+      return ids.map((customerId) => ({
+        customerId,
+        balance: balanceById.get(customerId) ?? 0,
+      }));
+    }
+
+    return rows.map((row) => ({
+      customerId: row.customerId,
+      balance: row.balance,
+    }));
+  }
+
   async getStatement(id: string): Promise<CustomerStatementLine[]> {
     await this.findOne(id);
 

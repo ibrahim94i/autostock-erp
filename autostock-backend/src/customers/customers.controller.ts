@@ -59,6 +59,18 @@ export class CustomersController {
     return this.customersService.remove(id);
   }
 
+  @Get('balances/bulk')
+  @UseGuards(JwtAuthGuard)
+  getBalancesBulk(@Query('ids') ids?: string) {
+    const idList = ids
+      ? ids
+          .split(',')
+          .map((value) => value.trim())
+          .filter(Boolean)
+      : undefined;
+    return this.customersService.getBalancesBulk(idList);
+  }
+
   @Get(':id/balance')
   @UseGuards(JwtAuthGuard)
   getBalance(@Param('id', ParseUUIDPipe) id: string) {
