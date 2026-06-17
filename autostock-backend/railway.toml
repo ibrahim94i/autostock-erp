@@ -3,4 +3,7 @@ buildCommand = "npm install && npm run build"
 
 [deploy]
 startCommand = "npm run start:prod"
-restartPolicyType = "ON_FAILURE"
+healthcheckPath = "/health"
+healthcheckTimeout = 300
+restartPolicyType = "ALWAYS"
+restartPolicyMaxRetries = 10

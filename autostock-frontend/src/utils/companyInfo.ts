@@ -7,4 +7,5 @@ export const COMPANY_WAREHOUSE = 'مخزن حرير البصرة';
 export const COMPANY_ADDRESS = 'واسط - الحفرية - الشارع العام';
 export const COMPANY_PHONES = '07709438984 - 07772044733';
 export const COMPANY_FOOTER = 'شكراً لتعاملكم معنا — شركة حرير البصرة';
+export const COMPANY_RECEIPT_MANAGEMENT = 'بأدارة عباس الشمري';
 export const COMPANY_PRINT_FOOTER = `${COMPANY_FOOTER}`;

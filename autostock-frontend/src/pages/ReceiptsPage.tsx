@@ -15,11 +15,9 @@ import { useSettings, normalizeReceiptSize } from '../context/SettingsContext';
 import type { CompanySettings, Receipt, SaleInvoiceResponse } from '../types';
 import {
   computeInvoiceTotals,
-  printInvoice,
-  viewInvoice,
   type InvoiceData,
   type ReceiptSize,
-} from '../pos/invoicePrint';
+} from '../pos/invoiceUtils';
 import { monthStartIsoDate, todayIsoDate } from '../utils/reportDates';
 
 function buildInvoiceFromSale(
@@ -118,6 +116,7 @@ export function ReceiptsPage() {
     try {
       const invoice = await fetchSaleInvoice(receipt.saleId);
       const invoiceData = buildInvoiceFromSale(receipt, invoice, settings);
+      const { viewInvoice } = await import('../pos/invoicePrint');
       const ok = viewInvoice(invoiceData, receiptSize);
       if (!ok) {
         setReprintError('تعذّر فتح نافذة العرض — اسمح بالنوافذ المنبثقة');
@@ -135,6 +134,7 @@ export function ReceiptsPage() {
     try {
       const invoice = await fetchSaleInvoice(receipt.saleId);
       const invoiceData = buildInvoiceFromSale(receipt, invoice, settings);
+      const { printInvoice } = await import('../pos/invoicePrint');
       const ok = printInvoice(invoiceData, receiptSize);
       if (!ok) {
         setReprintError('تعذّر فتح نافذة الطباعة — اسمح بالنوافذ المنبثقة');

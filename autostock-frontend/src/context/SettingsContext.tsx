@@ -13,7 +13,7 @@ import {
   SETTINGS_CACHE_KEY,
 } from '../api';
 import type { CompanySettings } from '../types';
-import type { ReceiptSize } from '../pos/invoicePrint';
+import type { ReceiptSize } from '../pos/invoiceUtils';
 
 export const DEFAULT_SETTINGS: CompanySettings = {
   id: 'default',

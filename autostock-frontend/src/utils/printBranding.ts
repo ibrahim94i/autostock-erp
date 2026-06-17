@@ -4,7 +4,6 @@ import {
   COMPANY_FOOTER,
   COMPANY_FULL_NAME,
   COMPANY_PHONES,
-  COMPANY_TAGLINE,
   COMPANY_WAREHOUSE,
 } from './companyInfo';
 
@@ -31,7 +30,7 @@ function escapeHtml(value: string): string {
 
 export function printBrandingStyles(options?: PrintBrandingOptions): string {
   const compact = options?.compact ?? false;
-  const logoSize = compact ? 48 : 72;
+  const logoWidth = compact ? 120 : 220;
   const watermarkSize = compact ? 160 : 440;
 
   return `
@@ -44,9 +43,12 @@ export function printBrandingStyles(options?: PrintBrandingOptions): string {
       justify-content: center;
       z-index: 0;
       pointer-events: none;
+      overflow: hidden;
+      max-width: 100%;
     }
     .doc-watermark img {
       width: ${watermarkSize}px;
+      max-width: 80vw;
       height: auto;
       opacity: 0.10;
       object-fit: contain;
@@ -57,35 +59,25 @@ export function printBrandingStyles(options?: PrintBrandingOptions): string {
       margin-bottom: ${compact ? '8px' : '16px'};
       padding-bottom: ${compact ? '6px' : '12px'};
       border-bottom: ${compact ? '1px solid #1e3a5f' : '2px solid #1e3a5f'};
+      text-align: center;
     }
-    .doc-letterhead__row {
+    .doc-letterhead__logo-center {
       display: flex;
-      align-items: center;
-      gap: ${compact ? '8px' : '16px'};
-      direction: rtl;
+      justify-content: center;
+      margin-bottom: ${compact ? '4px' : '8px'};
     }
-    .doc-letterhead__logo {
-      flex-shrink: 0;
-    }
-    .doc-letterhead__logo img {
-      width: ${logoSize}px;
-      height: ${logoSize}px;
+    .doc-letterhead__logo-center img {
+      width: ${logoWidth}px;
+      max-width: 92%;
+      height: auto;
       object-fit: contain;
       display: block;
+      margin: 0 auto;
     }
     .doc-letterhead__info {
-      flex: 1;
-      text-align: right;
+      text-align: center;
       min-width: 0;
     }
-    .doc-letterhead__name {
-      margin: 0;
-      font-size: ${compact ? '11px' : '16px'};
-      font-weight: 800;
-      color: #1e3a5f;
-      line-height: 1.35;
-    }
-    .doc-letterhead__tagline,
     .doc-letterhead__warehouse,
     .doc-letterhead__address,
     .doc-letterhead__phones {
@@ -99,7 +91,6 @@ export function printBrandingStyles(options?: PrintBrandingOptions): string {
       color: #334155;
       direction: ltr;
       unicode-bidi: embed;
-      text-align: right;
     }
     .doc-letterhead__title {
       margin: ${compact ? '6px 0 0' : '10px 0 0'};
@@ -123,6 +114,12 @@ export function printBrandingStyles(options?: PrintBrandingOptions): string {
       color: #64748b;
       position: relative;
       z-index: 2;
+    }
+    .doc-footer__management {
+      margin: ${compact ? '4px 0 0' : '6px 0 0'};
+      font-size: ${compact ? '9px' : '12px'};
+      font-weight: 700;
+      color: #1e3a5f;
     }
     .doc-signature {
       margin-top: ${compact ? '16px' : '32px'};
@@ -224,6 +221,7 @@ export function printDocumentBaseStyles(): string {
       color: #111;
       background: #fff;
       line-height: 1.5;
+      overflow-x: hidden;
     }
     @page { size: A4; margin: 12mm 14mm; }
     @media print {
@@ -251,17 +249,13 @@ export function printBrandingHtml(
       <img src="${safeSrc}" alt="" />
     </div>
     <header class="doc-letterhead">
-      <div class="doc-letterhead__row">
-        <div class="doc-letterhead__logo">
-          <img src="${safeSrc}" alt="${escapeHtml(COMPANY_FULL_NAME)}" />
-        </div>
-        <div class="doc-letterhead__info">
-          <h1 class="doc-letterhead__name">${escapeHtml(COMPANY_FULL_NAME)}</h1>
-          <p class="doc-letterhead__tagline">${escapeHtml(COMPANY_TAGLINE)}</p>
-          ${compact ? '' : `<p class="doc-letterhead__warehouse">${escapeHtml(COMPANY_WAREHOUSE)}</p>`}
-          <p class="doc-letterhead__address">${escapeHtml(COMPANY_ADDRESS)}</p>
-          <p class="doc-letterhead__phones">${escapeHtml(COMPANY_PHONES)}</p>
-        </div>
+      <div class="doc-letterhead__logo-center">
+        <img src="${safeSrc}" alt="${escapeHtml(COMPANY_FULL_NAME)}" />
+      </div>
+      <div class="doc-letterhead__info">
+        ${compact ? '' : `<p class="doc-letterhead__warehouse">${escapeHtml(COMPANY_WAREHOUSE)}</p>`}
+        <p class="doc-letterhead__address">${escapeHtml(COMPANY_ADDRESS)}</p>
+        <p class="doc-letterhead__phones">${escapeHtml(COMPANY_PHONES)}</p>
       </div>
       ${titleBlock}
       ${periodBlock}

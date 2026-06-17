@@ -16,6 +16,7 @@ import {
 import {
   createSale,
   fetchCustomers,
+  fetchLocations,
   fetchProducts,
   fetchStockBalances,
   formatCount,
@@ -39,13 +40,11 @@ import {
 } from '../pos/cartReducer';
 import {
   computeInvoiceTotals,
-  printInvoice,
-  saveInvoicePdf,
   VISIBLE_RECEIPT_SIZES,
   RECEIPT_SIZE_LABELS,
   type InvoiceData,
   type ReceiptSize,
-} from '../pos/invoicePrint';
+} from '../pos/invoiceUtils';
 import type { CreateSalePayload, Product } from '../types';
 import { formatCartonConversion, formatStockWithCartons, supportsCarton } from '../utils/units';
 import { useSettings, normalizeReceiptSize } from '../context/SettingsContext';
@@ -97,6 +96,7 @@ function buildInvoiceDataFromCart(
           : line.product.name,
       sku: line.product.sku,
       qty: line.qty,
+      unit: line.product.unit ?? 'قطعة',
       unitPrice: lineApiUnitPrice(line),
       lineTotal: cartLineTotal(line),
     })),
@@ -172,9 +172,22 @@ export function PosPage() {
       }),
   });
 
+  const locationsQuery = useQuery({
+    queryKey: ['locations'],
+    queryFn: fetchLocations,
+    staleTime: 5 * 60_000,
+  });
+
   const stockQuery = useQuery({
-    queryKey: ['stock', 'balances', 'pos'],
-    queryFn: () => fetchStockBalances({ limit: 1000, page: 1 }),
+    queryKey: ['stock', 'balances', 'pos', locationId],
+    queryFn: () =>
+      fetchStockBalances({
+        locationId,
+        limit: 200,
+        page: 1,
+      }),
+    enabled: Boolean(locationId),
+    staleTime: 30_000,
   });
 
   const customersQuery = useQuery({
@@ -191,6 +204,7 @@ export function PosPage() {
   useEffect(() => {
     for (const err of [
       productsQuery.error,
+      locationsQuery.error,
       stockQuery.error,
       customersQuery.error,
     ]) {
@@ -199,20 +213,14 @@ export function PosPage() {
         return;
       }
     }
-  }, [productsQuery.error, stockQuery.error, customersQuery.error, navigate]);
+  }, [productsQuery.error, locationsQuery.error, stockQuery.error, customersQuery.error, navigate]);
 
   const locations = useMemo(() => {
-    const map = new Map<string, string>();
-    for (const item of stockQuery.data?.items ?? []) {
-      if (map.has(item.locationId)) continue;
-      const loc = item.location;
-      const label = loc
-        ? `${loc.zone} / ${loc.shelf} (${loc.code})`
-        : item.locationId.slice(0, 8);
-      map.set(item.locationId, label);
-    }
-    return Array.from(map.entries()).map(([id, label]) => ({ id, label }));
-  }, [stockQuery.data]);
+    return (locationsQuery.data ?? []).map((loc) => ({
+      id: loc.id,
+      label: `${loc.zone} / ${loc.shelf} (${loc.code})`,
+    }));
+  }, [locationsQuery.data]);
 
   const stockByProductId = useMemo(() => {
     const totals = new Map<string, number>();
@@ -280,7 +288,7 @@ export function PosPage() {
       });
       const toPrint = { ...invoiceData, invoiceNumber: receipt.invoiceNumber };
       setInvoiceData(toPrint);
-      const ok = printInvoice(toPrint, receiptSize);
+      const ok = (await import('../pos/invoicePrint')).printInvoice(toPrint, receiptSize);
       if (!ok) {
         setPrintError('تعذّر فتح نافذة الطباعة — اسمح بالنوافذ المنبثقة');
       }
@@ -289,10 +297,10 @@ export function PosPage() {
     }
   }
 
-  function handleSavePdf() {
+  async function handleSavePdf() {
     if (!invoiceData) return;
     setPrintError('');
-    const ok = saveInvoicePdf(invoiceData, receiptSize);
+    const ok = (await import('../pos/invoicePrint')).saveInvoicePdf(invoiceData, receiptSize);
     if (!ok) {
       setPrintError('تعذّر فتح نافذة الحفظ — اسمح بالنوافذ المنبثقة');
     }

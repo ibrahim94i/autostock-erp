@@ -1,46 +1,24 @@
 import type { PriceType } from './cartReducer';
-import { COMPANY_FOOTER } from '../utils/companyInfo';
+import { COMPANY_FOOTER, COMPANY_RECEIPT_MANAGEMENT } from '../utils/companyInfo';
 import {
   printBrandingHtml,
   printBrandingStyles,
   printDocumentBaseStyles,
   resolvePrintLogoUrl,
 } from '../utils/printBranding';
+import {
+  type InvoiceData,
+  type ReceiptSize,
+} from './invoiceUtils';
 
-export type ReceiptSize = '58mm' | '80mm' | 'a4';
-
-export interface InvoiceLine {
-  productName: string;
-  sku: string;
-  qty: number;
-  unit?: string;
-  unitPrice: number;
-  lineTotal: number;
-}
-
-export interface InvoiceData {
-  invoiceNumber: string;
-  saleId: string;
-  appliedAt: string;
-  companyName: string;
-  companyPhone?: string;
-  companyAddress?: string;
-  companyLogo?: string;
-  taxNumber?: string;
-  currency: string;
-  receiptFooter: string;
-  paymentType: 'cash' | 'debt';
-  priceType: PriceType;
-  customerId?: string;
-  customerName?: string;
-  cashCustomerName?: string;
-  cashCustomerPhone?: string;
-  lines: InvoiceLine[];
-  subtotal: number;
-  taxRate: number;
-  taxAmount: number;
-  total: number;
-}
+export {
+  computeInvoiceTotals,
+  type InvoiceData,
+  type InvoiceLine,
+  type ReceiptSize,
+  RECEIPT_SIZE_LABELS,
+  VISIBLE_RECEIPT_SIZES,
+} from './invoiceUtils';
 
 function escapeHtml(value: string): string {
   return value
@@ -89,20 +67,31 @@ function buildStyles(size: ReceiptSize): string {
     `
     body.size-58mm { width: 58mm; max-width: 58mm; padding: 3mm 2mm; font-size: 10px; }
     body.size-80mm { width: 80mm; max-width: 80mm; padding: 4mm 3mm; font-size: 11px; }
-    body.size-a4 { width: 210mm; max-width: 210mm; min-height: 280mm; padding: 10mm 12mm; font-size: 13px; }
+    body.size-a4 {
+      width: 100%;
+      max-width: 210mm;
+      min-height: auto;
+      margin: 0 auto;
+      padding: 8mm 10mm;
+      font-size: 12px;
+      overflow-x: hidden;
+    }
     .invoice-meta {
       margin-bottom: 10px;
       position: relative;
       z-index: 2;
     }
     .invoice-meta__row {
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 6px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
       font-size: ${compact ? '9px' : '12px'};
       color: #334155;
       margin-bottom: 4px;
+    }
+    .invoice-meta__row > span {
+      min-width: 0;
+      overflow-wrap: anywhere;
     }
     .invoice-no {
       font-family: 'Courier New', monospace;
@@ -138,6 +127,21 @@ function buildStyles(size: ReceiptSize): string {
       z-index: 2;
     }
     ${hideUnit ? '.col-unit { display: none; }' : ''}
+    .doc-table {
+      table-layout: fixed;
+      width: 100%;
+    }
+    .doc-table .col-product { width: 36%; word-break: break-word; }
+    .doc-table .col-qty { width: 10%; }
+    .doc-table .col-unit { width: 12%; }
+    .doc-table .col-price { width: 18%; }
+    .doc-table .col-total { width: 18%; }
+    .doc-total-box .num {
+      flex-shrink: 0;
+      white-space: nowrap;
+      direction: ltr;
+      unicode-bidi: embed;
+    }
     .line-name { display: block; font-weight: 600; }
     .line-sku {
       display: block;
@@ -173,14 +177,14 @@ export function buildInvoiceHtml(data: InvoiceData, size: ReceiptSize): string {
     .map(
       (line) => `
       <tr>
-        <td>
+        <td class="col-product">
           <span class="line-name">${escapeHtml(line.productName)}</span>
           ${line.sku?.trim() ? `<span class="line-sku">${escapeHtml(line.sku.trim())}</span>` : ''}
         </td>
-        <td class="num">${line.qty}</td>
+        <td class="num col-qty">${line.qty}</td>
         <td class="col-unit">${escapeHtml(line.unit ?? 'قطعة')}</td>
-        <td class="num">${formatMoney(line.unitPrice)}</td>
-        <td class="num">${formatMoney(line.lineTotal)}</td>
+        <td class="num col-price">${formatMoney(line.unitPrice)}</td>
+        <td class="num col-total">${formatMoney(line.lineTotal)}</td>
       </tr>`,
     )
     .join('');
@@ -238,11 +242,11 @@ export function buildInvoiceHtml(data: InvoiceData, size: ReceiptSize): string {
     <table class="doc-table">
       <thead>
         <tr>
-          <th>المنتج</th>
-          <th class="num">الكمية</th>
+          <th class="col-product">المنتج</th>
+          <th class="num col-qty">الكمية</th>
           <th class="col-unit">الوحدة</th>
-          <th class="num">السعر</th>
-          <th class="num">الإجمالي</th>
+          <th class="num col-price">السعر</th>
+          <th class="num col-total">الإجمالي</th>
         </tr>
       </thead>
       <tbody>${rows}</tbody>
@@ -259,7 +263,10 @@ export function buildInvoiceHtml(data: InvoiceData, size: ReceiptSize): string {
       <strong>طريقة الدفع:</strong> ${paymentLabel(data.paymentType)}
     </div>
 
-    <footer class="doc-footer">${escapeHtml(footerText)}</footer>
+    <footer class="doc-footer">
+      <p>${escapeHtml(footerText)}</p>
+      <p class="doc-footer__management">${escapeHtml(COMPANY_RECEIPT_MANAGEMENT)}</p>
+    </footer>
   </div>
 </body>
 </html>`;
@@ -303,22 +310,4 @@ export function saveInvoicePdf(data: InvoiceData, size: ReceiptSize): boolean {
 
 export function buildInvoiceNumber(saleId: string): string {
   return `INV-${saleId.slice(0, 8).toUpperCase()}`;
-}
-
-export const VISIBLE_RECEIPT_SIZES: ReceiptSize[] = ['58mm', '80mm', 'a4'];
-
-export const RECEIPT_SIZE_LABELS: Record<ReceiptSize, string> = {
-  '58mm': '58mm (حراري)',
-  '80mm': '80mm (حراري)',
-  a4: 'A4',
-};
-
-export function computeInvoiceTotals(subtotal: number, taxRate: number) {
-  const taxAmount = taxRate > 0 ? (subtotal * taxRate) / 100 : 0;
-  return {
-    subtotal,
-    taxRate,
-    taxAmount,
-    total: subtotal + taxAmount,
-  };
 }

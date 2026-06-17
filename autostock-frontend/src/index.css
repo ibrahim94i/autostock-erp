@@ -115,37 +115,29 @@ body {
     margin-bottom: 16px;
     padding-bottom: 12px;
     border-bottom: 2px solid #1e3a5f;
+    text-align: center;
   }
 
-  .doc-letterhead__row {
-    display: flex !important;
-    align-items: center;
-    gap: 16px;
-    direction: rtl;
+  .doc-letterhead__logo-center {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 8px;
   }
 
-  .doc-letterhead__logo img {
-    width: 72px;
-    height: 72px;
+  .doc-letterhead__logo-center img {
+    width: 220px;
+    max-width: 92%;
+    height: auto;
     object-fit: contain;
     print-color-adjust: exact;
     -webkit-print-color-adjust: exact;
   }
 
+  .doc-letterhead__info--center,
   .doc-letterhead__info {
-    flex: 1;
-    text-align: right;
+    text-align: center;
   }
 
-  .doc-letterhead__name {
-    margin: 0;
-    font-size: 16px;
-    font-weight: 800;
-    color: #1e3a5f;
-    line-height: 1.35;
-  }
-
-  .doc-letterhead__tagline,
   .doc-letterhead__warehouse,
   .doc-letterhead__address {
     margin: 2px 0 0;
@@ -161,7 +153,6 @@ body {
     color: #334155;
     direction: ltr;
     unicode-bidi: embed;
-    text-align: right;
   }
 
   .doc-letterhead__title {
@@ -259,6 +250,13 @@ body {
     color: #64748b;
     position: relative;
     z-index: 2;
+  }
+
+  .doc-footer__management {
+    margin: 6px 0 0;
+    font-size: 12px;
+    font-weight: 700;
+    color: #1e3a5f;
   }
 
   .doc-signature {

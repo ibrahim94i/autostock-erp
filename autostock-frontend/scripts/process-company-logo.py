@@ -1,7 +1,6 @@
 """Process company logo: clean background, tight crop, optimize size."""
 from __future__ import annotations
 
-import base64
 import math
 from pathlib import Path
 
@@ -87,10 +86,11 @@ def main() -> None:
     cropped.save(OUT_PNG, 'PNG', optimize=True)
     cropped.save(OUT_PUBLIC, 'PNG', optimize=True)
 
-    b64 = base64.b64encode(OUT_PNG.read_bytes()).decode('ascii')
     OUT_DATAURL.write_text(
-        '/** Company logo for print windows */\n'
-        f"export const COMPANY_LOGO_DATA_URL = 'data:image/png;base64,{b64}';\n",
+        '/** Default company logo — served from public/ to keep JS bundles small. */\n'
+        "export const COMPANY_LOGO_URL = '/company-logo.png';\n\n"
+        '/** Fallback when settings have no custom logo (img src accepts URL or data URL). */\n'
+        'export const COMPANY_LOGO_DATA_URL = COMPANY_LOGO_URL;\n',
         encoding='utf-8',
     )
     print(f'Saved {OUT_PNG} ({cropped.size[0]}x{cropped.size[1]}, {OUT_PNG.stat().st_size // 1024}KB)')
