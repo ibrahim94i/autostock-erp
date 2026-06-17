@@ -1,4 +1,4 @@
-import { useEffect, useState, type FormEvent } from 'react';
+import { useEffect, useMemo, useState, type FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
@@ -21,6 +21,7 @@ import {
   UnauthorizedError,
 } from '../api';
 import type { CashRegister, CashRegisterSummary } from '../types';
+import { computeCashRegisterSummary } from '../utils/cashSummary';
 
 function parseAmount(value: string | number | null | undefined): number {
   if (value === null || value === undefined) return 0;
@@ -174,7 +175,12 @@ export function CashRegisterPage() {
   });
 
   const register = todayQuery.data?.register ?? null;
-  const summary = todayQuery.data?.summary ?? null;
+  const summary = useMemo(() => {
+    if (!register?.transactions) {
+      return todayQuery.data?.summary ?? null;
+    }
+    return computeCashRegisterSummary(register.openingBalance, register.transactions);
+  }, [register, todayQuery.data?.summary]);
   const isOpen = register?.status === 'open';
   const isClosed = register?.status === 'closed';
 

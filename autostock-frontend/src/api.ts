@@ -1212,9 +1212,7 @@ export function cashTransactionTypeLabel(type: string): string {
   }
 }
 
-export function isCashOutflowTransaction(type: string): boolean {
-  return type === 'payment_out' || type === 'expense';
-}
+export { isCashOutflowTransaction } from './utils/cashSummary';
 
 export async function fetchExpenses(params: {
   from?: string;

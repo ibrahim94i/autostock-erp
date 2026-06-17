@@ -16,6 +16,7 @@ import {
   TableSkeleton,
 } from './ReportShell';
 import { exportToExcel } from '../../utils/exportExcel';
+import { computeCashRegisterSummary } from '../../utils/cashSummary';
 import { formatDisplayDate, todayIsoDate } from '../../utils/reportDates';
 
 interface DailyReportTabProps {
@@ -74,23 +75,30 @@ export function DailyReportTab({ onPeriodChange }: DailyReportTabProps) {
     queryFn: async () => {
       if (isToday) {
         const today = await fetchCashToday();
-        return today.register && today.summary
-          ? {
-              opening: parseQuantity(today.register.openingBalance),
-              totalIn: parseQuantity(today.summary.totalIn),
-              totalOut: parseQuantity(today.summary.totalOut),
-              closing: parseQuantity(today.summary.expectedBalance),
-            }
-          : null;
+        if (!today.register) return null;
+        const summary = computeCashRegisterSummary(
+          today.register.openingBalance,
+          today.register.transactions ?? [],
+        );
+        return {
+          opening: parseQuantity(today.register.openingBalance),
+          totalIn: parseQuantity(summary.totalIn),
+          totalOut: parseQuantity(summary.totalOut),
+          closing: parseQuantity(summary.expectedBalance),
+        };
       }
       const history = await fetchCashHistory(appliedDate, appliedDate);
       const entry = history[0];
-      if (!entry?.summary) return null;
+      if (!entry) return null;
+      const summary = computeCashRegisterSummary(
+        entry.openingBalance,
+        entry.transactions ?? [],
+      );
       return {
         opening: parseQuantity(entry.openingBalance),
-        totalIn: parseQuantity(entry.summary.totalIn),
-        totalOut: parseQuantity(entry.summary.totalOut),
-        closing: parseQuantity(entry.summary.expectedBalance),
+        totalIn: parseQuantity(summary.totalIn),
+        totalOut: parseQuantity(summary.totalOut),
+        closing: parseQuantity(summary.expectedBalance),
       };
     },
   });
