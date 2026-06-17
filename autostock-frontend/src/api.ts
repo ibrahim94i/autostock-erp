@@ -49,9 +49,11 @@ import type {
   InventoryMovementRow,
   CashTodayResponse,
   CashRegister,
+  CashTransaction,
   CashHistoryEntry,
   OpenCashRegisterPayload,
   CloseCashRegisterPayload,
+  CreateCashDepositPayload,
   Expense,
   ExpenseCategory,
   ExpensesListResponse,
@@ -1184,6 +1186,17 @@ export async function closeCashRegister(
   return res.json() as Promise<CashRegister>;
 }
 
+export async function createCashDeposit(
+  payload: CreateCashDepositPayload,
+): Promise<CashTransaction> {
+  const res = await authedFetch('/cash/deposit', {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  });
+  if (!res.ok) throw new Error(await parseApiError(res));
+  return res.json() as Promise<CashTransaction>;
+}
+
 export async function fetchCashHistory(
   from?: string,
   to?: string,
@@ -1203,6 +1216,8 @@ export function cashTransactionTypeLabel(type: string): string {
       return 'بيع نقدي';
     case 'payment_in':
       return 'دفعة مستلمة';
+    case 'cash_deposit':
+      return 'إيداع نقد';
     case 'payment_out':
       return 'دفعة مورد';
     case 'expense':

@@ -17,6 +17,7 @@ import { RolesGuard } from '../common/guards/roles.guard';
 import { CashService } from './cash.service';
 import { CashHistoryQueryDto } from './dto/cash-history-query.dto';
 import { CloseCashRegisterDto } from './dto/close-cash-register.dto';
+import { CreateCashDepositDto } from './dto/create-cash-deposit.dto';
 import { OpenCashRegisterDto } from './dto/open-cash-register.dto';
 
 @Controller('cash')
@@ -47,6 +48,15 @@ export class CashController {
     @Req() req: Request & { user: JwtPayload },
   ) {
     return this.cashService.close(dto, req.user.userId);
+  }
+
+  @Post('deposit')
+  @Roles('admin', 'cashier', 'accountant')
+  deposit(
+    @Body() dto: CreateCashDepositDto,
+    @Req() req: Request & { user: JwtPayload },
+  ) {
+    return this.cashService.createDeposit(dto, req.user.userId);
   }
 
   @Get('history')

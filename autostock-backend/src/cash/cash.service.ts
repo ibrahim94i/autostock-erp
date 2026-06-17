@@ -16,6 +16,8 @@ import { PrismaService } from '../common/prisma/prisma.service';
 
 import { CloseCashRegisterDto } from './dto/close-cash-register.dto';
 
+import { CreateCashDepositDto } from './dto/create-cash-deposit.dto';
+
 import { CashHistoryQueryDto } from './dto/cash-history-query.dto';
 
 import { OpenCashRegisterDto } from './dto/open-cash-register.dto';
@@ -333,6 +335,49 @@ export class CashService {
 
 
     return { totalIn, totalOut, expectedBalance };
+
+  }
+
+  async createDeposit(dto: CreateCashDepositDto, userId: string) {
+    const existing = await this.prisma.cashTransaction.findUnique({
+      where: { reference: dto.clientUuid },
+    });
+
+    if (existing) {
+      return existing;
+    }
+
+    const today = startOfUtcDay(new Date());
+    const register = await this.prisma.cashRegister.findFirst({
+      where: { date: today, status: 'open' },
+      orderBy: { createdAt: 'desc' },
+    });
+
+    if (!register) {
+      throw new BadRequestException('الصندوق غير مفتوح — افتح الصندوق أولاً');
+    }
+
+    const source = dto.source?.trim();
+    const note = dto.description?.trim();
+    let description = 'إيداع نقد للصندوق';
+    if (source && note) {
+      description = `إيداع نقد — ${source} — ${note}`;
+    } else if (source) {
+      description = `إيداع نقد — ${source}`;
+    } else if (note) {
+      description = `إيداع نقد — ${note}`;
+    }
+
+    return this.prisma.cashTransaction.create({
+      data: {
+        registerId: register.id,
+        type: 'cash_deposit',
+        amount: dto.amount,
+        description,
+        reference: dto.clientUuid,
+        createdBy: userId,
+      },
+    });
 
   }
 

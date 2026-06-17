@@ -484,6 +484,13 @@ export interface CloseCashRegisterPayload {
   notes?: string;
 }
 
+export interface CreateCashDepositPayload {
+  amount: number;
+  source?: string;
+  description?: string;
+  clientUuid: string;
+}
+
 export interface ExpenseCategory {
   id: string;
   name: string;

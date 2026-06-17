@@ -6,26 +6,104 @@ import {
   ArrowUpCircle,
   Loader2,
   Lock,
+  PlusCircle,
+  Printer,
   Unlock,
   Wallet,
 } from 'lucide-react';
 import {
   cashTransactionTypeLabel,
   closeCashRegister,
+  createCashDeposit,
   fetchCashToday,
   formatDateTime,
   formatPrice,
+  getUsername,
   isCashOutflowTransaction,
   openCashRegister,
   parseQuantity,
   UnauthorizedError,
 } from '../api';
-import type { CashRegister, CashRegisterSummary } from '../types';
+import type { CashRegister, CashRegisterSummary, CashTransaction } from '../types';
 import { computeCashRegisterSummary } from '../utils/cashSummary';
+import {
+  cashDepositVoucherNumber,
+  parseCashDepositDescription,
+  printCashDepositVoucher,
+} from '../pos/cashDepositVoucherPrint';
 
 function parseAmount(value: string | number | null | undefined): number {
   if (value === null || value === undefined) return 0;
   return typeof value === 'string' ? parseFloat(value) || 0 : value;
+}
+
+function printDepositVoucher(tx: CashTransaction) {
+  const parsed = parseCashDepositDescription(tx.description);
+  printCashDepositVoucher({
+    voucherNumber: cashDepositVoucherNumber(tx.id),
+    amount: parseQuantity(tx.amount),
+    source: parsed.source,
+    description: parsed.note,
+    receivedBy: getUsername() ?? tx.createdBy,
+    createdAt: tx.createdAt,
+  });
+}
+
+function TransactionTable({
+  transactions,
+  showPrint = false,
+}: {
+  transactions: CashTransaction[];
+  showPrint?: boolean;
+}) {
+  return (
+    <table className="w-full min-w-[640px] border-collapse text-sm">
+      <thead>
+        <tr className="border-b border-slate-200 bg-slate-50 text-slate-600">
+          <th className="px-4 py-3 text-right font-semibold">النوع</th>
+          <th className="px-4 py-3 text-right font-semibold">الوصف</th>
+          <th className="px-4 py-3 text-right font-semibold">المبلغ</th>
+          <th className="px-4 py-3 text-right font-semibold">الوقت</th>
+          {showPrint && <th className="px-4 py-3 text-right font-semibold">بوصل</th>}
+        </tr>
+      </thead>
+      <tbody>
+        {transactions.map((tx) => (
+          <tr key={tx.id} className="border-b border-slate-100">
+            <td className="px-4 py-3">{cashTransactionTypeLabel(tx.type)}</td>
+            <td className="px-4 py-3 text-slate-600">{tx.description ?? '—'}</td>
+            <td
+              className={[
+                'px-4 py-3 font-semibold',
+                isCashOutflowTransaction(tx.type) ? 'text-red-700' : 'text-emerald-700',
+              ].join(' ')}
+            >
+              {isCashOutflowTransaction(tx.type) ? '−' : '+'}
+              {formatPrice(parseQuantity(tx.amount))}
+            </td>
+            <td className="px-4 py-3 text-slate-500">{formatDateTime(tx.createdAt)}</td>
+            {showPrint && (
+              <td className="px-4 py-3">
+                {tx.type === 'cash_deposit' ? (
+                  <button
+                    type="button"
+                    onClick={() => printDepositVoucher(tx)}
+                    className="inline-flex min-h-[36px] items-center gap-1 rounded-lg border border-slate-200 px-2 py-1 text-xs font-medium text-slate-700 hover:bg-slate-50"
+                    title="طباعة بوصل الإيداع"
+                  >
+                    <Printer className="h-3.5 w-3.5" />
+                    طباعة
+                  </button>
+                ) : (
+                  '—'
+                )}
+              </td>
+            )}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
 }
 
 function SummaryCards({ summary }: { summary: CashRegisterSummary }) {
@@ -118,6 +196,10 @@ export function CashRegisterPage() {
   const [closeNotes, setCloseNotes] = useState('');
   const [showCloseForm, setShowCloseForm] = useState(false);
   const [showNewOpenForm, setShowNewOpenForm] = useState(false);
+  const [showDepositForm, setShowDepositForm] = useState(false);
+  const [depositAmount, setDepositAmount] = useState('');
+  const [depositSource, setDepositSource] = useState('');
+  const [depositNote, setDepositNote] = useState('');
   const [formError, setFormError] = useState('');
 
   useEffect(() => {
@@ -174,6 +256,35 @@ export function CashRegisterPage() {
     onError: (err: Error) => setFormError(err.message),
   });
 
+  const depositMutation = useMutation({
+    mutationFn: () => {
+      const amount = parseFloat(depositAmount);
+      if (Number.isNaN(amount) || amount <= 0) {
+        throw new Error('أدخل مبلغ إيداع صالح');
+      }
+      const source = depositSource.trim();
+      if (!source) {
+        throw new Error('أدخل اسم المُودِع (مثل: المدير)');
+      }
+      return createCashDeposit({
+        amount,
+        source,
+        description: depositNote.trim() || undefined,
+        clientUuid: crypto.randomUUID(),
+      });
+    },
+    onSuccess: async (tx) => {
+      setFormError('');
+      setDepositAmount('');
+      setDepositSource('');
+      setDepositNote('');
+      setShowDepositForm(false);
+      await queryClient.invalidateQueries({ queryKey: ['cash'] });
+      printDepositVoucher(tx);
+    },
+    onError: (err: Error) => setFormError(err.message),
+  });
+
   const register = todayQuery.data?.register ?? null;
   const summary = useMemo(() => {
     if (!register?.transactions) {
@@ -192,6 +303,11 @@ export function CashRegisterPage() {
   function handleCloseSubmit(e: FormEvent) {
     e.preventDefault();
     closeMutation.mutate();
+  }
+
+  function handleDepositSubmit(e: FormEvent) {
+    e.preventDefault();
+    depositMutation.mutate();
   }
 
   return (
@@ -267,6 +383,96 @@ export function CashRegisterPage() {
 
           <SummaryCards summary={summary} />
 
+          <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+            {!showDepositForm ? (
+              <button
+                type="button"
+                onClick={() => {
+                  setFormError('');
+                  setShowDepositForm(true);
+                }}
+                className="inline-flex min-h-[44px] items-center gap-2 rounded-lg bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-emerald-700"
+              >
+                <PlusCircle className="h-4 w-4" />
+                إيداع نقد للصندوق
+              </button>
+            ) : (
+              <form onSubmit={handleDepositSubmit} className="max-w-lg space-y-4">
+                <h3 className="text-lg font-bold text-slate-900">إيداع نقد — بوصل استلام</h3>
+                <p className="text-sm text-slate-500">
+                  عند استلام مبلغ نقدي من المدير أو أي شخص، سجّله هنا واطبع بوصل الإيداع.
+                </p>
+                <label className="block text-sm font-medium text-slate-700">
+                  المبلغ
+                  <input
+                    type="number"
+                    min={0.01}
+                    step="0.01"
+                    value={depositAmount}
+                    onChange={(e) => setDepositAmount(e.target.value)}
+                    required
+                    placeholder="0.00"
+                    className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2.5 text-base outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200"
+                  />
+                </label>
+                <label className="block text-sm font-medium text-slate-700">
+                  المُودِع (من أين جاءت الفلوس)
+                  <input
+                    type="text"
+                    value={depositSource}
+                    onChange={(e) => setDepositSource(e.target.value)}
+                    required
+                    placeholder="مثال: المدير — أبو علي"
+                    className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2.5 text-base outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200"
+                  />
+                </label>
+                <label className="block text-sm font-medium text-slate-700">
+                  ملاحظات (اختياري)
+                  <input
+                    type="text"
+                    value={depositNote}
+                    onChange={(e) => setDepositNote(e.target.value)}
+                    placeholder="سبب الإيداع أو تفاصيل إضافية"
+                    className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2.5 text-base outline-none focus:border-emerald-500"
+                  />
+                </label>
+                {formError && (
+                  <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">{formError}</p>
+                )}
+                <div className="flex flex-wrap gap-3">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowDepositForm(false);
+                      setFormError('');
+                    }}
+                    disabled={depositMutation.isPending}
+                    className="rounded-lg border border-slate-300 px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+                  >
+                    إلغاء
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={depositMutation.isPending}
+                    className="inline-flex items-center gap-2 rounded-lg bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-emerald-700 disabled:opacity-60"
+                  >
+                    {depositMutation.isPending ? (
+                      <>
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                        جاري الحفظ...
+                      </>
+                    ) : (
+                      <>
+                        <Printer className="h-4 w-4" />
+                        حفظ وطباعة البوصل
+                      </>
+                    )}
+                  </button>
+                </div>
+              </form>
+            )}
+          </div>
+
           <div className="overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-sm">
             <div className="border-b border-slate-200 px-4 py-3">
               <h3 className="font-bold text-slate-900">معاملات اليوم</h3>
@@ -274,38 +480,12 @@ export function CashRegisterPage() {
             {(register.transactions?.length ?? 0) === 0 ? (
               <p className="p-8 text-center text-sm text-slate-400">لا توجد معاملات بعد</p>
             ) : (
-              <table className="w-full min-w-[640px] border-collapse text-sm">
-                <thead>
-                  <tr className="border-b border-slate-200 bg-slate-50 text-slate-600">
-                    <th className="px-4 py-3 text-right font-semibold">النوع</th>
-                    <th className="px-4 py-3 text-right font-semibold">الوصف</th>
-                    <th className="px-4 py-3 text-right font-semibold">المبلغ</th>
-                    <th className="px-4 py-3 text-right font-semibold">الوقت</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {register.transactions!.map((tx) => (
-                    <tr key={tx.id} className="border-b border-slate-100">
-                      <td className="px-4 py-3">{cashTransactionTypeLabel(tx.type)}</td>
-                      <td className="px-4 py-3 text-slate-600">{tx.description ?? '—'}</td>
-                      <td
-                        className={[
-                          'px-4 py-3 font-semibold',
-                          isCashOutflowTransaction(tx.type) ? 'text-red-700' : 'text-emerald-700',
-                        ].join(' ')}
-                      >
-                        {isCashOutflowTransaction(tx.type) ? '−' : '+'}
-                        {formatPrice(parseQuantity(tx.amount))}
-                      </td>
-                      <td className="px-4 py-3 text-slate-500">{formatDateTime(tx.createdAt)}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+              <TransactionTable transactions={register.transactions!} showPrint />
             )}
           </div>
 
           {!showCloseForm ? (
+            <div className="flex flex-wrap gap-3">
             <button
               type="button"
               onClick={() => {
@@ -320,6 +500,7 @@ export function CashRegisterPage() {
               <Lock className="h-4 w-4" />
               إغلاق الصندوق
             </button>
+            </div>
           ) : (
             <form
               onSubmit={handleCloseSubmit}
@@ -385,34 +566,7 @@ export function CashRegisterPage() {
               <div className="border-b border-slate-200 px-4 py-3">
                 <h3 className="font-bold text-slate-900">معاملات اليوم</h3>
               </div>
-              <table className="w-full min-w-[640px] border-collapse text-sm">
-                <thead>
-                  <tr className="border-b border-slate-200 bg-slate-50 text-slate-600">
-                    <th className="px-4 py-3 text-right font-semibold">النوع</th>
-                    <th className="px-4 py-3 text-right font-semibold">الوصف</th>
-                    <th className="px-4 py-3 text-right font-semibold">المبلغ</th>
-                    <th className="px-4 py-3 text-right font-semibold">الوقت</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {register.transactions!.map((tx) => (
-                    <tr key={tx.id} className="border-b border-slate-100">
-                      <td className="px-4 py-3">{cashTransactionTypeLabel(tx.type)}</td>
-                      <td className="px-4 py-3 text-slate-600">{tx.description ?? '—'}</td>
-                      <td
-                        className={[
-                          'px-4 py-3 font-semibold',
-                          isCashOutflowTransaction(tx.type) ? 'text-red-700' : 'text-emerald-700',
-                        ].join(' ')}
-                      >
-                        {isCashOutflowTransaction(tx.type) ? '−' : '+'}
-                        {formatPrice(parseQuantity(tx.amount))}
-                      </td>
-                      <td className="px-4 py-3 text-slate-500">{formatDateTime(tx.createdAt)}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+              <TransactionTable transactions={register.transactions!} showPrint />
             </div>
           )}
 

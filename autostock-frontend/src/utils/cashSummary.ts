@@ -1,6 +1,6 @@
 import type { CashRegisterSummary, CashTransaction } from '../types';
 
-const INFLOW_TYPES = new Set(['sale', 'payment_in']);
+const INFLOW_TYPES = new Set(['sale', 'payment_in', 'cash_deposit']);
 const OUTFLOW_TYPES = new Set(['payment_out', 'expense']);
 
 function parseMoney(value: string | number | null | undefined): number {
