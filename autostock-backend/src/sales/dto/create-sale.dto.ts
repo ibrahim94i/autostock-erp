@@ -32,6 +32,15 @@ export class CreateSaleItemDto {
   @IsNumber()
   @IsPositive()
   unitCost: number;
+
+  @IsOptional()
+  @IsIn(['piece', 'carton'])
+  qtyUnit?: 'piece' | 'carton';
+
+  @IsOptional()
+  @IsNumber()
+  @IsPositive()
+  displayQty?: number;
 }
 
 export class CreateSaleDto {

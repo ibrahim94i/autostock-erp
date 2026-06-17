@@ -184,6 +184,8 @@ export interface CreateSaleItemPayload {
   qty: number;
   unitPrice: number;
   unitCost: number;
+  qtyUnit?: 'piece' | 'carton';
+  displayQty?: number;
 }
 
 export interface CreateSalePayload {
@@ -412,6 +414,7 @@ export interface SalesPeriodReportRow {
 export interface ProductReportRow {
   productId: string;
   name: string;
+  unitsPerCarton: number;
   qtySold: number;
   revenue: number;
   cost: number;
@@ -557,6 +560,8 @@ export interface SaleInvoiceResponse {
     id?: string;
     productId: string;
     qty: string | number;
+    qtyUnit?: string;
+    displayQty?: string | number;
     unitPrice: string | number;
     unitCost: string | number;
     product: { id: string; name: string; sku: string; unitsPerCarton?: number };
@@ -578,6 +583,8 @@ export interface CreateSaleReturnPayload {
     locationId: string;
     qty: number;
     unitCost: number;
+    qtyUnit?: 'piece' | 'carton';
+    displayQty?: number;
   }>;
   refundMethod: 'cash' | 'credit';
   reason: string;

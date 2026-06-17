@@ -13,10 +13,11 @@ import {
 import type { CreateSaleReturnPayload, Receipt, SaleInvoiceResponse } from '../types';
 import { monthStartIsoDate, todayIsoDate } from '../utils/reportDates';
 import {
+  formatDualQty,
+  formatStoredQty,
   maxReturnableInUnit,
   piecesToDisplayQty,
   productUnitsPerCarton,
-  qtyUnitLabel,
   supportsCarton,
   toPieceQty,
   type QtyUnit,
@@ -29,11 +30,24 @@ interface ReturnLineState {
   sku: string;
   unitsPerCarton: number;
   soldQty: number;
+  soldQtyUnit?: QtyUnit;
+  soldDisplayQty?: number;
   returnedQty: number;
   returnUnit: QtyUnit;
   inputReturnQty: number;
   unitPrice: number;
   unitCost: number;
+}
+
+function resolveLineQtyUnit(
+  item: SaleInvoiceResponse['items'][number],
+  saleType: string,
+  unitsPerCarton: number,
+): QtyUnit {
+  if (item.qtyUnit === 'carton' || item.qtyUnit === 'piece') {
+    return item.qtyUnit;
+  }
+  return defaultReturnUnit(saleType, unitsPerCarton);
 }
 
 function defaultReturnUnit(saleType: string, unitsPerCarton: number): QtyUnit {
@@ -55,6 +69,11 @@ function buildReturnLines(invoice: SaleInvoiceResponse): ReturnLineState[] {
     const soldQty = parseQuantity(item.qty);
     const returnedQty = parseQuantity(returnedMap[item.productId] ?? 0);
     const unitsPerCarton = productUnitsPerCarton(item.product.unitsPerCarton ?? undefined);
+    const soldQtyUnit = resolveLineQtyUnit(item, saleType, unitsPerCarton);
+    const soldDisplayRaw =
+      item.displayQty !== undefined && item.displayQty !== null
+        ? parseQuantity(item.displayQty)
+        : piecesToDisplayQty(soldQty, soldQtyUnit, unitsPerCarton);
 
     return {
       lineId: item.id ?? `${item.productId}-${index}`,
@@ -63,8 +82,10 @@ function buildReturnLines(invoice: SaleInvoiceResponse): ReturnLineState[] {
       sku: item.product.sku,
       unitsPerCarton,
       soldQty,
+      soldQtyUnit,
+      soldDisplayQty: soldDisplayRaw,
       returnedQty,
-      returnUnit: defaultReturnUnit(saleType, unitsPerCarton),
+      returnUnit: soldQtyUnit,
       inputReturnQty: 0,
       unitPrice: parseQuantity(item.unitPrice),
       unitCost: parseQuantity(item.unitCost),
@@ -72,40 +93,36 @@ function buildReturnLines(invoice: SaleInvoiceResponse): ReturnLineState[] {
   });
 }
 
-function formatQtyDisplay(pieces: number, unit: QtyUnit, unitsPerCarton: number): string {
-  const qty = piecesToDisplayQty(pieces, unit, unitsPerCarton);
-  const label = qtyUnitLabel(unit, qty);
-  const formatted = Number.isInteger(qty) ? String(qty) : qty.toLocaleString('ar-EG', { maximumFractionDigits: 2 });
-  return `${formatted} ${label}`;
+function formatQtyDisplay(line: ReturnLineState, pieces: number): string {
+  if (pieces === line.soldQty && line.soldQtyUnit) {
+    return formatStoredQty(
+      line.soldQty,
+      line.soldQtyUnit,
+      line.soldDisplayQty,
+      line.unitsPerCarton,
+    );
+  }
+  return formatDualQty(pieces, line.unitsPerCarton);
 }
 
 function aggregateReturnItems(
   lines: ReturnLineState[],
   locationId: string,
 ): CreateSaleReturnPayload['items'] {
-  const byProduct = new Map<
-    string,
-    { productId: string; locationId: string; qty: number; unitCost: number }
-  >();
-
-  for (const line of lines) {
-    const pieces = returnQtyPieces(line);
-    if (pieces <= 0) continue;
-
-    const existing = byProduct.get(line.productId);
-    if (existing) {
-      existing.qty += pieces;
-    } else {
-      byProduct.set(line.productId, {
+  return lines
+    .map((line) => {
+      const pieces = returnQtyPieces(line);
+      if (pieces <= 0) return null;
+      return {
         productId: line.productId,
         locationId,
         qty: pieces,
+        qtyUnit: line.returnUnit,
+        displayQty: line.inputReturnQty,
         unitCost: line.unitCost,
-      });
-    }
-  }
-
-  return [...byProduct.values()];
+      };
+    })
+    .filter((item): item is NonNullable<typeof item> => item !== null);
 }
 
 export function SalesReturnsPage() {
@@ -406,13 +423,13 @@ export function SalesReturnsPage() {
                       <td className="px-3 py-2 text-sm">{line.productName}</td>
                       <td className="px-3 py-2 text-sm">{line.sku}</td>
                       <td className="px-3 py-2 text-sm">
-                        {formatQtyDisplay(line.soldQty, 'piece', line.unitsPerCarton)}
+                        {formatQtyDisplay(line, line.soldQty)}
                       </td>
                       <td className="px-3 py-2 text-sm">
-                        {formatQtyDisplay(line.returnedQty, 'piece', line.unitsPerCarton)}
+                        {formatQtyDisplay(line, line.returnedQty)}
                       </td>
                       <td className="px-3 py-2 text-sm">
-                        {formatQtyDisplay(remainingPieces, 'piece', line.unitsPerCarton)}
+                        {formatQtyDisplay(line, remainingPieces)}
                       </td>
                       <td className="px-3 py-2 text-sm">
                         {canToggleUnit ? (

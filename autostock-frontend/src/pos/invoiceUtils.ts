@@ -68,6 +68,8 @@ export function invoiceLineFromCart(line: CartLine): InvoiceLine {
 
 export interface SaleInvoiceItemSource {
   qty: string | number;
+  qtyUnit?: string | null;
+  displayQty?: string | number | null;
   unitPrice: string | number;
   product: {
     name: string;
@@ -88,10 +90,18 @@ export function invoiceLineFromSaleItem(
   const qtyPieces = parseInvoiceNumber(item.qty);
   const unitPricePiece = parseInvoiceNumber(item.unitPrice);
   const upc = productUnitsPerCarton(item.product.unitsPerCarton ?? undefined);
-  const soldAsCarton = saleType === 'wholesale' && upc > 1;
+  const storedUnit = item.qtyUnit === 'carton' ? 'carton' : 'piece';
+  const storedDisplay =
+    item.displayQty !== undefined && item.displayQty !== null
+      ? parseInvoiceNumber(item.displayQty)
+      : null;
 
-  if (soldAsCarton) {
-    const cartonQty = qtyPieces / upc;
+  const soldAsCarton =
+    storedUnit === 'carton' ||
+    (storedDisplay === null && saleType === 'wholesale' && upc > 1);
+
+  if (soldAsCarton && upc > 1) {
+    const cartonQty = storedDisplay ?? qtyPieces / upc;
     const unitPriceCarton = unitPricePiece * upc;
     return {
       productName: item.product.name,
@@ -103,12 +113,13 @@ export function invoiceLineFromSaleItem(
     };
   }
 
+  const pieceQty = storedDisplay ?? qtyPieces;
   return {
     productName: item.product.name,
     sku: item.product.sku,
-    qty: qtyPieces,
+    qty: pieceQty,
     unit: receiptUnitLabel('piece'),
     unitPrice: unitPricePiece,
-    lineTotal: qtyPieces * unitPricePiece,
+    lineTotal: pieceQty * unitPricePiece,
   };
 }

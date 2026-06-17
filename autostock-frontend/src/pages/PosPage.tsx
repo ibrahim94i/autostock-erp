@@ -338,6 +338,8 @@ export function PosPage() {
           productId: line.product.id,
           locationId,
           qty: line.qty,
+          qtyUnit: line.saleUnit,
+          displayQty: line.inputQty,
           unitPrice: lineApiUnitPrice(line),
           unitCost: productUnitCost(line.product),
         })),

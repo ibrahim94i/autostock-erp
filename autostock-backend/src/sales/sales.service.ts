@@ -14,6 +14,10 @@ import { randomUUID } from 'crypto';
 
 import { PrismaService } from '../common/prisma/prisma.service';
 import { pieceUnitCostFromProduct } from '../common/utils/product-cost.util';
+import {
+  normalizeSaleItemUnits,
+  type QtyUnit,
+} from '../common/utils/qty-units.util';
 
 import {
 
@@ -76,17 +80,27 @@ export class SalesService {
 
     );
 
-    const saleItems = dto.items.map((item) => ({
+    const productById = new Map(products.map((p) => [p.id, p]));
 
-      ...item,
+    const saleItems = dto.items.map((item) => {
+      const product = productById.get(item.productId);
+      const upc = product?.unitsPerCarton ?? 1;
+      const units = normalizeSaleItemUnits(
+        item.qty,
+        item.qtyUnit as QtyUnit | undefined,
+        item.displayQty,
+        upc,
+      );
 
-      unitCost:
-
-        averageCostByProduct.get(item.productId) ??
-
-        new Prisma.Decimal(item.unitCost),
-
-    }));
+      return {
+        ...item,
+        qtyUnit: units.qtyUnit,
+        displayQty: units.displayQty,
+        unitCost:
+          averageCostByProduct.get(item.productId) ??
+          new Prisma.Decimal(item.unitCost),
+      };
+    });
 
     const subtotal = saleItems.reduce(
 
@@ -161,6 +175,10 @@ export class SalesService {
                 productId: item.productId,
 
                 qty: item.qty,
+
+                qtyUnit: item.qtyUnit,
+
+                displayQty: item.displayQty,
 
                 unitPrice: item.unitPrice,
 
@@ -271,6 +289,8 @@ export class SalesService {
           productId: item.productId,
           locationId: item.locationId,
           qty: item.qty,
+          qtyUnit: item.qtyUnit ?? 'piece',
+          displayQty: item.displayQty ?? item.qty,
           unitCost: item.unitCost,
         })),
       },
@@ -291,6 +311,8 @@ export class SalesService {
               saleId: sale.id,
               productId: item.productId,
               qty: item.qty,
+              qtyUnit: item.qtyUnit ?? 'piece',
+              displayQty: item.displayQty ?? item.qty,
               reason: dto.reason,
               refundAmount: itemRefund,
             },

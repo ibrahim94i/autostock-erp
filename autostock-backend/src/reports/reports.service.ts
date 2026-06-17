@@ -430,13 +430,14 @@ export class ReportsService {
 
     const items = await this.prisma.saleItem.findMany({
       where: { saleId: { in: sales.map((s) => s.id) } },
-      include: { product: { select: { id: true, name: true } } },
+      include: { product: { select: { id: true, name: true, unitsPerCarton: true } } },
     });
 
     const grouped = new Map<
       string,
       {
         name: string;
+        unitsPerCarton: number;
         qtySold: Prisma.Decimal;
         revenue: Prisma.Decimal;
         cost: Prisma.Decimal;
@@ -446,6 +447,7 @@ export class ReportsService {
     for (const item of items) {
       const row = grouped.get(item.productId) ?? {
         name: item.product.name,
+        unitsPerCarton: item.product.unitsPerCarton,
         qtySold: new Prisma.Decimal(0),
         revenue: new Prisma.Decimal(0),
         cost: new Prisma.Decimal(0),
@@ -460,6 +462,7 @@ export class ReportsService {
       .map(([productId, row]) => ({
         productId,
         name: row.name,
+        unitsPerCarton: row.unitsPerCarton,
         qtySold: row.qtySold.toNumber(),
         revenue: row.revenue.toNumber(),
         cost: row.cost.toNumber(),

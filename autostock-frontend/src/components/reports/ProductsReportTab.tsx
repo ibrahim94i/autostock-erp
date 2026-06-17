@@ -4,6 +4,7 @@ import { FileDown, FileSpreadsheet, Search } from 'lucide-react';
 import { fetchProductsReport, formatCount, formatPrice } from '../../api';
 import { ReportShell, TableSkeleton } from './ReportShell';
 import { exportToExcel } from '../../utils/exportExcel';
+import { formatDualQty } from '../../utils/units';
 import { monthStartIsoDate, todayIsoDate } from '../../utils/reportDates';
 
 interface ProductsReportTabProps {
@@ -41,8 +42,14 @@ export function ProductsReportTab({ onPeriodChange }: ProductsReportTabProps) {
     exportToExcel(
       `تقرير-منتجات-${applied.from}_${applied.to}.xlsx`,
       'المنتجات',
-      ['المنتج', 'الكمية المباعة', 'الإيراد', 'التكلفة', 'الربح'],
-      sorted.map((r) => [r.name, r.qtySold, r.revenue, r.cost, r.profit]),
+      ['المنتج', 'الكمية (كارتون + قطع)', 'الإيراد', 'التكلفة', 'الربح'],
+      sorted.map((r) => [
+        r.name,
+        formatDualQty(r.qtySold, r.unitsPerCarton ?? 1),
+        r.revenue,
+        r.cost,
+        r.profit,
+      ]),
       [25, 15, 18, 18, 18],
     );
   }
@@ -116,7 +123,7 @@ export function ProductsReportTab({ onPeriodChange }: ProductsReportTabProps) {
               {rows.map((row) => (
                 <tr key={row.productId} className="border-b border-slate-100">
                   <td className="px-4 py-2">{row.name}</td>
-                  <td className="px-4 py-2">{formatCount(row.qtySold)}</td>
+                  <td className="px-4 py-2">{formatDualQty(row.qtySold, row.unitsPerCarton ?? 1)}</td>
                   <td className="px-4 py-2">{formatPrice(row.revenue)}</td>
                   <td className="px-4 py-2">{formatPrice(row.cost)}</td>
                   <td className="px-4 py-2 font-medium text-green-700">{formatPrice(row.profit)}</td>

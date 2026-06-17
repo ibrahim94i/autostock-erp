@@ -41,7 +41,7 @@ function newLine(): PoLineForm {
     productLabel: '',
     qty: '',
     unitCost: '',
-    qtyUnit: 'piece',
+    qtyUnit: 'carton',
     unitsPerCarton: 1,
   };
 }
@@ -112,7 +112,7 @@ export function CreatePoModal({
       productLabel: `${product.name} (${product.sku})`,
       unitCost: String(product.costPrice),
       unitsPerCarton: product.unitsPerCarton ?? 1,
-      qtyUnit: 'piece',
+      qtyUnit: supportsCarton(product.unitsPerCarton) ? 'carton' : 'piece',
     });
   }
 

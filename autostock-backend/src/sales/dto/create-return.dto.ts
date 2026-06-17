@@ -5,6 +5,7 @@ import {
   IsIn,
   IsNotEmpty,
   IsNumber,
+  IsOptional,
   IsPositive,
   IsString,
   ValidateNested,
@@ -26,6 +27,15 @@ export class CreateReturnItemDto {
   @IsNumber()
   @IsPositive()
   unitCost: number;
+
+  @IsOptional()
+  @IsIn(['piece', 'carton'])
+  qtyUnit?: 'piece' | 'carton';
+
+  @IsOptional()
+  @IsNumber()
+  @IsPositive()
+  displayQty?: number;
 }
 
 export class CreateReturnDto {

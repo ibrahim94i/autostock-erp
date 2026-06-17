@@ -210,14 +210,16 @@ model Sale {
 }
 
 model SaleItem {
-  id        String  @id @default(uuid())
-  saleId    String
-  sale      Sale    @relation(fields: [saleId], references: [id])
-  productId String
-  product   Product @relation(fields: [productId], references: [id])
-  qty       Decimal @db.Decimal(18, 4)
-  unitPrice Decimal @db.Decimal(18, 4)
-  unitCost  Decimal @db.Decimal(18, 4)
+  id         String  @id @default(uuid())
+  saleId     String
+  sale       Sale    @relation(fields: [saleId], references: [id])
+  productId  String
+  product    Product @relation(fields: [productId], references: [id])
+  qty        Decimal @db.Decimal(18, 4)
+  qtyUnit    String  @default("piece")
+  displayQty Decimal @db.Decimal(18, 4)
+  unitPrice  Decimal @db.Decimal(18, 4)
+  unitCost   Decimal @db.Decimal(18, 4)
 }
 
 model PurchaseOrder {
@@ -249,6 +251,8 @@ model Return {
   productId    String
   product      Product @relation(fields: [productId], references: [id])
   qty          Decimal @db.Decimal(18, 4)
+  qtyUnit      String  @default("piece")
+  displayQty   Decimal @db.Decimal(18, 4)
   reason       String
   refundAmount Decimal @db.Decimal(18, 4)
 }

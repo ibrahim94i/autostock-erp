@@ -8,6 +8,34 @@ export function supportsCarton(unitsPerCarton: number | undefined): boolean {
   return productUnitsPerCarton(unitsPerCarton) > 1;
 }
 
+export interface DualQtyParts {
+  cartons: number;
+  loosePieces: number;
+  totalPieces: number;
+}
+
+/** Split piece total into whole cartons + loose pieces. */
+export function splitDualQty(totalPieces: number, unitsPerCarton: number): DualQtyParts {
+  const upc = productUnitsPerCarton(unitsPerCarton);
+  const total = Math.max(0, totalPieces);
+  if (upc <= 1) {
+    return { cartons: 0, loosePieces: total, totalPieces: total };
+  }
+  const cartons = Math.floor(total / upc);
+  const loosePieces = total % upc;
+  return { cartons, loosePieces, totalPieces: total };
+}
+
+/** Combine carton + loose piece inputs into total pieces. */
+export function dualQtyToPieces(
+  cartons: number,
+  loosePieces: number,
+  unitsPerCarton: number,
+): number {
+  const upc = productUnitsPerCarton(unitsPerCarton);
+  return Math.max(0, cartons) * upc + Math.max(0, loosePieces);
+}
+
 /** Convert user input to piece quantity for API. */
 export function toPieceQty(inputQty: number, unit: QtyUnit, unitsPerCarton: number): number {
   if (unit === 'carton') {
@@ -16,21 +44,32 @@ export function toPieceQty(inputQty: number, unit: QtyUnit, unitsPerCarton: numb
   return inputQty;
 }
 
-/** Format stock balance: "75 قطعة (12 كارتون + 3 قطع)" */
-export function formatStockWithCartons(totalPieces: number, unitsPerCarton: number): string {
+/** Carton-first display: "6 كارتون + 3 قطع" or piece-only. */
+export function formatDualQty(totalPieces: number, unitsPerCarton: number): string {
+  const { cartons, loosePieces } = splitDualQty(totalPieces, unitsPerCarton);
   const upc = productUnitsPerCarton(unitsPerCarton);
+
   if (upc <= 1) {
     return `${formatQty(totalPieces)} قطعة`;
   }
 
-  const wholeCartons = Math.floor(totalPieces / upc);
-  const remainder = totalPieces % upc;
-
-  if (remainder === 0) {
-    return `${formatQty(totalPieces)} قطعة (${formatQty(wholeCartons)} كارتون)`;
+  if (loosePieces === 0) {
+    return `${formatQty(cartons)} ${cartons === 1 ? 'كارتون' : 'كارتون'}`;
   }
 
-  return `${formatQty(totalPieces)} قطعة (${formatQty(wholeCartons)} كارتون + ${formatQty(remainder)} قطع)`;
+  if (cartons === 0) {
+    return `${formatQty(loosePieces)} ${loosePieces === 1 ? 'قطعة' : 'قطع'}`;
+  }
+
+  return `${formatQty(cartons)} كارتون + ${formatQty(loosePieces)} ${loosePieces === 1 ? 'قطعة' : 'قطع'}`;
+}
+
+/** Stock / inventory with total in parentheses. */
+export function formatStockWithCartons(totalPieces: number, unitsPerCarton: number): string {
+  const dual = formatDualQty(totalPieces, unitsPerCarton);
+  const upc = productUnitsPerCarton(unitsPerCarton);
+  if (upc <= 1) return dual;
+  return `${dual} (${formatQty(totalPieces)} قطعة)`;
 }
 
 /** e.g. "1000 كارتون = 6000 قطعة" */
@@ -48,6 +87,16 @@ export function formatCartonConversion(
   return `${formatQty(inputQty)} كارتون = ${formatQty(pieces)} قطعة`;
 }
 
+/** Dual-field input helper label. */
+export function formatDualInputPreview(
+  cartons: number,
+  loosePieces: number,
+  unitsPerCarton: number,
+): string {
+  const total = dualQtyToPieces(cartons, loosePieces, unitsPerCarton);
+  return `المجموع: ${formatStockWithCartons(total, unitsPerCarton)}`;
+}
+
 export function formatQty(n: number): string {
   if (Number.isInteger(n)) return String(n);
   return n.toLocaleString('ar-EG', { maximumFractionDigits: 4 });
@@ -61,7 +110,7 @@ export function receiptUnitLabel(unit: QtyUnit): string {
 /** Plural unit label for qty display. */
 export function qtyUnitLabel(unit: QtyUnit, qty: number): string {
   if (unit === 'carton') {
-    return qty === 1 ? 'كارتونة' : 'كراتين';
+    return qty === 1 ? 'كارتون' : 'كارتون';
   }
   return qty === 1 ? 'قطعة' : 'قطع';
 }
@@ -88,4 +137,22 @@ export function maxReturnableInUnit(
     return Math.floor(remaining / upc);
   }
   return remaining;
+}
+
+/** Format sold/returned qty using stored unit when available. */
+export function formatStoredQty(
+  qtyPieces: number,
+  qtyUnit: QtyUnit | string | undefined,
+  displayQty: number | undefined,
+  unitsPerCarton: number,
+): string {
+  const unit: QtyUnit = qtyUnit === 'carton' ? 'carton' : 'piece';
+  if (displayQty !== undefined && displayQty > 0 && unit === 'carton') {
+    const label = qtyUnitLabel('carton', displayQty);
+    return `${formatQty(displayQty)} ${label}`;
+  }
+  if (unit === 'carton' && supportsCarton(unitsPerCarton)) {
+    return formatDualQty(qtyPieces, unitsPerCarton);
+  }
+  return `${formatQty(qtyPieces)} ${qtyUnitLabel('piece', qtyPieces)}`;
 }

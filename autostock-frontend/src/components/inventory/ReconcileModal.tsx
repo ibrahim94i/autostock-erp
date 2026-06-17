@@ -9,7 +9,8 @@ import { fetchProducts, formatLocation } from '../../api';
 import type { Location } from '../../types';
 
 import {
-  formatCartonConversion,
+  dualQtyToPieces,
+  formatDualInputPreview,
   supportsCarton,
   type QtyUnit,
 } from '../../utils/units';
@@ -101,8 +102,8 @@ export function ReconcileModal({
   const [locationId, setLocationId] = useState('');
 
   const [actualQty, setActualQty] = useState('');
-
-  const [qtyUnit, setQtyUnit] = useState<QtyUnit>('piece');
+  const [cartonQty, setCartonQty] = useState('');
+  const [loosePieceQty, setLoosePieceQty] = useState('');
 
   const [reason, setReason] = useState('إدخال مخزون أولي');
 
@@ -121,10 +122,10 @@ export function ReconcileModal({
       setLocationId(initialValues.locationId);
 
       setActualQty(initialValues.actualQty);
+      setCartonQty('');
+      setLoosePieceQty('');
 
       setReason(initialValues.reason ?? 'تعديل مخزون');
-
-      setQtyUnit('piece');
 
     } else {
 
@@ -133,8 +134,8 @@ export function ReconcileModal({
       setProductLabel('');
 
       setActualQty('');
-
-      setQtyUnit('piece');
+      setCartonQty('');
+      setLoosePieceQty('');
 
       setReason('إدخال مخزون أولي');
 
@@ -177,19 +178,21 @@ export function ReconcileModal({
 
 
   function handleSubmit(e: FormEvent) {
-
     e.preventDefault();
+    const upc = unitsPerCarton;
+    const totalPieces = supportsCarton(upc)
+      ? dualQtyToPieces(parseFloat(cartonQty) || 0, parseFloat(loosePieceQty) || 0, upc)
+      : parseFloat(actualQty) || 0;
 
     onSubmit({
       productId,
       locationId,
-      actualQty,
-      qtyUnit,
+      actualQty: String(totalPieces),
+      qtyUnit: 'piece',
       reason,
       productLabel,
       unitsPerCarton,
     });
-
   }
 
 
@@ -202,8 +205,9 @@ export function ReconcileModal({
 
     setProductLabel(product ? productOptionLabel(product.name, product.sku) : '');
 
-    setQtyUnit('piece');
-
+    setCartonQty('');
+    setLoosePieceQty('');
+    setActualQty('');
   }
 
 
@@ -211,12 +215,6 @@ export function ReconcileModal({
   const selectedProduct = products.find((p) => p.id === productId);
 
   const unitsPerCarton = selectedProduct?.unitsPerCarton ?? 1;
-
-  const conversionHint = formatCartonConversion(
-    parseFloat(actualQty),
-    qtyUnit,
-    unitsPerCarton,
-  );
 
 
 
@@ -344,55 +342,60 @@ export function ReconcileModal({
 
 
 
-          <label className="block text-sm font-medium text-slate-700">
-
-            {qtyUnit === 'carton' ? 'عدد الكراتين' : 'الكمية الفعلية (قطع)'}
-
-            {supportsCarton(unitsPerCarton) && (
-              <div className="mt-2 flex gap-1">
-                {(['piece', 'carton'] as const).map((unit) => (
-                  <button
-                    key={unit}
-                    type="button"
-                    onClick={() => setQtyUnit(unit)}
-                    className={[
-                      'rounded-md px-3 py-1.5 text-xs font-bold transition',
-                      qtyUnit === unit
-                        ? 'bg-blue-600 text-white'
-                        : 'border border-slate-300 bg-white text-slate-600 hover:bg-slate-50',
-                    ].join(' ')}
-                  >
-                    {unit === 'piece' ? 'قطعة' : 'كارتون'}
-                  </button>
-                ))}
+          {supportsCarton(unitsPerCarton) ? (
+            <div className="space-y-3">
+              <p className="text-sm font-medium text-slate-700">الكمية الفعلية</p>
+              <div className="grid grid-cols-2 gap-3">
+                <label className="block text-sm font-medium text-slate-700">
+                  كراتين
+                  <input
+                    type="number"
+                    min={0}
+                    step="any"
+                    value={cartonQty}
+                    onChange={(e) => setCartonQty(e.target.value)}
+                    placeholder="0"
+                    className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2.5 text-base outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+                  />
+                </label>
+                <label className="block text-sm font-medium text-slate-700">
+                  قطع مفردة
+                  <input
+                    type="number"
+                    min={0}
+                    step="any"
+                    value={loosePieceQty}
+                    onChange={(e) => setLoosePieceQty(e.target.value)}
+                    placeholder="0"
+                    className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2.5 text-base outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+                  />
+                </label>
               </div>
-            )}
-
+              {(parseFloat(cartonQty) > 0 || parseFloat(loosePieceQty) > 0) && (
+                <p className="text-xs font-medium text-blue-700">
+                  {formatDualInputPreview(
+                    parseFloat(cartonQty) || 0,
+                    parseFloat(loosePieceQty) || 0,
+                    unitsPerCarton,
+                  )}
+                </p>
+              )}
+            </div>
+          ) : (
+          <label className="block text-sm font-medium text-slate-700">
+            الكمية الفعلية (قطع)
             <input
-
               type="number"
-
               min={0}
-
               step="any"
-
               value={actualQty}
-
               onChange={(e) => setActualQty(e.target.value)}
-
               required
-
-              placeholder={qtyUnit === 'carton' ? 'مثال: 10' : 'مثال: 100'}
-
+              placeholder="مثال: 100"
               className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2.5 text-base outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
-
             />
-
-            {conversionHint && (
-              <p className="mt-1 text-xs font-medium text-blue-700">{conversionHint}</p>
-            )}
-
           </label>
+          )}
 
 
 
