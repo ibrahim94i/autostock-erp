@@ -5,4 +5,4 @@ export const COMPANY_LOGO_URL = '/company-logo.png?v=transparent2026';
 export const COMPANY_LOGO_DATA_URL = COMPANY_LOGO_URL;
 
 /** HEMA app logo — sidebar, login, and in-app watermark only. */
-export const APP_LOGO_URL = '/hema-logo.png?v=hema2026';
+export const APP_LOGO_URL = '/hema-logo.png?v=transparent-hema2026';

@@ -84,11 +84,31 @@ select {
   }
 
   .app-watermark {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     pointer-events: none;
+    overflow: hidden;
+  }
+
+  .app-watermark img {
+    width: min(780px, 88vw);
+    max-height: 88vh;
+    height: auto;
+    object-fit: contain;
+    opacity: 0.12;
+    user-select: none;
   }
 }
 
 @media print {
+  .app-watermark {
+    display: none !important;
+  }
+
   aside,
   header,
   .no-print {

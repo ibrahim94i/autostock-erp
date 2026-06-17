@@ -42,9 +42,6 @@ export function LoginPage() {
 
   return (
     <div className="relative flex min-h-screen flex-col bg-slate-100">
-      <div className="app-watermark pointer-events-none fixed inset-0 z-0 flex items-center justify-center" aria-hidden="true">
-        <img src={APP_LOGO_URL} alt="" className="max-w-[min(540px,80vw)] opacity-10" />
-      </div>
       <div className="relative z-10 flex flex-1 items-center justify-center p-4">
         <div className="w-full max-w-md rounded-xl border border-slate-200 bg-white p-8 shadow-lg">
           <div className="flex items-center justify-center gap-3">

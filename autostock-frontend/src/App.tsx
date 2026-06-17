@@ -1,6 +1,7 @@
 import { lazy, Suspense } from 'react';
 import { BrowserRouter, HashRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { SessionWarning } from './components/SessionWarning';
+import { AppWatermark } from './components/AppWatermark';
 import { BackendKeepAlive } from './components/BackendKeepAlive';
 import { AdminRoute } from './components/AdminRoute';
 import { BackendConnectionGate } from './components/BackendConnectionGate';
@@ -60,6 +61,7 @@ const Router = isElectronFile ? HashRouter : BrowserRouter;
 function AppRoutes() {
   return (
     <>
+      <AppWatermark />
       <SessionWarning />
       <BackendKeepAlive />
       <Suspense fallback={<PageLoader />}>
