@@ -10,5 +10,10 @@
       ]
     }
   ],
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+  "rewrites": [
+    {
+      "source": "/((?!company-logo\\.png|favicon\\.ico|assets/).*)",
+      "destination": "/index.html"
+    }
+  ]
 }
