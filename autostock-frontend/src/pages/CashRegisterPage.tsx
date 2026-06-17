@@ -15,6 +15,7 @@ import {
   fetchCashToday,
   formatDateTime,
   formatPrice,
+  isCashOutflowTransaction,
   openCashRegister,
   parseQuantity,
   UnauthorizedError,
@@ -284,10 +285,10 @@ export function CashRegisterPage() {
                       <td
                         className={[
                           'px-4 py-3 font-semibold',
-                          tx.type === 'payment_out' ? 'text-red-700' : 'text-emerald-700',
+                          isCashOutflowTransaction(tx.type) ? 'text-red-700' : 'text-emerald-700',
                         ].join(' ')}
                       >
-                        {tx.type === 'payment_out' ? '−' : '+'}
+                        {isCashOutflowTransaction(tx.type) ? '−' : '+'}
                         {formatPrice(parseQuantity(tx.amount))}
                       </td>
                       <td className="px-4 py-3 text-slate-500">{formatDateTime(tx.createdAt)}</td>
@@ -392,7 +393,13 @@ export function CashRegisterPage() {
                     <tr key={tx.id} className="border-b border-slate-100">
                       <td className="px-4 py-3">{cashTransactionTypeLabel(tx.type)}</td>
                       <td className="px-4 py-3 text-slate-600">{tx.description ?? '—'}</td>
-                      <td className="px-4 py-3 font-semibold">
+                      <td
+                        className={[
+                          'px-4 py-3 font-semibold',
+                          isCashOutflowTransaction(tx.type) ? 'text-red-700' : 'text-emerald-700',
+                        ].join(' ')}
+                      >
+                        {isCashOutflowTransaction(tx.type) ? '−' : '+'}
                         {formatPrice(parseQuantity(tx.amount))}
                       </td>
                       <td className="px-4 py-3 text-slate-500">{formatDateTime(tx.createdAt)}</td>

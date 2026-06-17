@@ -35,7 +35,7 @@ interface PaymentMadePayload {
 }
 
 const INFLOW_TYPES = new Set(['sale', 'payment_in']);
-const OUTFLOW_TYPES = new Set(['payment_out']);
+const OUTFLOW_TYPES = new Set(['payment_out', 'expense']);
 
 export class CashHandler {
   async apply(
