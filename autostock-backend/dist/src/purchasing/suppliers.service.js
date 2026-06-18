@@ -98,6 +98,21 @@ let SuppliersService = class SuppliersService {
             balance: balanceView?.balance ?? 0,
         };
     }
+    async getBalancesBulk(ids) {
+        const where = ids && ids.length > 0 ? { supplierId: { in: ids } } : undefined;
+        const rows = await this.prisma.supplierBalanceView.findMany({ where });
+        const balanceById = new Map(rows.map((row) => [row.supplierId, row.balance]));
+        if (ids && ids.length > 0) {
+            return ids.map((supplierId) => ({
+                supplierId,
+                balance: balanceById.get(supplierId) ?? 0,
+            }));
+        }
+        return rows.map((row) => ({
+            supplierId: row.supplierId,
+            balance: row.balance,
+        }));
+    }
 };
 exports.SuppliersService = SuppliersService;
 exports.SuppliersService = SuppliersService = __decorate([

@@ -26,6 +26,7 @@ import {
 } from '../api';
 import type { CashRegister, CashRegisterSummary, CashTransaction } from '../types';
 import { computeCashRegisterSummary } from '../utils/cashSummary';
+import { CashHistorySection } from '../components/cash/CashHistorySection';
 import {
   cashDepositVoucherNumber,
   parseCashDepositDescription,
@@ -35,6 +36,15 @@ import {
 function parseAmount(value: string | number | null | undefined): number {
   if (value === null || value === undefined) return 0;
   return typeof value === 'string' ? parseFloat(value) || 0 : value;
+}
+
+function SuggestedOpeningHint({ amount }: { amount: number }) {
+  if (amount <= 0) return null;
+  return (
+    <p className="rounded-lg bg-blue-50 px-3 py-2 text-xs text-blue-800">
+      مقترح من إغلاق آخر صندوق: <strong>{formatPrice(amount)}</strong> — يمكنك تعديله قبل الفتح
+    </p>
+  );
 }
 
 function printDepositVoucher(tx: CashTransaction) {
@@ -286,6 +296,8 @@ export function CashRegisterPage() {
   });
 
   const register = todayQuery.data?.register ?? null;
+  const suggestedOpening = todayQuery.data?.suggestedOpeningBalance;
+  const suggestedOpeningAmount = parseAmount(suggestedOpening);
   const summary = useMemo(() => {
     if (!register?.transactions) {
       return todayQuery.data?.summary ?? null;
@@ -294,6 +306,16 @@ export function CashRegisterPage() {
   }, [register, todayQuery.data?.summary]);
   const isOpen = register?.status === 'open';
   const isClosed = register?.status === 'closed';
+
+  useEffect(() => {
+    if (suggestedOpening == null) return;
+    const needsOpenForm = !register || (isClosed && showNewOpenForm);
+    if (!needsOpenForm) return;
+    const value = parseAmount(suggestedOpening);
+    if (value > 0) {
+      setOpeningBalance((prev) => (prev === '' ? String(value) : prev));
+    }
+  }, [suggestedOpening, register, isClosed, showNewOpenForm]);
 
   function handleOpenSubmit(e: FormEvent) {
     e.preventDefault();
@@ -353,6 +375,7 @@ export function CashRegisterPage() {
                 className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2.5 text-base outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
               />
             </label>
+            <SuggestedOpeningHint amount={suggestedOpeningAmount} />
             {formError && (
               <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">{formError}</p>
             )}
@@ -576,6 +599,8 @@ export function CashRegisterPage() {
               onClick={() => {
                 setFormError('');
                 setShowNewOpenForm(true);
+                const value = parseAmount(suggestedOpening);
+                setOpeningBalance(value > 0 ? String(value) : '');
               }}
               className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-700"
             >
@@ -602,6 +627,7 @@ export function CashRegisterPage() {
                     className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2.5 text-base outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
                   />
                 </label>
+                <SuggestedOpeningHint amount={suggestedOpeningAmount} />
                 {formError && (
                   <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">{formError}</p>
                 )}
@@ -634,6 +660,10 @@ export function CashRegisterPage() {
           )}
         </div>
       )}
+
+      <div className="mt-8">
+        <CashHistorySection currentRegisterId={register?.id} />
+      </div>
     </div>
   );
 }

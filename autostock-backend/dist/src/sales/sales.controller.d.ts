@@ -36,6 +36,8 @@ export declare class SalesController {
                 clientUuid: string;
                 saleId: string;
                 qty: import("@prisma/client-runtime-utils").Decimal;
+                qtyUnit: string;
+                displayQty: import("@prisma/client-runtime-utils").Decimal;
                 refundAmount: import("@prisma/client-runtime-utils").Decimal;
             })[];
             customer: {
@@ -65,6 +67,8 @@ export declare class SalesController {
                 productId: string;
                 saleId: string;
                 qty: import("@prisma/client-runtime-utils").Decimal;
+                qtyUnit: string;
+                displayQty: import("@prisma/client-runtime-utils").Decimal;
                 unitPrice: import("@prisma/client-runtime-utils").Decimal;
             })[];
         } & {
@@ -99,6 +103,8 @@ export declare class SalesController {
             productId: string;
             saleId: string;
             qty: import("@prisma/client-runtime-utils").Decimal;
+            qtyUnit: string;
+            displayQty: import("@prisma/client-runtime-utils").Decimal;
             unitPrice: import("@prisma/client-runtime-utils").Decimal;
         })[];
         returns: ({
@@ -123,6 +129,8 @@ export declare class SalesController {
             clientUuid: string;
             saleId: string;
             qty: import("@prisma/client-runtime-utils").Decimal;
+            qtyUnit: string;
+            displayQty: import("@prisma/client-runtime-utils").Decimal;
             refundAmount: import("@prisma/client-runtime-utils").Decimal;
         })[];
         returnedByProduct: {
@@ -193,6 +201,8 @@ export declare class SalesController {
             clientUuid: string;
             saleId: string;
             qty: import("@prisma/client-runtime-utils").Decimal;
+            qtyUnit: string;
+            displayQty: import("@prisma/client-runtime-utils").Decimal;
             refundAmount: import("@prisma/client-runtime-utils").Decimal;
         })[];
         customer: {
@@ -222,6 +232,8 @@ export declare class SalesController {
             productId: string;
             saleId: string;
             qty: import("@prisma/client-runtime-utils").Decimal;
+            qtyUnit: string;
+            displayQty: import("@prisma/client-runtime-utils").Decimal;
             unitPrice: import("@prisma/client-runtime-utils").Decimal;
         })[];
     } & {

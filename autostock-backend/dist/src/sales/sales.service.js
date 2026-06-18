@@ -15,6 +15,7 @@ const client_1 = require("@prisma/client");
 const crypto_1 = require("crypto");
 const prisma_service_1 = require("../common/prisma/prisma.service");
 const product_cost_util_1 = require("../common/utils/product-cost.util");
+const qty_units_util_1 = require("../common/utils/qty-units.util");
 const event_core_service_1 = require("../events/event-core.service");
 const event_types_enum_1 = require("../events/event-types.enum");
 let SalesService = class SalesService {
@@ -37,11 +38,19 @@ let SalesService = class SalesService {
             product.id,
             (0, product_cost_util_1.pieceUnitCostFromProduct)(product),
         ]));
-        const saleItems = dto.items.map((item) => ({
-            ...item,
-            unitCost: averageCostByProduct.get(item.productId) ??
-                new client_1.Prisma.Decimal(item.unitCost),
-        }));
+        const productById = new Map(products.map((p) => [p.id, p]));
+        const saleItems = dto.items.map((item) => {
+            const product = productById.get(item.productId);
+            const upc = product?.unitsPerCarton ?? 1;
+            const units = (0, qty_units_util_1.normalizeSaleItemUnits)(item.qty, item.qtyUnit, item.displayQty, upc);
+            return {
+                ...item,
+                qtyUnit: units.qtyUnit,
+                displayQty: units.displayQty,
+                unitCost: averageCostByProduct.get(item.productId) ??
+                    new client_1.Prisma.Decimal(item.unitCost),
+            };
+        });
         const subtotal = saleItems.reduce((sum, item) => sum.plus(new client_1.Prisma.Decimal(item.qty).mul(item.unitPrice)), new client_1.Prisma.Decimal(0));
         return this.eventCoreService.dispatch({
             clientUuid,
@@ -75,6 +84,8 @@ let SalesService = class SalesService {
                             create: saleItems.map((item) => ({
                                 productId: item.productId,
                                 qty: item.qty,
+                                qtyUnit: item.qtyUnit,
+                                displayQty: item.displayQty,
                                 unitPrice: item.unitPrice,
                                 unitCost: item.unitCost,
                             })),
@@ -140,6 +151,8 @@ let SalesService = class SalesService {
                     productId: item.productId,
                     locationId: item.locationId,
                     qty: item.qty,
+                    qtyUnit: item.qtyUnit ?? 'piece',
+                    displayQty: item.displayQty ?? item.qty,
                     unitCost: item.unitCost,
                 })),
             },
@@ -158,6 +171,8 @@ let SalesService = class SalesService {
                             saleId: sale.id,
                             productId: item.productId,
                             qty: item.qty,
+                            qtyUnit: item.qtyUnit ?? 'piece',
+                            displayQty: item.displayQty ?? item.qty,
                             reason: dto.reason,
                             refundAmount: itemRefund,
                         },

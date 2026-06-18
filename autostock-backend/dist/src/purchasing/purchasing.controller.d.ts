@@ -24,6 +24,7 @@ export declare class PurchasingController {
     removeSupplier(id: string): Promise<{
         deleted: true;
     }>;
+    getSupplierBalancesBulk(ids?: string): Promise<import("./suppliers.service").SupplierBalanceResponse[]>;
     getSupplierBalance(id: string): Promise<import("./suppliers.service").SupplierBalanceResponse>;
     findOneSupplier(id: string): Promise<{
         id: string;

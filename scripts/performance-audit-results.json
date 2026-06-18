@@ -1,0 +1,809 @@
+{
+  "generatedAt": "2026-06-17T12:14:46.932Z",
+  "backend": "https://autostock-backend-production.up.railway.app",
+  "frontend": "https://autostock-frontend-one.vercel.app",
+  "allRequests": [
+    {
+      "label": "Login",
+      "method": "POST",
+      "path": "/auth/login",
+      "startTime": "2026-06-17T12:14:34.887Z",
+      "endTime": "2026-06-17T12:14:35.826Z",
+      "durationMs": 939,
+      "status": 201,
+      "error": null
+    },
+    {
+      "label": "Warm-up",
+      "method": "GET",
+      "path": "/dashboard/summary",
+      "startTime": "2026-06-17T12:14:35.830Z",
+      "endTime": "2026-06-17T12:14:36.310Z",
+      "durationMs": 481,
+      "status": 200,
+      "error": null
+    },
+    {
+      "label": "Login (post-auth) → GET /settings",
+      "method": "GET",
+      "path": "/settings",
+      "startTime": "2026-06-17T12:14:36.311Z",
+      "endTime": "2026-06-17T12:14:36.549Z",
+      "durationMs": 238,
+      "status": 200,
+      "error": null
+    },
+    {
+      "label": "Dashboard → GET /dashboard/summary",
+      "method": "GET",
+      "path": "/dashboard/summary",
+      "startTime": "2026-06-17T12:14:36.549Z",
+      "endTime": "2026-06-17T12:14:36.789Z",
+      "durationMs": 240,
+      "status": 200,
+      "error": null
+    },
+    {
+      "label": "Dashboard → GET /settings",
+      "method": "GET",
+      "path": "/settings",
+      "startTime": "2026-06-17T12:14:36.789Z",
+      "endTime": "2026-06-17T12:14:37.052Z",
+      "durationMs": 263,
+      "status": 200,
+      "error": null
+    },
+    {
+      "label": "Products → GET /products?page=1&limit=10",
+      "method": "GET",
+      "path": "/products?page=1&limit=10",
+      "startTime": "2026-06-17T12:14:37.052Z",
+      "endTime": "2026-06-17T12:14:37.317Z",
+      "durationMs": 265,
+      "status": 200,
+      "error": null
+    },
+    {
+      "label": "Products → GET /categories",
+      "method": "GET",
+      "path": "/categories",
+      "startTime": "2026-06-17T12:14:37.317Z",
+      "endTime": "2026-06-17T12:14:37.581Z",
+      "durationMs": 264,
+      "status": 200,
+      "error": null
+    },
+    {
+      "label": "Inventory → GET /locations",
+      "method": "GET",
+      "path": "/locations",
+      "startTime": "2026-06-17T12:14:37.581Z",
+      "endTime": "2026-06-17T12:14:37.823Z",
+      "durationMs": 242,
+      "status": 200,
+      "error": null
+    },
+    {
+      "label": "Inventory → GET /stock/balances?page=1&limit=15",
+      "method": "GET",
+      "path": "/stock/balances?page=1&limit=15",
+      "startTime": "2026-06-17T12:14:37.823Z",
+      "endTime": "2026-06-17T12:14:38.174Z",
+      "durationMs": 351,
+      "status": 200,
+      "error": null
+    },
+    {
+      "label": "Inventory → GET /stock/low-alerts",
+      "method": "GET",
+      "path": "/stock/low-alerts",
+      "startTime": "2026-06-17T12:14:38.174Z",
+      "endTime": "2026-06-17T12:14:38.468Z",
+      "durationMs": 294,
+      "status": 200,
+      "error": null
+    },
+    {
+      "label": "Inventory → GET /products?page=1&limit=100",
+      "method": "GET",
+      "path": "/products?page=1&limit=100",
+      "startTime": "2026-06-17T12:14:38.468Z",
+      "endTime": "2026-06-17T12:14:38.717Z",
+      "durationMs": 249,
+      "status": 200,
+      "error": null
+    },
+    {
+      "label": "Purchasing → GET /purchase-orders?page=1&limit=10",
+      "method": "GET",
+      "path": "/purchase-orders?page=1&limit=10",
+      "startTime": "2026-06-17T12:14:38.717Z",
+      "endTime": "2026-06-17T12:14:39.080Z",
+      "durationMs": 363,
+      "status": 200,
+      "error": null
+    },
+    {
+      "label": "Purchasing → GET /locations",
+      "method": "GET",
+      "path": "/locations",
+      "startTime": "2026-06-17T12:14:39.080Z",
+      "endTime": "2026-06-17T12:14:39.321Z",
+      "durationMs": 242,
+      "status": 200,
+      "error": null
+    },
+    {
+      "label": "Purchasing → GET /suppliers?page=1&limit=100",
+      "method": "GET",
+      "path": "/suppliers?page=1&limit=100",
+      "startTime": "2026-06-17T12:14:39.321Z",
+      "endTime": "2026-06-17T12:14:39.560Z",
+      "durationMs": 239,
+      "status": 200,
+      "error": null
+    },
+    {
+      "label": "Purchasing → GET /products?page=1&limit=100",
+      "method": "GET",
+      "path": "/products?page=1&limit=100",
+      "startTime": "2026-06-17T12:14:39.560Z",
+      "endTime": "2026-06-17T12:14:39.847Z",
+      "durationMs": 287,
+      "status": 200,
+      "error": null
+    },
+    {
+      "label": "Customers → GET /customers?page=1&limit=20",
+      "method": "GET",
+      "path": "/customers?page=1&limit=20",
+      "startTime": "2026-06-17T12:14:39.847Z",
+      "endTime": "2026-06-17T12:14:40.222Z",
+      "durationMs": 375,
+      "status": 200,
+      "error": null
+    },
+    {
+      "label": "Reports (Daily tab) → GET /reports/daily",
+      "method": "GET",
+      "path": "/reports/daily?date=2026-06-17",
+      "startTime": "2026-06-17T12:14:40.505Z",
+      "endTime": "2026-06-17T12:14:40.824Z",
+      "durationMs": 319,
+      "status": 200,
+      "error": null
+    },
+    {
+      "label": "Reports (Daily tab) → GET /expenses",
+      "method": "GET",
+      "path": "/expenses?page=1&limit=50",
+      "startTime": "2026-06-17T12:14:40.824Z",
+      "endTime": "2026-06-17T12:14:41.116Z",
+      "durationMs": 292,
+      "status": 400,
+      "error": "400 {\"statusCode\":400,\"error\":\"Bad Request\",\"message\":[\"property page should not exist\",\"property limit should not exist\"],\"timestamp\":\"2026-06-17T12:14:41.081Z\",\"path\":\"/expenses?page=1&limit=50\"}"
+    },
+    {
+      "label": "Reports (Daily tab) → GET /cash/today",
+      "method": "GET",
+      "path": "/cash/today",
+      "startTime": "2026-06-17T12:14:41.116Z",
+      "endTime": "2026-06-17T12:14:41.368Z",
+      "durationMs": 252,
+      "status": 200,
+      "error": null
+    },
+    {
+      "label": "Reports (Sales tab) → GET /reports/sales",
+      "method": "GET",
+      "path": "/reports/sales?from=2026-06-01&to=2026-06-17&groupBy=day",
+      "startTime": "2026-06-17T12:14:41.369Z",
+      "endTime": "2026-06-17T12:14:41.619Z",
+      "durationMs": 251,
+      "status": 200,
+      "error": null
+    },
+    {
+      "label": "Reports (Products tab) → GET /reports/products",
+      "method": "GET",
+      "path": "/reports/products?from=2026-06-01&to=2026-06-17",
+      "startTime": "2026-06-17T12:14:41.619Z",
+      "endTime": "2026-06-17T12:14:41.998Z",
+      "durationMs": 378,
+      "status": 200,
+      "error": null
+    },
+    {
+      "label": "Reports (Inventory tab) → GET /reports/inventory-movement",
+      "method": "GET",
+      "path": "/reports/inventory-movement?from=2026-06-01&to=2026-06-17",
+      "startTime": "2026-06-17T12:14:41.998Z",
+      "endTime": "2026-06-17T12:14:42.413Z",
+      "durationMs": 416,
+      "status": 200,
+      "error": null
+    },
+    {
+      "label": "POS → GET /locations",
+      "method": "GET",
+      "path": "/locations",
+      "startTime": "2026-06-17T12:14:42.413Z",
+      "endTime": "2026-06-17T12:14:42.786Z",
+      "durationMs": 373,
+      "status": 200,
+      "error": null
+    },
+    {
+      "label": "POS → GET /products?page=1&limit=20",
+      "method": "GET",
+      "path": "/products?page=1&limit=20",
+      "startTime": "2026-06-17T12:14:42.786Z",
+      "endTime": "2026-06-17T12:14:43.067Z",
+      "durationMs": 281,
+      "status": 200,
+      "error": null
+    },
+    {
+      "label": "POS → GET /stock/balances?limit=200",
+      "method": "GET",
+      "path": "/stock/balances?limit=200&page=1",
+      "startTime": "2026-06-17T12:14:43.067Z",
+      "endTime": "2026-06-17T12:14:43.319Z",
+      "durationMs": 252,
+      "status": 200,
+      "error": null
+    },
+    {
+      "label": "Extra",
+      "method": "GET",
+      "path": "/suppliers?page=1&limit=20",
+      "startTime": "2026-06-17T12:14:43.319Z",
+      "endTime": "2026-06-17T12:14:43.581Z",
+      "durationMs": 261,
+      "status": 200,
+      "error": null
+    },
+    {
+      "label": "Extra",
+      "method": "GET",
+      "path": "/receipts?page=1&limit=20",
+      "startTime": "2026-06-17T12:14:43.581Z",
+      "endTime": "2026-06-17T12:14:44.094Z",
+      "durationMs": 513,
+      "status": 400,
+      "error": "400 {\"statusCode\":400,\"error\":\"Bad Request\",\"message\":[\"property page should not exist\",\"property limit should not exist\"],\"timestamp\":\"2026-06-17T12:14:43.817Z\",\"path\":\"/receipts?page=1&limit=20\"}"
+    },
+    {
+      "label": "Extra",
+      "method": "GET",
+      "path": "/expense-categories",
+      "startTime": "2026-06-17T12:14:44.094Z",
+      "endTime": "2026-06-17T12:14:44.889Z",
+      "durationMs": 795,
+      "status": 200,
+      "error": null
+    },
+    {
+      "label": "Extra",
+      "method": "GET",
+      "path": "/cash/today",
+      "startTime": "2026-06-17T12:14:44.889Z",
+      "endTime": "2026-06-17T12:14:45.985Z",
+      "durationMs": 1096,
+      "status": 200,
+      "error": null
+    },
+    {
+      "label": "Extra",
+      "method": "GET",
+      "path": "/activity-log?page=1&limit=20",
+      "startTime": "2026-06-17T12:14:45.985Z",
+      "endTime": "2026-06-17T12:14:46.368Z",
+      "durationMs": 384,
+      "status": 200,
+      "error": null
+    },
+    {
+      "label": "Extra",
+      "method": "GET",
+      "path": "/activity-log/users",
+      "startTime": "2026-06-17T12:14:46.368Z",
+      "endTime": "2026-06-17T12:14:46.693Z",
+      "durationMs": 324,
+      "status": 200,
+      "error": null
+    },
+    {
+      "label": "Extra",
+      "method": "GET",
+      "path": "/activity-log/event-types",
+      "startTime": "2026-06-17T12:14:46.693Z",
+      "endTime": "2026-06-17T12:14:46.932Z",
+      "durationMs": 239,
+      "status": 200,
+      "error": null
+    }
+  ],
+  "screens": [
+    {
+      "screen": "Login (post-auth)",
+      "startTime": "2026-06-17T12:14:36.311Z",
+      "endTime": "2026-06-17T12:14:36.549Z",
+      "totalDurationMs": 238,
+      "calls": [
+        {
+          "label": "Login (post-auth) → GET /settings",
+          "method": "GET",
+          "path": "/settings",
+          "startTime": "2026-06-17T12:14:36.311Z",
+          "endTime": "2026-06-17T12:14:36.549Z",
+          "durationMs": 238,
+          "status": 200,
+          "error": null
+        }
+      ]
+    },
+    {
+      "screen": "Dashboard",
+      "startTime": "2026-06-17T12:14:36.549Z",
+      "endTime": "2026-06-17T12:14:37.052Z",
+      "totalDurationMs": 503,
+      "calls": [
+        {
+          "label": "Dashboard → GET /dashboard/summary",
+          "method": "GET",
+          "path": "/dashboard/summary",
+          "startTime": "2026-06-17T12:14:36.549Z",
+          "endTime": "2026-06-17T12:14:36.789Z",
+          "durationMs": 240,
+          "status": 200,
+          "error": null
+        },
+        {
+          "label": "Dashboard → GET /settings",
+          "method": "GET",
+          "path": "/settings",
+          "startTime": "2026-06-17T12:14:36.789Z",
+          "endTime": "2026-06-17T12:14:37.052Z",
+          "durationMs": 263,
+          "status": 200,
+          "error": null
+        }
+      ]
+    },
+    {
+      "screen": "Products",
+      "startTime": "2026-06-17T12:14:37.052Z",
+      "endTime": "2026-06-17T12:14:37.581Z",
+      "totalDurationMs": 529,
+      "calls": [
+        {
+          "label": "Products → GET /products?page=1&limit=10",
+          "method": "GET",
+          "path": "/products?page=1&limit=10",
+          "startTime": "2026-06-17T12:14:37.052Z",
+          "endTime": "2026-06-17T12:14:37.317Z",
+          "durationMs": 265,
+          "status": 200,
+          "error": null
+        },
+        {
+          "label": "Products → GET /categories",
+          "method": "GET",
+          "path": "/categories",
+          "startTime": "2026-06-17T12:14:37.317Z",
+          "endTime": "2026-06-17T12:14:37.581Z",
+          "durationMs": 264,
+          "status": 200,
+          "error": null
+        }
+      ]
+    },
+    {
+      "screen": "Inventory",
+      "startTime": "2026-06-17T12:14:37.581Z",
+      "endTime": "2026-06-17T12:14:38.717Z",
+      "totalDurationMs": 1136,
+      "calls": [
+        {
+          "label": "Inventory → GET /locations",
+          "method": "GET",
+          "path": "/locations",
+          "startTime": "2026-06-17T12:14:37.581Z",
+          "endTime": "2026-06-17T12:14:37.823Z",
+          "durationMs": 242,
+          "status": 200,
+          "error": null
+        },
+        {
+          "label": "Inventory → GET /stock/balances?page=1&limit=15",
+          "method": "GET",
+          "path": "/stock/balances?page=1&limit=15",
+          "startTime": "2026-06-17T12:14:37.823Z",
+          "endTime": "2026-06-17T12:14:38.174Z",
+          "durationMs": 351,
+          "status": 200,
+          "error": null
+        },
+        {
+          "label": "Inventory → GET /stock/low-alerts",
+          "method": "GET",
+          "path": "/stock/low-alerts",
+          "startTime": "2026-06-17T12:14:38.174Z",
+          "endTime": "2026-06-17T12:14:38.468Z",
+          "durationMs": 294,
+          "status": 200,
+          "error": null
+        },
+        {
+          "label": "Inventory → GET /products?page=1&limit=100",
+          "method": "GET",
+          "path": "/products?page=1&limit=100",
+          "startTime": "2026-06-17T12:14:38.468Z",
+          "endTime": "2026-06-17T12:14:38.717Z",
+          "durationMs": 249,
+          "status": 200,
+          "error": null
+        }
+      ]
+    },
+    {
+      "screen": "Purchasing",
+      "startTime": "2026-06-17T12:14:38.717Z",
+      "endTime": "2026-06-17T12:14:39.847Z",
+      "totalDurationMs": 1130,
+      "calls": [
+        {
+          "label": "Purchasing → GET /purchase-orders?page=1&limit=10",
+          "method": "GET",
+          "path": "/purchase-orders?page=1&limit=10",
+          "startTime": "2026-06-17T12:14:38.717Z",
+          "endTime": "2026-06-17T12:14:39.080Z",
+          "durationMs": 363,
+          "status": 200,
+          "error": null
+        },
+        {
+          "label": "Purchasing → GET /locations",
+          "method": "GET",
+          "path": "/locations",
+          "startTime": "2026-06-17T12:14:39.080Z",
+          "endTime": "2026-06-17T12:14:39.321Z",
+          "durationMs": 242,
+          "status": 200,
+          "error": null
+        },
+        {
+          "label": "Purchasing → GET /suppliers?page=1&limit=100",
+          "method": "GET",
+          "path": "/suppliers?page=1&limit=100",
+          "startTime": "2026-06-17T12:14:39.321Z",
+          "endTime": "2026-06-17T12:14:39.560Z",
+          "durationMs": 239,
+          "status": 200,
+          "error": null
+        },
+        {
+          "label": "Purchasing → GET /products?page=1&limit=100",
+          "method": "GET",
+          "path": "/products?page=1&limit=100",
+          "startTime": "2026-06-17T12:14:39.560Z",
+          "endTime": "2026-06-17T12:14:39.847Z",
+          "durationMs": 287,
+          "status": 200,
+          "error": null
+        }
+      ]
+    },
+    {
+      "screen": "Customers",
+      "startTime": "2026-06-17T12:14:39.847Z",
+      "endTime": "2026-06-17T12:14:40.222Z",
+      "totalDurationMs": 375,
+      "calls": [
+        {
+          "label": "Customers → GET /customers?page=1&limit=20",
+          "method": "GET",
+          "path": "/customers?page=1&limit=20",
+          "startTime": "2026-06-17T12:14:39.847Z",
+          "endTime": "2026-06-17T12:14:40.222Z",
+          "durationMs": 375,
+          "status": 200,
+          "error": null
+        }
+      ]
+    },
+    {
+      "screen": "Reports (Daily tab)",
+      "startTime": "2026-06-17T12:14:40.505Z",
+      "endTime": "2026-06-17T12:14:41.368Z",
+      "totalDurationMs": 863,
+      "calls": [
+        {
+          "label": "Reports (Daily tab) → GET /reports/daily",
+          "method": "GET",
+          "path": "/reports/daily?date=2026-06-17",
+          "startTime": "2026-06-17T12:14:40.505Z",
+          "endTime": "2026-06-17T12:14:40.824Z",
+          "durationMs": 319,
+          "status": 200,
+          "error": null
+        },
+        {
+          "label": "Reports (Daily tab) → GET /expenses",
+          "method": "GET",
+          "path": "/expenses?page=1&limit=50",
+          "startTime": "2026-06-17T12:14:40.824Z",
+          "endTime": "2026-06-17T12:14:41.116Z",
+          "durationMs": 292,
+          "status": 400,
+          "error": "400 {\"statusCode\":400,\"error\":\"Bad Request\",\"message\":[\"property page should not exist\",\"property limit should not exist\"],\"timestamp\":\"2026-06-17T12:14:41.081Z\",\"path\":\"/expenses?page=1&limit=50\"}"
+        },
+        {
+          "label": "Reports (Daily tab) → GET /cash/today",
+          "method": "GET",
+          "path": "/cash/today",
+          "startTime": "2026-06-17T12:14:41.116Z",
+          "endTime": "2026-06-17T12:14:41.368Z",
+          "durationMs": 252,
+          "status": 200,
+          "error": null
+        }
+      ]
+    },
+    {
+      "screen": "Reports (Sales tab)",
+      "startTime": "2026-06-17T12:14:41.369Z",
+      "endTime": "2026-06-17T12:14:41.619Z",
+      "totalDurationMs": 251,
+      "calls": [
+        {
+          "label": "Reports (Sales tab) → GET /reports/sales",
+          "method": "GET",
+          "path": "/reports/sales?from=2026-06-01&to=2026-06-17&groupBy=day",
+          "startTime": "2026-06-17T12:14:41.369Z",
+          "endTime": "2026-06-17T12:14:41.619Z",
+          "durationMs": 251,
+          "status": 200,
+          "error": null
+        }
+      ]
+    },
+    {
+      "screen": "Reports (Products tab)",
+      "startTime": "2026-06-17T12:14:41.619Z",
+      "endTime": "2026-06-17T12:14:41.998Z",
+      "totalDurationMs": 378,
+      "calls": [
+        {
+          "label": "Reports (Products tab) → GET /reports/products",
+          "method": "GET",
+          "path": "/reports/products?from=2026-06-01&to=2026-06-17",
+          "startTime": "2026-06-17T12:14:41.619Z",
+          "endTime": "2026-06-17T12:14:41.998Z",
+          "durationMs": 378,
+          "status": 200,
+          "error": null
+        }
+      ]
+    },
+    {
+      "screen": "Reports (Inventory tab)",
+      "startTime": "2026-06-17T12:14:41.998Z",
+      "endTime": "2026-06-17T12:14:42.413Z",
+      "totalDurationMs": 416,
+      "calls": [
+        {
+          "label": "Reports (Inventory tab) → GET /reports/inventory-movement",
+          "method": "GET",
+          "path": "/reports/inventory-movement?from=2026-06-01&to=2026-06-17",
+          "startTime": "2026-06-17T12:14:41.998Z",
+          "endTime": "2026-06-17T12:14:42.413Z",
+          "durationMs": 416,
+          "status": 200,
+          "error": null
+        }
+      ]
+    },
+    {
+      "screen": "POS",
+      "startTime": "2026-06-17T12:14:42.413Z",
+      "endTime": "2026-06-17T12:14:43.319Z",
+      "totalDurationMs": 906,
+      "calls": [
+        {
+          "label": "POS → GET /locations",
+          "method": "GET",
+          "path": "/locations",
+          "startTime": "2026-06-17T12:14:42.413Z",
+          "endTime": "2026-06-17T12:14:42.786Z",
+          "durationMs": 373,
+          "status": 200,
+          "error": null
+        },
+        {
+          "label": "POS → GET /products?page=1&limit=20",
+          "method": "GET",
+          "path": "/products?page=1&limit=20",
+          "startTime": "2026-06-17T12:14:42.786Z",
+          "endTime": "2026-06-17T12:14:43.067Z",
+          "durationMs": 281,
+          "status": 200,
+          "error": null
+        },
+        {
+          "label": "POS → GET /stock/balances?limit=200",
+          "method": "GET",
+          "path": "/stock/balances?limit=200&page=1",
+          "startTime": "2026-06-17T12:14:43.067Z",
+          "endTime": "2026-06-17T12:14:43.319Z",
+          "durationMs": 252,
+          "status": 200,
+          "error": null
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "totalRequests": 32,
+    "slowest10": [
+      {
+        "label": "Extra",
+        "method": "GET",
+        "path": "/cash/today",
+        "startTime": "2026-06-17T12:14:44.889Z",
+        "endTime": "2026-06-17T12:14:45.985Z",
+        "durationMs": 1096,
+        "status": 200,
+        "error": null
+      },
+      {
+        "label": "Login",
+        "method": "POST",
+        "path": "/auth/login",
+        "startTime": "2026-06-17T12:14:34.887Z",
+        "endTime": "2026-06-17T12:14:35.826Z",
+        "durationMs": 939,
+        "status": 201,
+        "error": null
+      },
+      {
+        "label": "Extra",
+        "method": "GET",
+        "path": "/expense-categories",
+        "startTime": "2026-06-17T12:14:44.094Z",
+        "endTime": "2026-06-17T12:14:44.889Z",
+        "durationMs": 795,
+        "status": 200,
+        "error": null
+      },
+      {
+        "label": "Extra",
+        "method": "GET",
+        "path": "/receipts?page=1&limit=20",
+        "startTime": "2026-06-17T12:14:43.581Z",
+        "endTime": "2026-06-17T12:14:44.094Z",
+        "durationMs": 513,
+        "status": 400,
+        "error": "400 {\"statusCode\":400,\"error\":\"Bad Request\",\"message\":[\"property page should not exist\",\"property limit should not exist\"],\"timestamp\":\"2026-06-17T12:14:43.817Z\",\"path\":\"/receipts?page=1&limit=20\"}"
+      },
+      {
+        "label": "Warm-up",
+        "method": "GET",
+        "path": "/dashboard/summary",
+        "startTime": "2026-06-17T12:14:35.830Z",
+        "endTime": "2026-06-17T12:14:36.310Z",
+        "durationMs": 481,
+        "status": 200,
+        "error": null
+      },
+      {
+        "label": "Reports (Inventory tab) → GET /reports/inventory-movement",
+        "method": "GET",
+        "path": "/reports/inventory-movement?from=2026-06-01&to=2026-06-17",
+        "startTime": "2026-06-17T12:14:41.998Z",
+        "endTime": "2026-06-17T12:14:42.413Z",
+        "durationMs": 416,
+        "status": 200,
+        "error": null
+      },
+      {
+        "label": "Extra",
+        "method": "GET",
+        "path": "/activity-log?page=1&limit=20",
+        "startTime": "2026-06-17T12:14:45.985Z",
+        "endTime": "2026-06-17T12:14:46.368Z",
+        "durationMs": 384,
+        "status": 200,
+        "error": null
+      },
+      {
+        "label": "Reports (Products tab) → GET /reports/products",
+        "method": "GET",
+        "path": "/reports/products?from=2026-06-01&to=2026-06-17",
+        "startTime": "2026-06-17T12:14:41.619Z",
+        "endTime": "2026-06-17T12:14:41.998Z",
+        "durationMs": 378,
+        "status": 200,
+        "error": null
+      },
+      {
+        "label": "Customers → GET /customers?page=1&limit=20",
+        "method": "GET",
+        "path": "/customers?page=1&limit=20",
+        "startTime": "2026-06-17T12:14:39.847Z",
+        "endTime": "2026-06-17T12:14:40.222Z",
+        "durationMs": 375,
+        "status": 200,
+        "error": null
+      },
+      {
+        "label": "POS → GET /locations",
+        "method": "GET",
+        "path": "/locations",
+        "startTime": "2026-06-17T12:14:42.413Z",
+        "endTime": "2026-06-17T12:14:42.786Z",
+        "durationMs": 373,
+        "status": 200,
+        "error": null
+      }
+    ],
+    "screenTotals": [
+      {
+        "screen": "Login (post-auth)",
+        "totalDurationMs": 238,
+        "classification": "Good"
+      },
+      {
+        "screen": "Dashboard",
+        "totalDurationMs": 503,
+        "classification": "Needs Optimization"
+      },
+      {
+        "screen": "Products",
+        "totalDurationMs": 529,
+        "classification": "Needs Optimization"
+      },
+      {
+        "screen": "Inventory",
+        "totalDurationMs": 1136,
+        "classification": "Needs Optimization"
+      },
+      {
+        "screen": "Purchasing",
+        "totalDurationMs": 1130,
+        "classification": "Needs Optimization"
+      },
+      {
+        "screen": "Customers",
+        "totalDurationMs": 375,
+        "classification": "Good"
+      },
+      {
+        "screen": "Reports (Daily tab)",
+        "totalDurationMs": 863,
+        "classification": "Needs Optimization"
+      },
+      {
+        "screen": "Reports (Sales tab)",
+        "totalDurationMs": 251,
+        "classification": "Good"
+      },
+      {
+        "screen": "Reports (Products tab)",
+        "totalDurationMs": 378,
+        "classification": "Good"
+      },
+      {
+        "screen": "Reports (Inventory tab)",
+        "totalDurationMs": 416,
+        "classification": "Good"
+      },
+      {
+        "screen": "POS",
+        "totalDurationMs": 906,
+        "classification": "Needs Optimization"
+      }
+    ]
+  }
+}

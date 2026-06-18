@@ -29,4 +29,5 @@ export declare class SuppliersService {
         deleted: true;
     }>;
     getBalance(id: string): Promise<SupplierBalanceResponse>;
+    getBalancesBulk(ids?: string[]): Promise<SupplierBalanceResponse[]>;
 }

@@ -472,6 +472,7 @@ export interface CashRegisterSummary {
 export interface CashTodayResponse {
   register: CashRegister | null;
   summary: CashRegisterSummary | null;
+  suggestedOpeningBalance?: string | number | null;
 }
 
 export interface CashHistoryEntry extends CashRegister {

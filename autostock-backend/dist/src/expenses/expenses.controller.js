@@ -20,7 +20,6 @@ const roles_guard_1 = require("../common/guards/roles.guard");
 const idempotency_interceptor_1 = require("../common/interceptors/idempotency.interceptor");
 const create_expense_category_dto_1 = require("./dto/create-expense-category.dto");
 const create_expense_dto_1 = require("./dto/create-expense.dto");
-const expenses_query_dto_1 = require("./dto/expenses-query.dto");
 const update_expense_category_dto_1 = require("./dto/update-expense-category.dto");
 const update_expense_dto_1 = require("./dto/update-expense.dto");
 const expenses_service_1 = require("./expenses.service");
@@ -29,8 +28,8 @@ let ExpensesController = class ExpensesController {
     constructor(expensesService) {
         this.expensesService = expensesService;
     }
-    findAll(query) {
-        return this.expensesService.findAll(query);
+    findAll(page, limit, from, to, categoryId) {
+        return this.expensesService.findAll({ page, limit, from, to, categoryId });
     }
     create(dto, req) {
         return this.expensesService.create(dto, req.user.userId);
@@ -55,9 +54,13 @@ exports.ExpensesController = ExpensesController;
 __decorate([
     (0, common_1.Get)('expenses'),
     (0, roles_decorator_1.Roles)('admin', 'accountant'),
-    __param(0, (0, common_1.Query)()),
+    __param(0, (0, common_1.Query)('page', new common_1.DefaultValuePipe(1), common_1.ParseIntPipe)),
+    __param(1, (0, common_1.Query)('limit', new common_1.DefaultValuePipe(50), common_1.ParseIntPipe)),
+    __param(2, (0, common_1.Query)('from')),
+    __param(3, (0, common_1.Query)('to')),
+    __param(4, (0, common_1.Query)('categoryId')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [expenses_query_dto_1.ExpensesQueryDto]),
+    __metadata("design:paramtypes", [Number, Number, String, String, String]),
     __metadata("design:returntype", void 0)
 ], ExpensesController.prototype, "findAll", null);
 __decorate([

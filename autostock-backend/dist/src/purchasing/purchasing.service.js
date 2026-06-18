@@ -42,7 +42,11 @@ let PurchasingService = class PurchasingService {
                 orderBy: { createdAt: 'desc' },
                 include: {
                     supplier: true,
-                    items: true,
+                    items: {
+                        include: {
+                            product: { select: { unitsPerCarton: true } },
+                        },
+                    },
                 },
             }),
             this.prisma.purchaseOrder.count({ where }),

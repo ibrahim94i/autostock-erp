@@ -13,10 +13,10 @@ exports.PrismaService = void 0;
 const common_1 = require("@nestjs/common");
 const client_1 = require("@prisma/client");
 const adapter_pg_1 = require("@prisma/adapter-pg");
-const pg_1 = require("pg");
+const pg_pool_1 = require("./pg-pool");
 let PrismaService = class PrismaService extends client_1.PrismaClient {
     constructor() {
-        const pool = new pg_1.Pool({ connectionString: process.env.DATABASE_URL });
+        const pool = (0, pg_pool_1.createPgPool)();
         const adapter = new adapter_pg_1.PrismaPg(pool);
         super({ adapter });
     }

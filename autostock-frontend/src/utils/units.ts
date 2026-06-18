@@ -44,6 +44,61 @@ export function toPieceQty(inputQty: number, unit: QtyUnit, unitsPerCarton: numb
   return inputQty;
 }
 
+/**
+ * Purchase orders store qty in pieces and unitCost as carton cost (when upc > 1).
+ * Convert user-entered cost to the stored carton cost.
+ */
+export function inputCostToStoredCartonCost(
+  inputCost: number,
+  qtyUnit: QtyUnit,
+  unitsPerCarton: number,
+): number {
+  const upc = productUnitsPerCarton(unitsPerCarton);
+  if (upc <= 1 || qtyUnit === 'carton') {
+    return inputCost;
+  }
+  return inputCost * upc;
+}
+
+/** Display stored carton cost as piece cost for piece-mode inputs. */
+export function storedCartonCostToPieceCost(
+  cartonCost: number,
+  unitsPerCarton: number,
+): number {
+  const upc = productUnitsPerCarton(unitsPerCarton);
+  if (upc <= 1) {
+    return cartonCost;
+  }
+  return cartonCost / upc;
+}
+
+/** Line total from stored PO item (piece qty + carton cost when upc > 1). */
+export function poLineTotalFromStored(
+  qtyPieces: number,
+  storedUnitCost: number,
+  unitsPerCarton: number,
+): number {
+  const upc = productUnitsPerCarton(unitsPerCarton);
+  if (upc <= 1) {
+    return qtyPieces * storedUnitCost;
+  }
+  return (qtyPieces / upc) * storedUnitCost;
+}
+
+export function buildPurchaseOrderItemPayload(
+  productId: string,
+  inputQty: number,
+  inputUnitCost: number,
+  qtyUnit: QtyUnit,
+  unitsPerCarton: number,
+): { productId: string; qty: number; unitCost: number } {
+  return {
+    productId,
+    qty: toPieceQty(inputQty, qtyUnit, unitsPerCarton),
+    unitCost: inputCostToStoredCartonCost(inputUnitCost, qtyUnit, unitsPerCarton),
+  };
+}
+
 /** Carton-first display: "6 كارتون + 3 قطع" or piece-only. */
 export function formatDualQty(totalPieces: number, unitsPerCarton: number): string {
   const { cartons, loosePieces } = splitDualQty(totalPieces, unitsPerCarton);

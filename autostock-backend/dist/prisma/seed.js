@@ -36,9 +36,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 require("dotenv/config");
 const client_1 = require("@prisma/client");
 const adapter_pg_1 = require("@prisma/adapter-pg");
-const pg_1 = require("pg");
+const pg_pool_1 = require("../src/common/prisma/pg-pool");
 const bcrypt = __importStar(require("bcryptjs"));
-const pool = new pg_1.Pool({ connectionString: process.env.DATABASE_URL });
+const pool = (0, pg_pool_1.createPgPool)();
 const adapter = new adapter_pg_1.PrismaPg(pool);
 const prisma = new client_1.PrismaClient({ adapter });
 const accounts = [

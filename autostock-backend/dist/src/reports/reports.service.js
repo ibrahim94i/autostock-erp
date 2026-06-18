@@ -325,12 +325,13 @@ let ReportsService = class ReportsService {
             return [];
         const items = await this.prisma.saleItem.findMany({
             where: { saleId: { in: sales.map((s) => s.id) } },
-            include: { product: { select: { id: true, name: true } } },
+            include: { product: { select: { id: true, name: true, unitsPerCarton: true } } },
         });
         const grouped = new Map();
         for (const item of items) {
             const row = grouped.get(item.productId) ?? {
                 name: item.product.name,
+                unitsPerCarton: item.product.unitsPerCarton,
                 qtySold: new client_1.Prisma.Decimal(0),
                 revenue: new client_1.Prisma.Decimal(0),
                 cost: new client_1.Prisma.Decimal(0),
@@ -344,6 +345,7 @@ let ReportsService = class ReportsService {
             .map(([productId, row]) => ({
             productId,
             name: row.name,
+            unitsPerCarton: row.unitsPerCarton,
             qtySold: row.qtySold.toNumber(),
             revenue: row.revenue.toNumber(),
             cost: row.cost.toNumber(),

@@ -18,7 +18,6 @@ const roles_decorator_1 = require("../common/decorators/roles.decorator");
 const jwt_auth_guard_1 = require("../common/guards/jwt-auth.guard");
 const roles_guard_1 = require("../common/guards/roles.guard");
 const log_receipt_dto_1 = require("./dto/log-receipt.dto");
-const receipts_query_dto_1 = require("./dto/receipts-query.dto");
 const receipts_service_1 = require("./receipts.service");
 let ReceiptsController = class ReceiptsController {
     receiptsService;
@@ -28,8 +27,8 @@ let ReceiptsController = class ReceiptsController {
     log(dto, req) {
         return this.receiptsService.log(dto, req.user.userId);
     }
-    findAll(query) {
-        return this.receiptsService.findAll(query);
+    findAll(page, limit, from, to, search) {
+        return this.receiptsService.findAll({ page, limit, from, to, search });
     }
     getNextNumber() {
         return this.receiptsService.getNextNumber();
@@ -51,9 +50,13 @@ __decorate([
 __decorate([
     (0, common_1.Get)(),
     (0, roles_decorator_1.Roles)('admin', 'cashier', 'accountant'),
-    __param(0, (0, common_1.Query)()),
+    __param(0, (0, common_1.Query)('page', new common_1.DefaultValuePipe(1), common_1.ParseIntPipe)),
+    __param(1, (0, common_1.Query)('limit', new common_1.DefaultValuePipe(50), common_1.ParseIntPipe)),
+    __param(2, (0, common_1.Query)('from')),
+    __param(3, (0, common_1.Query)('to')),
+    __param(4, (0, common_1.Query)('search')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [receipts_query_dto_1.ReceiptsQueryDto]),
+    __metadata("design:paramtypes", [Number, Number, String, String, String]),
     __metadata("design:returntype", void 0)
 ], ReceiptsController.prototype, "findAll", null);
 __decorate([

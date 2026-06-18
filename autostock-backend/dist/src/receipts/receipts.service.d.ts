@@ -19,7 +19,10 @@ export declare class ReceiptsService {
         printedAt: Date;
         printCount: number;
     }>;
-    findAll(query: ReceiptsQueryDto): Promise<{
+    findAll(query: ReceiptsQueryDto & {
+        page: number;
+        limit: number;
+    }): Promise<{
         id: string;
         createdBy: string;
         saleId: string;

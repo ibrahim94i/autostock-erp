@@ -3,6 +3,8 @@ export declare class CreateReturnItemDto {
     locationId: string;
     qty: number;
     unitCost: number;
+    qtyUnit?: 'piece' | 'carton';
+    displayQty?: number;
 }
 export declare class CreateReturnDto {
     items: CreateReturnItemDto[];

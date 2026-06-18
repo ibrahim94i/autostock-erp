@@ -56,13 +56,31 @@ let ExpensesService = class ExpensesService {
                 where.date.lt = toEnd;
             }
         }
-        const items = await this.prisma.expense.findMany({
-            where,
-            include: { category: true },
-            orderBy: [{ date: 'desc' }, { createdAt: 'desc' }],
-        });
-        const total = items.reduce((sum, item) => sum.plus(item.amount), new client_1.Prisma.Decimal(0));
-        return { items, total: total.toString() };
+        const page = query.page > 0 ? query.page : 1;
+        const limit = query.limit > 0 ? query.limit : 50;
+        const skip = (page - 1) * limit;
+        const [items, aggregate] = await this.prisma.$transaction([
+            this.prisma.expense.findMany({
+                where,
+                include: { category: true },
+                orderBy: [{ date: 'desc' }, { createdAt: 'desc' }],
+                skip,
+                take: limit,
+            }),
+            this.prisma.expense.aggregate({
+                where,
+                _sum: { amount: true },
+                _count: true,
+            }),
+        ]);
+        const total = aggregate._sum.amount ?? new client_1.Prisma.Decimal(0);
+        return {
+            items,
+            total: total.toString(),
+            page,
+            limit,
+            totalCount: aggregate._count,
+        };
     }
     async create(dto, userId) {
         const existing = await this.prisma.expense.findUnique({

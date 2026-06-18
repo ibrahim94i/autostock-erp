@@ -24,17 +24,10 @@ async function bootstrap() {
   app.useGlobalFilters(new AllExceptionsFilter());
 
   app.useGlobalPipes(
-
     new ValidationPipe({
-
-      whitelist: true,
-
       transform: true,
-
-      forbidNonWhitelisted: true,
-
+      whitelist: true,
     }),
-
   );
 
 

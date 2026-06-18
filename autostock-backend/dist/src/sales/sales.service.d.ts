@@ -32,6 +32,8 @@ export declare class SalesService {
             clientUuid: string;
             saleId: string;
             qty: Prisma.Decimal;
+            qtyUnit: string;
+            displayQty: Prisma.Decimal;
             refundAmount: Prisma.Decimal;
         })[];
         customer: {
@@ -61,6 +63,8 @@ export declare class SalesService {
             productId: string;
             saleId: string;
             qty: Prisma.Decimal;
+            qtyUnit: string;
+            displayQty: Prisma.Decimal;
             unitPrice: Prisma.Decimal;
         })[];
     } & {
@@ -98,6 +102,8 @@ export declare class SalesService {
                 clientUuid: string;
                 saleId: string;
                 qty: Prisma.Decimal;
+                qtyUnit: string;
+                displayQty: Prisma.Decimal;
                 refundAmount: Prisma.Decimal;
             })[];
             customer: {
@@ -127,6 +133,8 @@ export declare class SalesService {
                 productId: string;
                 saleId: string;
                 qty: Prisma.Decimal;
+                qtyUnit: string;
+                displayQty: Prisma.Decimal;
                 unitPrice: Prisma.Decimal;
             })[];
         } & {
@@ -161,6 +169,8 @@ export declare class SalesService {
             productId: string;
             saleId: string;
             qty: Prisma.Decimal;
+            qtyUnit: string;
+            displayQty: Prisma.Decimal;
             unitPrice: Prisma.Decimal;
         })[];
         returns: ({
@@ -185,6 +195,8 @@ export declare class SalesService {
             clientUuid: string;
             saleId: string;
             qty: Prisma.Decimal;
+            qtyUnit: string;
+            displayQty: Prisma.Decimal;
             refundAmount: Prisma.Decimal;
         })[];
         returnedByProduct: {

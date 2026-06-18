@@ -1,9 +1,11 @@
 import {
   Body,
   Controller,
+  DefaultValuePipe,
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   ParseUUIDPipe,
   Patch,
   Post,
@@ -35,8 +37,14 @@ export class ExpensesController {
 
   @Get('expenses')
   @Roles('admin', 'accountant')
-  findAll(@Query() query: ExpensesQueryDto) {
-    return this.expensesService.findAll(query);
+  findAll(
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
+    @Query('limit', new DefaultValuePipe(50), ParseIntPipe) limit: number,
+    @Query('from') from?: string,
+    @Query('to') to?: string,
+    @Query('categoryId') categoryId?: string,
+  ) {
+    return this.expensesService.findAll({ page, limit, from, to, categoryId });
   }
 
   @Post('expenses')

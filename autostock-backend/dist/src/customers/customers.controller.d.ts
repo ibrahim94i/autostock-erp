@@ -20,6 +20,7 @@ export declare class CustomersController {
     remove(id: string): Promise<{
         deleted: true;
     }>;
+    getBalancesBulk(ids?: string): Promise<import("./customers.service").CustomerBalanceResponse[]>;
     getBalance(id: string): Promise<import("./customers.service").CustomerBalanceResponse>;
     getStatement(id: string): Promise<import("./customers.service").CustomerStatementLine[]>;
     findOne(id: string): Promise<{

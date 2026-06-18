@@ -50,6 +50,7 @@ export declare class ReportsController {
     getProductsReport(query: DateRangeQueryDto): Promise<{
         productId: string;
         name: string;
+        unitsPerCarton: number;
         qtySold: number;
         revenue: number;
         cost: number;

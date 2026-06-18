@@ -17,6 +17,8 @@ class CreateReturnItemDto {
     locationId;
     qty;
     unitCost;
+    qtyUnit;
+    displayQty;
 }
 exports.CreateReturnItemDto = CreateReturnItemDto;
 __decorate([
@@ -39,6 +41,17 @@ __decorate([
     (0, class_validator_1.IsPositive)(),
     __metadata("design:type", Number)
 ], CreateReturnItemDto.prototype, "unitCost", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsIn)(['piece', 'carton']),
+    __metadata("design:type", String)
+], CreateReturnItemDto.prototype, "qtyUnit", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsNumber)(),
+    (0, class_validator_1.IsPositive)(),
+    __metadata("design:type", Number)
+], CreateReturnItemDto.prototype, "displayQty", void 0);
 class CreateReturnDto {
     items;
     refundMethod;

@@ -5,6 +5,9 @@ import { fetchProducts, fetchSuppliers } from '../../api';
 import type { Product, PurchaseOrder } from '../../types';
 import {
   formatCartonConversion,
+  piecesToDisplayQty,
+  productUnitsPerCarton,
+  storedCartonCostToPieceCost,
   supportsCarton,
   type QtyUnit,
 } from '../../utils/units';
@@ -65,17 +68,29 @@ export function CreatePoModal({
       setSupplierId(purchaseOrder.supplierId);
       setSupplierLabel(purchaseOrder.supplier?.name ?? '');
       setLines(
-        purchaseOrder.items.map((item) => ({
-          key: crypto.randomUUID(),
-          productId: item.productId,
-          productLabel: item.product?.name
-            ? `${item.product.name} (${item.product.sku ?? ''})`
-            : item.productId,
-          qty: String(item.qty),
-          unitCost: String(item.unitCost),
-          qtyUnit: 'piece' as QtyUnit,
-          unitsPerCarton: item.product?.unitsPerCarton ?? 1,
-        })),
+        purchaseOrder.items.map((item) => {
+          const upc = item.product?.unitsPerCarton ?? 1;
+          const qtyUnit: QtyUnit = supportsCarton(upc) ? 'carton' : 'piece';
+          const qtyPieces = parseFloat(String(item.qty));
+          const storedCost = parseFloat(String(item.unitCost));
+          const displayQty = piecesToDisplayQty(qtyPieces, qtyUnit, upc);
+          const displayCost =
+            qtyUnit === 'piece' && upc > 1
+              ? storedCartonCostToPieceCost(storedCost, upc)
+              : storedCost;
+
+          return {
+            key: crypto.randomUUID(),
+            productId: item.productId,
+            productLabel: item.product?.name
+              ? `${item.product.name} (${item.product.sku ?? ''})`
+              : item.productId,
+            qty: String(displayQty),
+            unitCost: String(displayCost),
+            qtyUnit,
+            unitsPerCarton: upc,
+          };
+        }),
       );
     } else {
       setSupplierId('');
@@ -118,6 +133,42 @@ export function CreatePoModal({
 
   function updateLine(key: string, patch: Partial<PoLineForm>) {
     setLines((prev) => prev.map((line) => (line.key === key ? { ...line, ...patch } : line)));
+  }
+
+  function switchLineUnit(key: string, newUnit: QtyUnit) {
+    setLines((prev) =>
+      prev.map((line) => {
+        if (line.key !== key || line.qtyUnit === newUnit) return line;
+
+        const upc = productUnitsPerCarton(line.unitsPerCarton);
+        const currentQty = parseFloat(line.qty);
+        const currentCost = parseFloat(line.unitCost);
+
+        if (!Number.isFinite(currentQty) || currentQty <= 0 || !Number.isFinite(currentCost)) {
+          return { ...line, qtyUnit: newUnit };
+        }
+
+        if (line.qtyUnit === 'carton' && newUnit === 'piece') {
+          return {
+            ...line,
+            qtyUnit: newUnit,
+            qty: String(currentQty * upc),
+            unitCost: String(storedCartonCostToPieceCost(currentCost, upc)),
+          };
+        }
+
+        if (line.qtyUnit === 'piece' && newUnit === 'carton') {
+          return {
+            ...line,
+            qtyUnit: newUnit,
+            qty: String(currentQty / upc),
+            unitCost: String(currentCost * upc),
+          };
+        }
+
+        return { ...line, qtyUnit: newUnit };
+      }),
+    );
   }
 
   function removeLine(key: string) {
@@ -236,7 +287,7 @@ export function CreatePoModal({
                             <button
                               key={unit}
                               type="button"
-                              onClick={() => updateLine(line.key, { qtyUnit: unit })}
+                              onClick={() => switchLineUnit(line.key, unit)}
                               className={[
                                 'rounded-md px-3 py-1.5 text-xs font-bold transition',
                                 line.qtyUnit === unit
@@ -273,7 +324,7 @@ export function CreatePoModal({
                         })()}
                       </label>
                       <label className="text-xs font-medium text-slate-600">
-                        سعر الكارتون
+                        {line.qtyUnit === 'carton' ? 'سعر الكارتون' : 'سعر القطعة'}
                         <input
                           type="text"
                           inputMode="decimal"

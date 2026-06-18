@@ -70,6 +70,7 @@ import type {
   ActivityLogUser,
 } from './types';
 import { UnauthorizedError } from './types';
+import { poLineTotalFromStored } from './utils/units';
 
 export { UnauthorizedError } from './types';
 
@@ -828,12 +829,30 @@ export async function receivePurchaseOrder(
   };
 }
 
-export function poLineTotal(qty: string | number, unitCost: string | number): number {
-  return parseQuantity(qty) * parseQuantity(unitCost);
+export function poLineTotal(
+  qty: string | number,
+  unitCost: string | number,
+  unitsPerCarton = 1,
+): number {
+  return poLineTotalFromStored(parseQuantity(qty), parseQuantity(unitCost), unitsPerCarton);
 }
 
-export function poTotal(items: { qty: string | number; unitCost: string | number }[]): number {
-  return items.reduce((sum, item) => sum + poLineTotal(item.qty, item.unitCost), 0);
+export function poTotal(
+  items: {
+    qty: string | number;
+    unitCost: string | number;
+    productId?: string;
+    product?: { unitsPerCarton?: number };
+  }[],
+  productCatalog?: Map<string, { unitsPerCarton?: number }>,
+): number {
+  return items.reduce((sum, item) => {
+    const upc =
+      item.product?.unitsPerCarton ??
+      (item.productId ? productCatalog?.get(item.productId)?.unitsPerCarton : undefined) ??
+      1;
+    return sum + poLineTotal(item.qty, item.unitCost, upc);
+  }, 0);
 }
 
 export function formatDateTime(value: string): string {

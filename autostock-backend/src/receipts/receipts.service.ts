@@ -78,7 +78,7 @@ export class ReceiptsService {
     });
   }
 
-  async findAll(query: ReceiptsQueryDto) {
+  async findAll(query: ReceiptsQueryDto & { page: number; limit: number }) {
     const where: Prisma.ReceiptWhereInput = {};
 
     if (query.from || query.to) {
@@ -99,9 +99,15 @@ export class ReceiptsService {
       ];
     }
 
+    const page = query.page > 0 ? query.page : 1;
+    const limit = query.limit > 0 ? query.limit : 50;
+    const skip = (page - 1) * limit;
+
     return this.prisma.receipt.findMany({
       where,
       orderBy: [{ printedAt: 'desc' }],
+      skip,
+      take: limit,
     });
   }
 

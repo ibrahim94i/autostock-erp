@@ -20,6 +20,7 @@ const roles_guard_1 = require("../common/guards/roles.guard");
 const cash_service_1 = require("./cash.service");
 const cash_history_query_dto_1 = require("./dto/cash-history-query.dto");
 const close_cash_register_dto_1 = require("./dto/close-cash-register.dto");
+const create_cash_deposit_dto_1 = require("./dto/create-cash-deposit.dto");
 const open_cash_register_dto_1 = require("./dto/open-cash-register.dto");
 let CashController = class CashController {
     cashService;
@@ -34,6 +35,9 @@ let CashController = class CashController {
     }
     close(dto, req) {
         return this.cashService.close(dto, req.user.userId);
+    }
+    deposit(dto, req) {
+        return this.cashService.createDeposit(dto, req.user.userId);
     }
     getHistory(query) {
         return this.cashService.getHistory(query);
@@ -65,6 +69,15 @@ __decorate([
     __metadata("design:paramtypes", [close_cash_register_dto_1.CloseCashRegisterDto, Object]),
     __metadata("design:returntype", void 0)
 ], CashController.prototype, "close", null);
+__decorate([
+    (0, common_1.Post)('deposit'),
+    (0, roles_decorator_1.Roles)('admin', 'cashier', 'accountant'),
+    __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [create_cash_deposit_dto_1.CreateCashDepositDto, Object]),
+    __metadata("design:returntype", void 0)
+], CashController.prototype, "deposit", null);
 __decorate([
     (0, common_1.Get)('history'),
     (0, roles_decorator_1.Roles)('admin', 'cashier', 'accountant'),

@@ -15,9 +15,8 @@ async function bootstrap() {
     });
     app.useGlobalFilters(new all_exceptions_filter_1.AllExceptionsFilter());
     app.useGlobalPipes(new common_1.ValidationPipe({
-        whitelist: true,
         transform: true,
-        forbidNonWhitelisted: true,
+        whitelist: true,
     }));
     await app.listen(process.env.PORT ?? 3000);
 }

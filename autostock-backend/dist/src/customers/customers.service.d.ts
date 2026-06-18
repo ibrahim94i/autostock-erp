@@ -36,5 +36,6 @@ export declare class CustomersService {
         deleted: true;
     }>;
     getBalance(id: string): Promise<CustomerBalanceResponse>;
+    getBalancesBulk(ids?: string[]): Promise<CustomerBalanceResponse[]>;
     getStatement(id: string): Promise<CustomerStatementLine[]>;
 }

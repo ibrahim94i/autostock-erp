@@ -1,6 +1,7 @@
 import { Prisma } from '@prisma/client';
 import { PrismaService } from '../common/prisma/prisma.service';
 import { CloseCashRegisterDto } from './dto/close-cash-register.dto';
+import { CreateCashDepositDto } from './dto/create-cash-deposit.dto';
 import { CashHistoryQueryDto } from './dto/cash-history-query.dto';
 import { OpenCashRegisterDto } from './dto/open-cash-register.dto';
 export interface CashRegisterSummary {
@@ -59,10 +60,14 @@ export declare class CashService {
             createdAt: Date;
         };
         summary: CashRegisterSummary;
+        suggestedOpeningBalance: Prisma.Decimal | null;
     } | {
         register: null;
         summary: null;
+        suggestedOpeningBalance: Prisma.Decimal | null;
     }>;
+    private findLastClosedRegister;
+    private suggestedOpeningBalance;
     close(dto: CloseCashRegisterDto, userId: string): Promise<{
         transactions: {
             id: string;
@@ -110,4 +115,14 @@ export declare class CashService {
         createdAt: Date;
     }[]>;
     private computeSummary;
+    createDeposit(dto: CreateCashDepositDto, userId: string): Promise<{
+        id: string;
+        type: string;
+        createdBy: string;
+        createdAt: Date;
+        reference: string | null;
+        registerId: string;
+        amount: Prisma.Decimal;
+        description: string | null;
+    }>;
 }

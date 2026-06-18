@@ -18,6 +18,8 @@ class CreateSaleItemDto {
     qty;
     unitPrice;
     unitCost;
+    qtyUnit;
+    displayQty;
 }
 exports.CreateSaleItemDto = CreateSaleItemDto;
 __decorate([
@@ -45,6 +47,17 @@ __decorate([
     (0, class_validator_1.IsPositive)(),
     __metadata("design:type", Number)
 ], CreateSaleItemDto.prototype, "unitCost", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsIn)(['piece', 'carton']),
+    __metadata("design:type", String)
+], CreateSaleItemDto.prototype, "qtyUnit", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsNumber)(),
+    (0, class_validator_1.IsPositive)(),
+    __metadata("design:type", Number)
+], CreateSaleItemDto.prototype, "displayQty", void 0);
 class CreateSaleDto {
     customerId;
     type;

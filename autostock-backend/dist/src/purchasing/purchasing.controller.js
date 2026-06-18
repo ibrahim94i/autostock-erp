@@ -47,6 +47,15 @@ let PurchasingController = class PurchasingController {
     removeSupplier(id) {
         return this.suppliersService.remove(id);
     }
+    getSupplierBalancesBulk(ids) {
+        const idList = ids
+            ? ids
+                .split(',')
+                .map((value) => value.trim())
+                .filter(Boolean)
+            : undefined;
+        return this.suppliersService.getBalancesBulk(idList);
+    }
     getSupplierBalance(id) {
         return this.suppliersService.getBalance(id);
     }
@@ -115,6 +124,14 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], PurchasingController.prototype, "removeSupplier", null);
+__decorate([
+    (0, common_1.Get)('suppliers/balances/bulk'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
+    __param(0, (0, common_1.Query)('ids')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], PurchasingController.prototype, "getSupplierBalancesBulk", null);
 __decorate([
     (0, common_1.Get)('suppliers/:id/balance'),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),

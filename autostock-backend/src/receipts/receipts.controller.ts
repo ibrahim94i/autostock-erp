@@ -1,8 +1,10 @@
 import {
   Body,
   Controller,
+  DefaultValuePipe,
   Get,
   Param,
+  ParseIntPipe,
   ParseUUIDPipe,
   Post,
   Query,
@@ -37,8 +39,14 @@ export class ReceiptsController {
 
   @Get()
   @Roles('admin', 'cashier', 'accountant')
-  findAll(@Query() query: ReceiptsQueryDto) {
-    return this.receiptsService.findAll(query);
+  findAll(
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
+    @Query('limit', new DefaultValuePipe(50), ParseIntPipe) limit: number,
+    @Query('from') from?: string,
+    @Query('to') to?: string,
+    @Query('search') search?: string,
+  ) {
+    return this.receiptsService.findAll({ page, limit, from, to, search });
   }
 
   @Get('next-number')

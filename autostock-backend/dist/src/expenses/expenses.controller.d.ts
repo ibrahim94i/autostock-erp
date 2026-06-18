@@ -2,14 +2,13 @@ import { Request } from 'express';
 import { JwtPayload } from '../auth/strategies/jwt.strategy';
 import { CreateExpenseCategoryDto } from './dto/create-expense-category.dto';
 import { CreateExpenseDto } from './dto/create-expense.dto';
-import { ExpensesQueryDto } from './dto/expenses-query.dto';
 import { UpdateExpenseCategoryDto } from './dto/update-expense-category.dto';
 import { UpdateExpenseDto } from './dto/update-expense.dto';
 import { ExpensesService } from './expenses.service';
 export declare class ExpensesController {
     private readonly expensesService;
     constructor(expensesService: ExpensesService);
-    findAll(query: ExpensesQueryDto): Promise<{
+    findAll(page: number, limit: number, from?: string, to?: string, categoryId?: string): Promise<{
         items: ({
             category: {
                 id: string;
@@ -26,6 +25,9 @@ export declare class ExpensesController {
             clientUuid: string;
         })[];
         total: string;
+        page: number;
+        limit: number;
+        totalCount: number;
     }>;
     create(dto: CreateExpenseDto, req: Request & {
         user: JwtPayload;

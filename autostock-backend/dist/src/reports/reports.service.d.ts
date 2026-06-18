@@ -59,6 +59,7 @@ export declare class ReportsService {
     getProductsReport(from: string, to: string): Promise<{
         productId: string;
         name: string;
+        unitsPerCarton: number;
         qtySold: number;
         revenue: number;
         cost: number;

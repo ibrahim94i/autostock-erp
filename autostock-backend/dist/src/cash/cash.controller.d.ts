@@ -3,6 +3,7 @@ import { JwtPayload } from '../auth/strategies/jwt.strategy';
 import { CashService } from './cash.service';
 import { CashHistoryQueryDto } from './dto/cash-history-query.dto';
 import { CloseCashRegisterDto } from './dto/close-cash-register.dto';
+import { CreateCashDepositDto } from './dto/create-cash-deposit.dto';
 import { OpenCashRegisterDto } from './dto/open-cash-register.dto';
 export declare class CashController {
     private readonly cashService;
@@ -57,9 +58,11 @@ export declare class CashController {
             createdAt: Date;
         };
         summary: import("./cash.service").CashRegisterSummary;
+        suggestedOpeningBalance: import("@prisma/client-runtime-utils").Decimal | null;
     } | {
         register: null;
         summary: null;
+        suggestedOpeningBalance: import("@prisma/client-runtime-utils").Decimal | null;
     }>;
     close(dto: CloseCashRegisterDto, req: Request & {
         user: JwtPayload;
@@ -85,6 +88,18 @@ export declare class CashController {
         notes: string | null;
         createdBy: string;
         createdAt: Date;
+    }>;
+    deposit(dto: CreateCashDepositDto, req: Request & {
+        user: JwtPayload;
+    }): Promise<{
+        id: string;
+        type: string;
+        createdBy: string;
+        createdAt: Date;
+        reference: string | null;
+        registerId: string;
+        amount: import("@prisma/client-runtime-utils").Decimal;
+        description: string | null;
     }>;
     getHistory(query: CashHistoryQueryDto): Promise<{
         summary: import("./cash.service").CashRegisterSummary;

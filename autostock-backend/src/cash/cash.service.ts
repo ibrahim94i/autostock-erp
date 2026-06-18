@@ -128,13 +128,15 @@ export class CashService {
 
         summary: this.computeSummary(openRegister.openingBalance, openRegister.transactions),
 
+        suggestedOpeningBalance: null,
+
       };
 
     }
 
 
 
-    const lastClosed = await this.prisma.cashRegister.findFirst({
+    const lastClosedToday = await this.prisma.cashRegister.findFirst({
 
       where: { date: today, status: 'closed' },
 
@@ -150,21 +152,83 @@ export class CashService {
 
 
 
-    if (!lastClosed) {
+    if (lastClosedToday) {
 
-      return { register: null, summary: null };
+      return {
+
+        register: lastClosedToday,
+
+        summary: this.computeSummary(lastClosedToday.openingBalance, lastClosedToday.transactions),
+
+        suggestedOpeningBalance: this.suggestedOpeningBalance(lastClosedToday),
+
+      };
 
     }
 
 
 
+    const lastClosed = await this.findLastClosedRegister();
+
+    const suggested = lastClosed ? this.suggestedOpeningBalance(lastClosed) : null;
+
+
+
     return {
 
-      register: lastClosed,
+      register: null,
 
-      summary: this.computeSummary(lastClosed.openingBalance, lastClosed.transactions),
+      summary: null,
+
+      suggestedOpeningBalance: suggested,
 
     };
+
+  }
+
+
+
+  private async findLastClosedRegister() {
+
+    return this.prisma.cashRegister.findFirst({
+
+      where: { status: 'closed' },
+
+      include: {
+
+        transactions: { orderBy: { createdAt: 'asc' } },
+
+      },
+
+      orderBy: [{ date: 'desc' }, { createdAt: 'desc' }],
+
+    });
+
+  }
+
+
+
+  private suggestedOpeningBalance(register: {
+
+    actualBalance: Prisma.Decimal | null;
+
+    closingBalance: Prisma.Decimal | null;
+
+  }): Prisma.Decimal | null {
+
+    if (register.actualBalance !== null) {
+
+      return new Prisma.Decimal(register.actualBalance);
+
+    }
+
+    if (register.closingBalance !== null) {
+
+      return new Prisma.Decimal(register.closingBalance);
+
+    }
+
+    return null;
 
   }
 

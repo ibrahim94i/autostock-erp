@@ -32,7 +32,7 @@ import type {
   ReceivePurchaseOrderPayload,
   Supplier,
 } from '../types';
-import { toPieceQty } from '../utils/units';
+import { buildPurchaseOrderItemPayload } from '../utils/units';
 
 const PAGE_SIZE = 10;
 
@@ -215,11 +215,16 @@ export function PurchasingPage() {
 
       const items = activeLines.map((line) => {
         const inputQty = parseFloat(line.qty);
-        const unitCost = parseFloat(line.unitCost);
+        const inputUnitCost = parseFloat(line.unitCost);
         if (Number.isNaN(inputQty) || inputQty <= 0) throw new Error('الكمية غير صالحة');
-        if (Number.isNaN(unitCost) || unitCost <= 0) throw new Error('سعر الشراء غير صالح');
-        const qty = toPieceQty(inputQty, line.qtyUnit, line.unitsPerCarton);
-        return { productId: line.productId, qty, unitCost };
+        if (Number.isNaN(inputUnitCost) || inputUnitCost <= 0) throw new Error('سعر الشراء غير صالح');
+        return buildPurchaseOrderItemPayload(
+          line.productId,
+          inputQty,
+          inputUnitCost,
+          line.qtyUnit,
+          line.unitsPerCarton,
+        );
       });
 
       return createPurchaseOrderRequest({
@@ -244,11 +249,16 @@ export function PurchasingPage() {
       if (activeLines.length === 0) throw new Error('أضف بنداً واحداً على الأقل');
       const items = activeLines.map((line) => {
         const inputQty = parseFloat(line.qty);
-        const unitCost = parseFloat(line.unitCost);
+        const inputUnitCost = parseFloat(line.unitCost);
         if (Number.isNaN(inputQty) || inputQty <= 0) throw new Error('الكمية غير صالحة');
-        if (Number.isNaN(unitCost) || unitCost <= 0) throw new Error('سعر الشراء غير صالح');
-        const qty = toPieceQty(inputQty, line.qtyUnit, line.unitsPerCarton);
-        return { productId: line.productId, qty, unitCost };
+        if (Number.isNaN(inputUnitCost) || inputUnitCost <= 0) throw new Error('سعر الشراء غير صالح');
+        return buildPurchaseOrderItemPayload(
+          line.productId,
+          inputQty,
+          inputUnitCost,
+          line.qtyUnit,
+          line.unitsPerCarton,
+        );
       });
       return updatePurchaseOrder(id, { supplierId: values.supplierId, items });
     },
@@ -397,7 +407,7 @@ export function PurchasingPage() {
           <div className="space-y-3 lg:hidden">
             {orders.map((po) => {
               const badge = statusBadge(po.status);
-              const total = poTotal(po.items);
+              const total = poTotal(po.items, productsCatalog);
               return (
                 <div
                   key={po.id}
@@ -491,7 +501,7 @@ export function PurchasingPage() {
               <tbody>
                 {orders.map((po) => {
                   const badge = statusBadge(po.status);
-                  const total = poTotal(po.items);
+                  const total = poTotal(po.items, productsCatalog);
                   return (
                     <tr
                       key={po.id}

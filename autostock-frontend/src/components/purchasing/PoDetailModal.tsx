@@ -8,6 +8,7 @@ import {
   shortId,
 } from '../../api';
 import { useQuery } from '@tanstack/react-query';
+import { formatDualQty, supportsCarton } from '../../utils/units';
 
 import type { Product } from '../../types';
 
@@ -131,6 +132,15 @@ export function PoDetailModal({ poId, productCatalog, onClose }: PoDetailModalPr
                         item.product,
                         productCatalog,
                       );
+                      const upc =
+                        item.product?.unitsPerCarton ??
+                        productCatalog?.get(item.productId)?.unitsPerCarton ??
+                        1;
+                      const qtyPieces = parseFloat(String(item.qty));
+                      const storedCost = parseFloat(String(item.unitCost));
+                      const displayCost = storedCost;
+                      const lineTotal = poLineTotal(item.qty, item.unitCost, upc);
+
                       return (
                       <tr key={item.id} className="border-b border-slate-100">
                         <td className="px-4 py-3">
@@ -139,10 +149,22 @@ export function PoDetailModal({ poId, productCatalog, onClose }: PoDetailModalPr
                             <p className="text-xs text-slate-400">{productLabel.sku}</p>
                           )}
                         </td>
-                        <td className="px-4 py-3">{item.qty.toString()}</td>
-                        <td className="px-4 py-3">{formatPrice(item.unitCost)}</td>
+                        <td className="px-4 py-3">
+                          <p>{formatDualQty(qtyPieces, upc)}</p>
+                          {supportsCarton(upc) && (
+                            <p className="text-xs text-slate-400">
+                              ({qtyPieces.toLocaleString('ar-EG')} قطعة)
+                            </p>
+                          )}
+                        </td>
+                        <td className="px-4 py-3">
+                          <p>{formatPrice(displayCost)}</p>
+                          {supportsCarton(upc) && (
+                            <p className="text-xs text-slate-400">سعر الكارتون</p>
+                          )}
+                        </td>
                         <td className="px-4 py-3 font-semibold">
-                          {formatPrice(poLineTotal(item.qty, item.unitCost))}
+                          {formatPrice(lineTotal)}
                         </td>
                       </tr>
                       );
@@ -154,7 +176,7 @@ export function PoDetailModal({ poId, productCatalog, onClose }: PoDetailModalPr
                         الإجمالي الكلي
                       </td>
                       <td className="px-4 py-3 text-lg font-bold text-slate-900">
-                        {formatPrice(poTotal(po.items))}
+                        {formatPrice(poTotal(po.items, productCatalog))}
                       </td>
                     </tr>
                   </tfoot>

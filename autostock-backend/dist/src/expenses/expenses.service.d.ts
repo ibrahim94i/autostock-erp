@@ -11,7 +11,10 @@ export declare class ExpensesService implements OnModuleInit {
     constructor(prisma: PrismaService);
     onModuleInit(): Promise<void>;
     seedDefaultCategories(): Promise<void>;
-    findAll(query: ExpensesQueryDto): Promise<{
+    findAll(query: ExpensesQueryDto & {
+        page: number;
+        limit: number;
+    }): Promise<{
         items: ({
             category: {
                 id: string;
@@ -28,6 +31,9 @@ export declare class ExpensesService implements OnModuleInit {
             clientUuid: string;
         })[];
         total: string;
+        page: number;
+        limit: number;
+        totalCount: number;
     }>;
     create(dto: CreateExpenseDto, userId: string): Promise<{
         category: {

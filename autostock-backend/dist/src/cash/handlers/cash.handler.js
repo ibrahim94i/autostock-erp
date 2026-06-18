@@ -6,8 +6,8 @@ exports.isInflowTransaction = isInflowTransaction;
 exports.isOutflowTransaction = isOutflowTransaction;
 const client_1 = require("@prisma/client");
 const event_types_enum_1 = require("../../events/event-types.enum");
-const INFLOW_TYPES = new Set(['sale', 'payment_in']);
-const OUTFLOW_TYPES = new Set(['payment_out']);
+const INFLOW_TYPES = new Set(['sale', 'payment_in', 'cash_deposit']);
+const OUTFLOW_TYPES = new Set(['payment_out', 'expense']);
 class CashHandler {
     async apply(tx, eventRow, payload) {
         const register = await this.findOpenRegisterForDate(tx, eventRow.occurredAt ?? new Date());

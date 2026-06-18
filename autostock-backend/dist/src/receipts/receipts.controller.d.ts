@@ -1,7 +1,6 @@
 import { Request } from 'express';
 import { JwtPayload } from '../auth/strategies/jwt.strategy';
 import { LogReceiptDto } from './dto/log-receipt.dto';
-import { ReceiptsQueryDto } from './dto/receipts-query.dto';
 import { ReceiptsService } from './receipts.service';
 export declare class ReceiptsController {
     private readonly receiptsService;
@@ -18,7 +17,7 @@ export declare class ReceiptsController {
         printedAt: Date;
         printCount: number;
     }>;
-    findAll(query: ReceiptsQueryDto): Promise<{
+    findAll(page: number, limit: number, from?: string, to?: string, search?: string): Promise<{
         id: string;
         createdBy: string;
         saleId: string;

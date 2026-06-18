@@ -50,22 +50,48 @@ let CashService = class CashService {
             return {
                 register: openRegister,
                 summary: this.computeSummary(openRegister.openingBalance, openRegister.transactions),
+                suggestedOpeningBalance: null,
             };
         }
-        const lastClosed = await this.prisma.cashRegister.findFirst({
+        const lastClosedToday = await this.prisma.cashRegister.findFirst({
             where: { date: today, status: 'closed' },
             include: {
                 transactions: { orderBy: { createdAt: 'asc' } },
             },
             orderBy: { createdAt: 'desc' },
         });
-        if (!lastClosed) {
-            return { register: null, summary: null };
+        if (lastClosedToday) {
+            return {
+                register: lastClosedToday,
+                summary: this.computeSummary(lastClosedToday.openingBalance, lastClosedToday.transactions),
+                suggestedOpeningBalance: this.suggestedOpeningBalance(lastClosedToday),
+            };
         }
+        const lastClosed = await this.findLastClosedRegister();
+        const suggested = lastClosed ? this.suggestedOpeningBalance(lastClosed) : null;
         return {
-            register: lastClosed,
-            summary: this.computeSummary(lastClosed.openingBalance, lastClosed.transactions),
+            register: null,
+            summary: null,
+            suggestedOpeningBalance: suggested,
         };
+    }
+    async findLastClosedRegister() {
+        return this.prisma.cashRegister.findFirst({
+            where: { status: 'closed' },
+            include: {
+                transactions: { orderBy: { createdAt: 'asc' } },
+            },
+            orderBy: [{ date: 'desc' }, { createdAt: 'desc' }],
+        });
+    }
+    suggestedOpeningBalance(register) {
+        if (register.actualBalance !== null) {
+            return new client_1.Prisma.Decimal(register.actualBalance);
+        }
+        if (register.closingBalance !== null) {
+            return new client_1.Prisma.Decimal(register.closingBalance);
+        }
+        return null;
     }
     async close(dto, userId) {
         const today = (0, cash_handler_1.startOfUtcDay)(new Date());
@@ -136,6 +162,44 @@ let CashService = class CashService {
         }
         const expectedBalance = openingBalance.plus(totalIn).minus(totalOut);
         return { totalIn, totalOut, expectedBalance };
+    }
+    async createDeposit(dto, userId) {
+        const existing = await this.prisma.cashTransaction.findUnique({
+            where: { reference: dto.clientUuid },
+        });
+        if (existing) {
+            return existing;
+        }
+        const today = (0, cash_handler_1.startOfUtcDay)(new Date());
+        const register = await this.prisma.cashRegister.findFirst({
+            where: { date: today, status: 'open' },
+            orderBy: { createdAt: 'desc' },
+        });
+        if (!register) {
+            throw new common_1.BadRequestException('الصندوق غير مفتوح — افتح الصندوق أولاً');
+        }
+        const source = dto.source?.trim();
+        const note = dto.description?.trim();
+        let description = 'إيداع نقد للصندوق';
+        if (source && note) {
+            description = `إيداع نقد — ${source} — ${note}`;
+        }
+        else if (source) {
+            description = `إيداع نقد — ${source}`;
+        }
+        else if (note) {
+            description = `إيداع نقد — ${note}`;
+        }
+        return this.prisma.cashTransaction.create({
+            data: {
+                registerId: register.id,
+                type: 'cash_deposit',
+                amount: dto.amount,
+                description,
+                reference: dto.clientUuid,
+                createdBy: userId,
+            },
+        });
     }
 };
 exports.CashService = CashService;
