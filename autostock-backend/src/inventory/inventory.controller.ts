@@ -1,7 +1,9 @@
 import {
   Body,
   Controller,
+  DefaultValuePipe,
   Get,
+  ParseIntPipe,
   Post,
   Query,
   Req,
@@ -17,7 +19,6 @@ import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
 import { RolesGuard } from '../common/guards/roles.guard';
 import { IdempotencyInterceptor } from '../common/interceptors/idempotency.interceptor';
 import { AdjustStockDto } from './dto/adjust-stock.dto';
-import { StockQueryDto } from './dto/stock-query.dto';
 import { InventoryService } from './inventory.service';
 
 @Controller('stock')
@@ -38,8 +39,13 @@ export class InventoryController {
 
   @Get('balances')
   @UseGuards(JwtAuthGuard)
-  getBalances(@Query() query: StockQueryDto) {
-    return this.inventoryService.getBalances(query);
+  getBalances(
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
+    @Query('limit', new DefaultValuePipe(50), ParseIntPipe) limit: number,
+    @Query('productId') productId?: string,
+    @Query('locationId') locationId?: string,
+  ) {
+    return this.inventoryService.getBalances({ page, limit, productId, locationId });
   }
 
   @Get('low-alerts')

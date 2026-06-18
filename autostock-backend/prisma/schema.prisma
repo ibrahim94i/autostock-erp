@@ -147,6 +147,7 @@ model StockBalanceView {
   updatedAt      DateTime
 
   @@id([productId, locationId])
+  @@index([locationId])
 }
 
 model JournalEntry {

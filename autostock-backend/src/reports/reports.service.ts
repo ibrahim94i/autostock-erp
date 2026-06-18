@@ -22,6 +22,12 @@ export class ReportsService {
 
   async getSummary() {
     const rows = await this.prisma.dashboardAggregate.findMany({
+      select: {
+        metricKey: true,
+        value: true,
+        period: true,
+        computedAt: true,
+      },
       orderBy: { metricKey: 'asc' },
     });
 
@@ -54,45 +60,52 @@ export class ReportsService {
     const now = new Date();
     const computedAt = now;
 
-    const salesToday = await this.computeSalesToday(todayStart, now);
-    await this.upsertMetric(
-      'sales_today',
+    const [
       salesToday,
-      PERIOD_TODAY,
-      computedAt,
-    );
-
-    const netProfitToday = await this.computeNetProfitToday(todayStart, now);
-    await this.upsertMetric(
-      'net_profit_today',
       netProfitToday,
-      PERIOD_TODAY,
-      computedAt,
-    );
-
-    const totalCustomerDebt = await this.computeTotalCustomerDebt();
-    await this.upsertMetric(
-      'total_customer_debt',
       totalCustomerDebt,
-      PERIOD_TODAY,
-      computedAt,
-    );
-
-    const topProducts = await this.computeTopProducts();
-    await this.upsertMetric(
-      'top_products',
-      new Prisma.Decimal(topProducts.length),
-      JSON.stringify(topProducts),
-      computedAt,
-    );
-
-    const lowStockCount = await this.computeLowStockCount();
-    await this.upsertMetric(
-      'low_stock_count',
+      topProducts,
       lowStockCount,
-      PERIOD_TODAY,
-      computedAt,
-    );
+    ] = await Promise.all([
+      this.computeSalesToday(todayStart, now),
+      this.computeNetProfitToday(todayStart, now),
+      this.computeTotalCustomerDebt(),
+      this.computeTopProducts(),
+      this.computeLowStockCount(),
+    ]);
+
+    await Promise.all([
+      this.upsertMetric(
+        'sales_today',
+        salesToday,
+        PERIOD_TODAY,
+        computedAt,
+      ),
+      this.upsertMetric(
+        'net_profit_today',
+        netProfitToday,
+        PERIOD_TODAY,
+        computedAt,
+      ),
+      this.upsertMetric(
+        'total_customer_debt',
+        totalCustomerDebt,
+        PERIOD_TODAY,
+        computedAt,
+      ),
+      this.upsertMetric(
+        'top_products',
+        new Prisma.Decimal(topProducts.length),
+        JSON.stringify(topProducts),
+        computedAt,
+      ),
+      this.upsertMetric(
+        'low_stock_count',
+        lowStockCount,
+        PERIOD_TODAY,
+        computedAt,
+      ),
+    ]);
   }
 
   private startOfToday(): Date {

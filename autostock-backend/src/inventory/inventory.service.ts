@@ -9,7 +9,13 @@ import {
 } from '../events/event-core.service';
 import { EventType } from '../events/event-types.enum';
 import { AdjustStockDto } from './dto/adjust-stock.dto';
-import { StockQueryDto } from './dto/stock-query.dto';
+
+export interface StockBalancesQuery {
+  page?: number;
+  limit?: number;
+  productId?: string;
+  locationId?: string;
+}
 
 export interface PaginatedStockBalances {
   items: Array<{
@@ -86,9 +92,9 @@ export class InventoryService {
     });
   }
 
-  async getBalances(query: StockQueryDto): Promise<PaginatedStockBalances> {
+  async getBalances(query: StockBalancesQuery): Promise<PaginatedStockBalances> {
     const page = query.page && query.page > 0 ? query.page : 1;
-    const limit = query.limit && query.limit > 0 ? query.limit : 20;
+    const limit = query.limit && query.limit > 0 ? query.limit : 50;
     const skip = (page - 1) * limit;
 
     const where: Prisma.StockBalanceViewWhereInput = {};
@@ -107,7 +113,12 @@ export class InventoryService {
         skip,
         take: limit,
         orderBy: [{ productId: 'asc' }, { locationId: 'asc' }],
-        include: {
+        select: {
+          productId: true,
+          locationId: true,
+          quantity: true,
+          lastMovementId: true,
+          updatedAt: true,
           product: {
             select: { id: true, sku: true, name: true, minStockAlert: true },
           },

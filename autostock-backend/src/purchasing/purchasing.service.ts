@@ -22,8 +22,21 @@ export interface FindPurchaseOrdersQuery {
   limit?: number;
 }
 
+export interface PurchaseOrderListItem {
+  id: string;
+  supplierId: string;
+  status: string;
+  createdAt: Date;
+  supplier: { id: string; name: string };
+  items: Array<{
+    qty: Prisma.Decimal;
+    unitCost: Prisma.Decimal;
+    product: { unitsPerCarton: number };
+  }>;
+}
+
 export interface PaginatedPurchaseOrders {
-  items: PurchaseOrder[];
+  items: PurchaseOrderListItem[];
   total: number;
   page: number;
   limit: number;
@@ -55,10 +68,16 @@ export class PurchasingService {
         skip,
         take: limit,
         orderBy: { createdAt: 'desc' },
-        include: {
-          supplier: true,
+        select: {
+          id: true,
+          supplierId: true,
+          status: true,
+          createdAt: true,
+          supplier: { select: { id: true, name: true } },
           items: {
-            include: {
+            select: {
+              qty: true,
+              unitCost: true,
               product: { select: { unitsPerCarton: true } },
             },
           },
