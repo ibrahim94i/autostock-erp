@@ -330,6 +330,7 @@ export interface CompanySettings {
   telegramChatId: string | null;
   telegramDailyTime: string;
   telegramEnabled: boolean;
+  enableDailyVoice: boolean;
   updatedAt: string;
 }
 
@@ -347,6 +348,7 @@ export interface UpdateSettingsPayload {
   telegramChatId?: string;
   telegramDailyTime?: string;
   telegramEnabled?: boolean;
+  enableDailyVoice?: boolean;
 }
 
 export interface BackupDryRunResult {

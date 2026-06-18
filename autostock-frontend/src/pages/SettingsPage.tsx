@@ -29,6 +29,7 @@ export function SettingsPage() {
     telegramChatId: settings.telegramChatId ?? '',
     telegramDailyTime: settings.telegramDailyTime ?? '21:00',
     telegramEnabled: settings.telegramEnabled ?? false,
+    enableDailyVoice: settings.enableDailyVoice ?? false,
   });
   const [successMessage, setSuccessMessage] = useState('');
   const [telegramMessage, setTelegramMessage] = useState('');
@@ -57,6 +58,7 @@ export function SettingsPage() {
       telegramChatId: settings.telegramChatId ?? '',
       telegramDailyTime: settings.telegramDailyTime ?? '21:00',
       telegramEnabled: settings.telegramEnabled ?? false,
+      enableDailyVoice: settings.enableDailyVoice ?? false,
     });
   }, [settings.updatedAt]);
 
@@ -111,9 +113,15 @@ export function SettingsPage() {
 
   const testTelegramMutation = useMutation({
     mutationFn: () => sendTelegramTest(),
-    onSuccess: () => {
+    onSuccess: (result) => {
       setTelegramError('');
-      setTelegramMessage('تم إرسال رسالة الاختبار إلى Telegram');
+      const voiceNote =
+        result.voice?.ok === true
+          ? ' (نص + صوت)'
+          : result.voice?.ok === false
+            ? ' (نص فقط — فشل الصوت)'
+            : '';
+      setTelegramMessage(`تم إرسال رسالة الاختبار إلى Telegram${voiceNote}`);
     },
     onError: (err: Error) => setTelegramError(err.message),
   });
@@ -139,6 +147,7 @@ export function SettingsPage() {
       telegramChatId: form.telegramChatId.trim() || undefined,
       telegramDailyTime: form.telegramDailyTime,
       telegramEnabled: form.telegramEnabled,
+      enableDailyVoice: form.enableDailyVoice,
     };
   }
 
@@ -343,6 +352,23 @@ export function SettingsPage() {
               checked={form.telegramEnabled}
               onChange={(e) =>
                 setForm((f) => ({ ...f, telegramEnabled: e.target.checked }))
+              }
+              className="h-5 w-5 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+            />
+          </label>
+
+          <label className="flex items-center justify-between gap-4 rounded-lg border border-slate-200 bg-slate-50 px-4 py-3">
+            <div>
+              <p className="text-sm font-medium text-slate-900">إرسال ملخص صوتي يومي</p>
+              <p className="text-xs text-slate-500">
+                يرسل رسالة صوتية بعد التقرير النصي (اختبار الإرسال يشمل الصوت عند التفعيل)
+              </p>
+            </div>
+            <input
+              type="checkbox"
+              checked={form.enableDailyVoice}
+              onChange={(e) =>
+                setForm((f) => ({ ...f, enableDailyVoice: e.target.checked }))
               }
               className="h-5 w-5 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
             />

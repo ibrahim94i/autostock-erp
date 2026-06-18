@@ -14,4 +14,12 @@ export class TelegramController {
   sendTest() {
     return this.telegramService.sendConfiguredTestMessage();
   }
+
+  @Post('test-voice')
+  @Roles('admin')
+  sendTestVoice() {
+    return this.telegramService.sendVoiceMessage(
+      'اختبار صوتي. المبيعات اليوم ألف وخمسمئة دينار. الربح ثلاثمئة دينار.',
+    );
+  }
 }

@@ -1039,14 +1039,26 @@ export async function updateSettings(
   return res.json() as Promise<CompanySettings>;
 }
 
-export async function sendTelegramTest(): Promise<{ ok: true }> {
+export async function sendTelegramTest(): Promise<{
+  ok: true;
+  voice?: {
+    ok: boolean;
+    error?: string;
+  };
+}> {
   const res = await authedFetch('/telegram/test', { method: 'POST' });
 
   if (!res.ok) {
     throw new Error(await parseApiError(res));
   }
 
-  return res.json() as Promise<{ ok: true }>;
+  return res.json() as Promise<{
+    ok: true;
+    voice?: {
+      ok: boolean;
+      error?: string;
+    };
+  }>;
 }
 
 export async function downloadBackupFile(): Promise<void> {

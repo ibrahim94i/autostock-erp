@@ -294,6 +294,7 @@ model Settings {
   telegramChatId       String?
   telegramDailyTime    String   @default("21:00")
   telegramEnabled      Boolean  @default(false)
+  enableDailyVoice     Boolean  @default(false)
   nextReceiptNumber    Int      @default(1)
   updatedAt            DateTime @updatedAt
 }

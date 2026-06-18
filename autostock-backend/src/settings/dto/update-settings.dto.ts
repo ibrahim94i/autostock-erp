@@ -67,4 +67,8 @@ export class UpdateSettingsDto {
   @IsOptional()
   @IsBoolean()
   telegramEnabled?: boolean;
+
+  @IsOptional()
+  @IsBoolean()
+  enableDailyVoice?: boolean;
 }

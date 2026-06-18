@@ -50,6 +50,9 @@ export class SettingsService implements OnModuleInit {
         ...(dto.telegramEnabled !== undefined && {
           telegramEnabled: dto.telegramEnabled,
         }),
+        ...(dto.enableDailyVoice !== undefined && {
+          enableDailyVoice: dto.enableDailyVoice,
+        }),
       },
     });
   }

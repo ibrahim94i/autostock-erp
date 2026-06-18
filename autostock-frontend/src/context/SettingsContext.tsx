@@ -30,6 +30,7 @@ export const DEFAULT_SETTINGS: CompanySettings = {
   telegramChatId: null,
   telegramDailyTime: '21:00',
   telegramEnabled: false,
+  enableDailyVoice: false,
   updatedAt: new Date(0).toISOString(),
 };
 

@@ -29,7 +29,39 @@ export class TelegramDailyJob {
       if (this.lastSentDate === today) return;
 
       const report = await this.reportsService.getDailyReport(today);
-      await this.telegramService.sendConfiguredDailyReport(report);
+      const textReport = this.telegramService.buildDailyReportMessage(
+        report,
+        settings.currency,
+      );
+
+      await this.telegramService.sendMessage(
+        textReport,
+        settings.telegramBotToken,
+        settings.telegramChatId,
+      );
+
+      if (settings.enableDailyVoice) {
+        try {
+          const shortSummary =
+            this.telegramService.buildDailyVoiceSummary(report);
+          const voiceResult = await this.telegramService.sendVoiceMessage(
+            shortSummary,
+            settings.telegramBotToken,
+            settings.telegramChatId,
+          );
+          if (!voiceResult.ok) {
+            this.logger.warn(
+              `Voice summary failed — text only sent: ${voiceResult.error ?? 'unknown'}`,
+            );
+          }
+        } catch (error) {
+          this.logger.warn(
+            'Voice summary failed — text only sent',
+            error instanceof Error ? error.message : String(error),
+          );
+        }
+      }
+
       this.lastSentDate = today;
       this.logger.log(`Daily Telegram report sent for ${today}`);
     } catch (error) {

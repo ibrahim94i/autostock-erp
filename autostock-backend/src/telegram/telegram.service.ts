@@ -98,7 +98,136 @@ export class TelegramService {
     ].join('\n');
   }
 
-  async sendConfiguredTestMessage(): Promise<{ ok: true }> {
+  buildDailyVoiceSummary(report: DailyReportLike): string {
+    const topProduct = report.topProducts[0]?.name ?? 'لا يوجد';
+    return [
+      'ملخص اليوم.',
+      `المبيعات ${this.formatAmount(report.totalSales)} دينار.`,
+      `الربح ${this.formatAmount(report.netProfit)} دينار.`,
+      `عدد الفواتير ${this.formatCount(report.salesCount)}.`,
+      `أكثر منتج مبيعاً ${topProduct}.`,
+    ].join(' ');
+  }
+
+  buildTestVoiceMessage(): string {
+    return 'اختبار صوتي. تم ربط Telegram بنجاح.';
+  }
+
+  generateVoiceUrl(text: string): string {
+    const encoded = encodeURIComponent(text);
+    return `https://translate.google.com/translate_tts?ie=UTF-8&q=${encoded}&tl=ar&client=tw-ob`;
+  }
+
+  async sendVoiceMessage(
+    text: string,
+    botToken?: string,
+    chatId?: string,
+  ): Promise<{
+    ok: boolean;
+    googleStatusCode?: number;
+    fileSizeBytes?: number;
+    telegramStatusCode?: number;
+    error?: string;
+  }> {
+    try {
+      const settings = await this.settingsService.getSettings();
+      const token =
+        botToken?.trim() || settings.telegramBotToken?.trim() || '';
+      const chat = chatId?.trim() || settings.telegramChatId?.trim() || '';
+
+      if (!token || !chat) {
+        const message =
+          'أدخل Bot Token و Chat ID واحفظ الإعدادات قبل اختبار الصوت';
+        this.logger.warn(`Voice skipped: ${message}`);
+        return { ok: false, error: message };
+      }
+
+      const googleUrl = this.generateVoiceUrl(text);
+      const googleResponse = await fetch(googleUrl, {
+        signal: AbortSignal.timeout(10_000),
+        headers: {
+          'User-Agent':
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+        },
+      });
+
+      const googleStatusCode = googleResponse.status;
+      const audioBuffer = await googleResponse.arrayBuffer();
+      const fileSizeBytes = audioBuffer.byteLength;
+
+      this.logger.log(`Google TTS Status Code: ${googleStatusCode}`);
+      this.logger.log(`Google TTS file size: ${fileSizeBytes} bytes`);
+
+      if (!googleResponse.ok || fileSizeBytes === 0) {
+        return {
+          ok: false,
+          googleStatusCode,
+          fileSizeBytes,
+          error: `Google TTS failed with HTTP ${googleStatusCode}`,
+        };
+      }
+
+      const formData = new FormData();
+      formData.append('chat_id', chat);
+      formData.append(
+        'voice',
+        new Blob([audioBuffer], { type: 'audio/mpeg' }),
+        'voice.mp3',
+      );
+
+      const telegramResponse = await fetch(
+        `https://api.telegram.org/bot${token}/sendVoice`,
+        {
+          method: 'POST',
+          body: formData,
+          signal: AbortSignal.timeout(10_000),
+        },
+      );
+
+      const telegramStatusCode = telegramResponse.status;
+      this.logger.log(`Telegram Status Code: ${telegramStatusCode}`);
+
+      const telegramBody = (await telegramResponse.json()) as {
+        ok?: boolean;
+        description?: string;
+      };
+
+      if (!telegramResponse.ok || !telegramBody.ok) {
+        return {
+          ok: false,
+          googleStatusCode,
+          fileSizeBytes,
+          telegramStatusCode,
+          error:
+            telegramBody.description ??
+            `Telegram sendVoice failed with HTTP ${telegramStatusCode}`,
+        };
+      }
+
+      return {
+        ok: true,
+        googleStatusCode,
+        fileSizeBytes,
+        telegramStatusCode,
+      };
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : 'Unknown voice error';
+      this.logger.warn(`Voice message failed (text unaffected): ${message}`);
+      return { ok: false, error: message };
+    }
+  }
+
+  async sendConfiguredTestMessage(): Promise<{
+    ok: true;
+    voice?: {
+      ok: boolean;
+      googleStatusCode?: number;
+      fileSizeBytes?: number;
+      telegramStatusCode?: number;
+      error?: string;
+    };
+  }> {
     const settings = await this.settingsService.getSettings();
     if (!settings.telegramBotToken?.trim() || !settings.telegramChatId?.trim()) {
       throw new BadRequestException(
@@ -106,11 +235,29 @@ export class TelegramService {
       );
     }
 
-    return this.sendMessage(
+    await this.sendMessage(
       this.buildTestMessage(),
       settings.telegramBotToken,
       settings.telegramChatId,
     );
+
+    if (!settings.enableDailyVoice) {
+      return { ok: true };
+    }
+
+    const voice = await this.sendVoiceMessage(
+      this.buildTestVoiceMessage(),
+      settings.telegramBotToken,
+      settings.telegramChatId,
+    );
+
+    if (!voice.ok) {
+      this.logger.warn(
+        `Test voice failed — text only sent: ${voice.error ?? 'unknown'}`,
+      );
+    }
+
+    return { ok: true, voice };
   }
 
   async sendConfiguredDailyReport(report: DailyReportLike): Promise<{ ok: true }> {
