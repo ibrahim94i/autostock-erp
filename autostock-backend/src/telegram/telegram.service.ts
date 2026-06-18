@@ -278,15 +278,24 @@ export class TelegramService {
     if (!match) return false;
 
     const targetMinutes = Number(match[1]) * 60 + Number(match[2]);
-    const currentMinutes = now.getHours() * 60 + now.getMinutes();
+    const baghdadTime = this.toBaghdadDate(now);
+    const currentMinutes =
+      baghdadTime.getHours() * 60 + baghdadTime.getMinutes();
     return Math.abs(currentMinutes - targetMinutes) <= 1;
   }
 
   todayIsoLocal(now = new Date()): string {
-    const y = now.getFullYear();
-    const m = String(now.getMonth() + 1).padStart(2, '0');
-    const d = String(now.getDate()).padStart(2, '0');
+    const baghdadTime = this.toBaghdadDate(now);
+    const y = baghdadTime.getFullYear();
+    const m = String(baghdadTime.getMonth() + 1).padStart(2, '0');
+    const d = String(baghdadTime.getDate()).padStart(2, '0');
     return `${y}-${m}-${d}`;
+  }
+
+  private toBaghdadDate(now: Date): Date {
+    return new Date(
+      now.toLocaleString('en-US', { timeZone: 'Asia/Baghdad' }),
+    );
   }
 
   private formatAmount(value: number): string {
