@@ -10,7 +10,7 @@ import { printFontFamilyCss } from './typography';
 
 export { COMPANY_LOGO_DATA_URL };
 
-/** Customer documents always use حرير البصرة logo — ignore app/settings overrides. */
+/** Customer documents always use قوة الجود logo — ignore app/settings overrides. */
 export function resolvePrintLogoUrl(_settingsLogo?: string | null): string {
   return COMPANY_LOGO_DATA_URL;
 }
