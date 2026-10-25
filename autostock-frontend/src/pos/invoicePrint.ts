@@ -267,7 +267,11 @@ export function buildInvoiceHtml(data: InvoiceData, size: ReceiptSize): string {
 
     <footer class="doc-footer">
       <p>${escapeHtml(footerText)}</p>
-      <p class="doc-footer__management">${escapeHtml(COMPANY_RECEIPT_MANAGEMENT)}</p>
+      ${
+        COMPANY_RECEIPT_MANAGEMENT.trim()
+          ? `<p class="doc-footer__management">${escapeHtml(COMPANY_RECEIPT_MANAGEMENT)}</p>`
+          : ''
+      }
     </footer>
   </div>
 </body>
