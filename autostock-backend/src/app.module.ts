@@ -1,4 +1,9 @@
-import { Module } from '@nestjs/common';
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
 import { ScheduleModule } from '@nestjs/schedule';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -10,6 +15,7 @@ import { CashModule } from './cash/cash.module';
 import { CategoriesModule } from './categories/categories.module';
 import { ExpensesModule } from './expenses/expenses.module';
 import { PrismaModule } from './common/prisma/prisma.module';
+import { TrialMiddleware } from './common/trial/trial.middleware';
 import { CustomersModule } from './customers/customers.module';
 import { InventoryModule } from './inventory/inventory.module';
 import { LocationsModule } from './locations/locations.module';
@@ -48,6 +54,16 @@ import { ActivityLogModule } from './activity-log/activity-log.module';
     ActivityLogModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, TrialMiddleware],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer): void {
+    consumer
+      .apply(TrialMiddleware)
+      .exclude(
+        { path: 'health', method: RequestMethod.GET },
+        { path: '/', method: RequestMethod.GET },
+      )
+      .forRoutes('*');
+  }
+}

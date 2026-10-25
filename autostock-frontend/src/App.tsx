@@ -6,6 +6,7 @@ import { BackendKeepAlive } from './components/BackendKeepAlive';
 import { AdminRoute } from './components/AdminRoute';
 import { SettingsRoute } from './components/SettingsRoute';
 import { BackendConnectionGate } from './components/BackendConnectionGate';
+import { TrialGate } from './components/TrialGate';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { ExpensesRoute } from './components/ExpensesRoute';
 import { CashRegisterRoute } from './components/CashRegisterRoute';
@@ -61,6 +62,7 @@ const Router = isElectronFile ? HashRouter : BrowserRouter;
 
 function AppRoutes() {
   return (
+    <TrialGate>
     <div className="app-root relative min-h-screen">
       <AppWatermark />
       <SessionWarning />
@@ -110,6 +112,7 @@ function AppRoutes() {
         </Routes>
       </Suspense>
     </div>
+    </TrialGate>
   );
 }
 
