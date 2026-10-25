@@ -1,7 +1,12 @@
 import { useEffect, useState, type FormEvent } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Loader2, Send, Trash2 } from 'lucide-react';
-import { resetAllData, sendTelegramTest, updateSettings } from '../api';
+import {
+  canManageSettings,
+  resetAllData,
+  sendTelegramTest,
+  updateSettings,
+} from '../api';
 import { useSettings } from '../context/SettingsContext';
 import { BackupSection } from '../components/BackupSection';
 import type { UpdateSettingsPayload } from '../types';
@@ -13,6 +18,7 @@ const RECEIPT_SIZE_OPTIONS = [
 ] as const;
 
 export function SettingsPage() {
+  const canEditSettings = canManageSettings();
   const { settings, setSettingsLocal, refreshSettings } = useSettings();
   const queryClient = useQueryClient();
   const [form, setForm] = useState({
@@ -182,6 +188,20 @@ export function SettingsPage() {
   function handleTelegramTest() {
     setTelegramError('');
     testTelegramMutation.mutate();
+  }
+
+  if (!canEditSettings) {
+    return (
+      <div className="mx-auto max-w-2xl">
+        <div className="mb-6">
+          <h2 className="text-xl font-bold text-slate-900">النسخ الاحتياطي</h2>
+          <p className="mt-1 text-sm text-slate-500">
+            يمكنك تنزيل نسخة من البيانات. تعديل إعدادات الشركة ومسح البيانات متاح للمسؤول فقط.
+          </p>
+        </div>
+        <BackupSection downloadOnly />
+      </div>
+    );
   }
 
   return (

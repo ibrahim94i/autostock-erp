@@ -14,7 +14,12 @@ function countBackupRecords(payload: BackupPayload): number {
   return Object.values(payload.recordCounts ?? {}).reduce((sum, n) => sum + (n ?? 0), 0);
 }
 
-export function BackupSection() {
+interface BackupSectionProps {
+  /** Owner account: download only (no restore / schedule). */
+  downloadOnly?: boolean;
+}
+
+export function BackupSection({ downloadOnly = false }: BackupSectionProps) {
   const queryClient = useQueryClient();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -35,6 +40,7 @@ export function BackupSection() {
   const scheduleQuery = useQuery({
     queryKey: ['backup-schedule'],
     queryFn: fetchBackupSchedule,
+    enabled: !downloadOnly,
   });
 
   useEffect(() => {
@@ -179,7 +185,9 @@ export function BackupSection() {
       <div>
         <h2 className="text-xl font-bold text-slate-900">النسخ الاحتياطي</h2>
         <p className="mt-1 text-sm text-slate-500">
-          تنزيل نسخة كاملة من البيانات أو استعادتها من ملف JSON
+          {downloadOnly
+            ? 'تنزيل نسخة كاملة من البيانات كملف JSON'
+            : 'تنزيل نسخة كاملة من البيانات أو استعادتها من ملف JSON'}
         </p>
       </div>
 
@@ -216,7 +224,8 @@ export function BackupSection() {
         </button>
       </div>
 
-      {/* Restore */}
+      {/* Restore — admin only */}
+      {!downloadOnly && (
       <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
         <h3 className="font-semibold text-slate-900">استعادة من ملف</h3>
 
@@ -329,8 +338,10 @@ export function BackupSection() {
           )}
         </div>
       </div>
+      )}
 
-      {/* Schedule */}
+      {/* Schedule — admin only */}
+      {!downloadOnly && (
       <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
         <h3 className="font-semibold text-slate-900">جدولة تلقائية</h3>
         <p className="mt-1 text-sm text-slate-500">
@@ -410,6 +421,7 @@ export function BackupSection() {
           </div>
         )}
       </div>
+      )}
     </div>
   );
 }

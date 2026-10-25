@@ -4,6 +4,7 @@ import { SessionWarning } from './components/SessionWarning';
 import { AppWatermark } from './components/AppWatermark';
 import { BackendKeepAlive } from './components/BackendKeepAlive';
 import { AdminRoute } from './components/AdminRoute';
+import { SettingsRoute } from './components/SettingsRoute';
 import { BackendConnectionGate } from './components/BackendConnectionGate';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { ExpensesRoute } from './components/ExpensesRoute';
@@ -95,8 +96,11 @@ function AppRoutes() {
                 <Route path="reports" element={<ReportsPage />} />
               </Route>
 
-              <Route element={<AdminRoute />}>
+              <Route element={<SettingsRoute />}>
                 <Route path="settings" element={<SettingsPage />} />
+              </Route>
+
+              <Route element={<AdminRoute />}>
                 <Route path="activity-log" element={<ActivityLogPage />} />
               </Route>
             </Route>

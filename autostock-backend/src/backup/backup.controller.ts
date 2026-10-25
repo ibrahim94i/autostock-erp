@@ -21,12 +21,13 @@ import { UpdateBackupScheduleDto } from './dto/update-backup-schedule.dto';
 
 @Controller('backup')
 @UseGuards(JwtAuthGuard, RolesGuard)
-@Roles('admin')
 @UsePipes(new ValidationPipe({ whitelist: true, transform: true }))
 export class BackupController {
   constructor(private readonly backupService: BackupService) {}
 
+  /** Owner may download backups; restore/schedule stay admin-only. */
   @Get('download')
+  @Roles('admin', 'owner')
   async download(@Res({ passthrough: false }) res: Response): Promise<void> {
     const payload = await this.backupService.exportBackup();
     const filename = this.backupService.formatBackupFilename(new Date(payload.exportedAt));
@@ -37,11 +38,13 @@ export class BackupController {
   }
 
   @Post('restore/dry-run')
+  @Roles('admin')
   dryRun(@Body() backupData: Record<string, unknown>) {
     return this.backupService.dryRun(backupData);
   }
 
   @Post('restore')
+  @Roles('admin')
   restore(
     @Req() req: Request & { user: JwtPayload },
     @Body() dto: RestoreBackupDto,
@@ -50,11 +53,13 @@ export class BackupController {
   }
 
   @Get('schedule')
+  @Roles('admin')
   getSchedule() {
     return this.backupService.getSchedule();
   }
 
   @Patch('schedule')
+  @Roles('admin')
   updateSchedule(@Body() dto: UpdateBackupScheduleDto) {
     return this.backupService.updateSchedule(dto);
   }

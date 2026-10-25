@@ -211,28 +211,55 @@ export function isAdmin(): boolean {
   return getUserRole() === 'admin';
 }
 
+/** Client/owner account: full ops + backup download, no settings/wipe. */
+export function isOwner(): boolean {
+  return getUserRole() === 'owner';
+}
+
 export function canAccessReports(): boolean {
   const role = getUserRole();
-  return role === 'admin' || role === 'accountant';
+  return role === 'admin' || role === 'owner' || role === 'accountant';
 }
 
 export function canAccessCashRegister(): boolean {
   const role = getUserRole();
-  return role === 'admin' || role === 'cashier' || role === 'accountant';
+  return (
+    role === 'admin' ||
+    role === 'owner' ||
+    role === 'cashier' ||
+    role === 'accountant'
+  );
 }
 
-export function canAccessSettings(): boolean {
+/** Full settings (company name, telegram, reset) — admin only. */
+export function canManageSettings(): boolean {
   return getUserRole() === 'admin';
+}
+
+/** Settings page access: admin (full) or owner (backup download only). */
+export function canAccessSettings(): boolean {
+  const role = getUserRole();
+  return role === 'admin' || role === 'owner';
+}
+
+export function canAccessBackupDownload(): boolean {
+  const role = getUserRole();
+  return role === 'admin' || role === 'owner';
 }
 
 export function canAccessExpenses(): boolean {
   const role = getUserRole();
-  return role === 'admin' || role === 'accountant';
+  return role === 'admin' || role === 'owner' || role === 'accountant';
 }
 
 export function canAccessReceipts(): boolean {
   const role = getUserRole();
-  return role === 'admin' || role === 'cashier' || role === 'accountant';
+  return (
+    role === 'admin' ||
+    role === 'owner' ||
+    role === 'cashier' ||
+    role === 'accountant'
+  );
 }
 
 function authHeaders(): HeadersInit {

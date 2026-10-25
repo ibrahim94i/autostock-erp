@@ -25,6 +25,7 @@ import {
   clearToken,
   getUsername,
   isAdmin,
+  canAccessSettings,
   canAccessReports,
   canAccessCashRegister,
   canAccessExpenses,
@@ -78,10 +79,8 @@ const salesReturnsNavItem = { to: '/sales-returns', label: 'مرتجعات ال�
 
 const reportsNavItem = { to: '/reports', label: 'التقارير', icon: BarChart3 } as const;
 
-const adminNavItems = [
-  { to: '/settings', label: 'الإعدادات', icon: Settings },
-  { to: '/activity-log', label: 'سجل النشاط', icon: History },
-] as const;
+const settingsNavItem = { to: '/settings', label: 'الإعدادات', icon: Settings } as const;
+const activityLogNavItem = { to: '/activity-log', label: 'سجل النشاط', icon: History } as const;
 
 function navLinkClass(isActive: boolean): string {
   return [
@@ -98,6 +97,7 @@ interface SidebarNavProps {
 
 function SidebarNav({ onNavigate }: SidebarNavProps) {
   const admin = isAdmin();
+  const showSettings = canAccessSettings();
   const showReports = canAccessReports();
   const showCashRegister = canAccessCashRegister();
   const showExpenses = canAccessExpenses();
@@ -164,18 +164,28 @@ function SidebarNav({ onNavigate }: SidebarNavProps) {
           <span>{reportsNavItem.label}</span>
         </NavLink>
       )}
-      {admin &&
-        adminNavItems.map(({ to, label, icon: Icon }) => (
-          <NavLink
-            key={to}
-            to={to}
-            className={({ isActive }) => navLinkClass(isActive)}
-            onClick={onNavigate}
-          >
-            <Icon className="h-5 w-5 shrink-0" />
-            <span>{label}</span>
-          </NavLink>
-        ))}
+      {showSettings && (
+        <NavLink
+          key={settingsNavItem.to}
+          to={settingsNavItem.to}
+          className={({ isActive }) => navLinkClass(isActive)}
+          onClick={onNavigate}
+        >
+          <settingsNavItem.icon className="h-5 w-5 shrink-0" />
+          <span>{admin ? settingsNavItem.label : 'نسخ احتياطي'}</span>
+        </NavLink>
+      )}
+      {admin && (
+        <NavLink
+          key={activityLogNavItem.to}
+          to={activityLogNavItem.to}
+          className={({ isActive }) => navLinkClass(isActive)}
+          onClick={onNavigate}
+        >
+          <activityLogNavItem.icon className="h-5 w-5 shrink-0" />
+          <span>{activityLogNavItem.label}</span>
+        </NavLink>
+      )}
     </nav>
   );
 }

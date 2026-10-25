@@ -22,6 +22,16 @@ const accounts = [
 
 const roles = [
   { name: 'admin', permissions: { all: true } },
+  {
+    name: 'owner',
+    permissions: {
+      allOps: true,
+      backupDownload: true,
+      settings: false,
+      resetData: false,
+      restoreBackup: false,
+    },
+  },
   { name: 'cashier', permissions: { sales: true, customers: true, cash: true, receipts: true } },
   { name: 'warehouse', permissions: { inventory: true, products: true, purchasing: true } },
   {
@@ -39,6 +49,12 @@ const roles = [
 
 const demoUsers = [
   { username: 'admin', name: 'Admin', password: 'admin123', roleName: 'admin' },
+  {
+    username: 'owner',
+    name: 'مالك النظام',
+    password: 'owner123',
+    roleName: 'owner',
+  },
   { username: 'cashier', name: 'Cashier', password: 'cashier123', roleName: 'cashier' },
   { username: 'warehouse', name: 'Warehouse', password: 'warehouse123', roleName: 'warehouse' },
   { username: 'accountant', name: 'Accountant', password: 'accountant123', roleName: 'accountant' },
